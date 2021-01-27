@@ -1,22 +1,15 @@
 import express from "express";
-import axios from "axios";
+
+import {apiRouter} from "./routes/api.route.js"
 
 const app = express();
-const kitsuAPI = axios.create({
-  baseURL: "https://kitsu.io/api/edge",
-});
-const port = 5000;
+const port = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+app.use(express.static("public"));
 
-app.get("/api", (req, res) => {
-  kitsuAPI.get("/anime/1").then((data) => {
-    res.send(data);
-  });
-});
+app.use("/api", apiRouter);
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
+
