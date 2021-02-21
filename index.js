@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 
 import { apiRouter } from "./routes/api.route.js";
 
-
-
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.set("view engine", "pug");
+app.set("views", "views")
 
 app.use(express.static("public"));
 
