@@ -18,6 +18,10 @@ const animeSchema = new Schema({
   promoArtURL: {
     type: String,
     required: true,
+  },
+  mal_id: {
+    type: Number,
+    required: true,
   }
 });
 

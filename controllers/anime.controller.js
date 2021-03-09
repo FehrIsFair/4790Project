@@ -2,11 +2,11 @@ import Anime from "../models/anime.model";
 
 export const getAnime = (req, res) => {
   const anime = new Anime({
-    title: req.body.attributes.canonicalTitle,
-    rating: req.body.averageRating,
+    title: req.body.title,
+    rating: req.body.score,
     synopsis: req.body.synopsis,
-    promoArtURL: req.body.posterImage.original,
-    titleSynonyms: 
+    promoArtURL: req.body.image_url,
+    mal_id: req.body.mal_id,
   });
   console.log(anime);
   anime.save();

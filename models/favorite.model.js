@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const favoriteSchema = new Schema({
-  id: {
+  mal_id: {
     type: Number,
     required: true,
   }
