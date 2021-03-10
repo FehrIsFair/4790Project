@@ -1,10 +1,16 @@
 import express from "express";
 import * as dotenv from "dotenv";
-import bodyParser from "body-parser"
+import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
-import { apiRouter } from "./routes/api.route.js";
-import authRouter from "./routes/auth.route.js";
+import { animeRouter } from "./routes/anime.route";
+import { mangaRouter } from "./routes/manga.route";
+
+const notFoundJSON = {
+  Message: "route not found see the readme file."
+}
+
+mongoose.set('useFindandModify', false);
 
 dotenv.config();
 
@@ -13,9 +19,13 @@ const port = process.env.PORT || 5000;
 
 app.use(express.static("public"));
 
-app.use("/api", apiRouter);
+app.use("/anime", animeRouter);
 
-// app.use("/login", authRouter);
+app.use("/manga", mangaRouter);
+
+app.use((req, res, next) => {
+  res.status(404).json(notFoundJSON);
+})
 
 const main = async () => {
   await mongoose.connect(`${process.env.CONNECTION_STRING}`, {

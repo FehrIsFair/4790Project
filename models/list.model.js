@@ -7,6 +7,10 @@ const listSchema = new Schema({
     type: Array,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   uid: {
     type: Number,
     required: true,
