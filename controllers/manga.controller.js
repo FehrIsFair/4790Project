@@ -23,7 +23,7 @@ export const getMangaDetail = async (req, res) => {
   res.json(data);
 };
 
-// third get
+// third get, this is also done this way to ensure I have the right list for the fron end.
 export const getList = async (res, req) => {
   const uid = req.body.uid;
   try {
@@ -63,5 +63,7 @@ export const deleteFavoriteList = async (req, res) => {
       return res.status(400).json({ Message: "No list to delete" });
     }
     res.sendStatus();
+  } catch (err) {
+    res.status(400).json({Message: `Could not delete${err}`})
   }
 };

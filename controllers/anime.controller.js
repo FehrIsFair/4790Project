@@ -61,5 +61,7 @@ export const deleteFavoriteList = async (req, res) => {
       return res.status(400).json({ Message: "No list to delete" });
     }
     res.sendStatus();
+  } catch (err) {
+    res.status(400).json({Message: `Could not delete${err}`})
   }
 };
