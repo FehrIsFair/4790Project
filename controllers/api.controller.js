@@ -1,35 +1,110 @@
-export const api = ((req, res) => {
-  res.json({
-    roomItems: {
-      numComps: 11,
-      amiibo: [
-        "marth",
-        "roy",
-        "ike",
-        "lucina",
-        "robin",
-        "corrin, p2 variant",
-        "chrom"
-      ],
-      ventusdesktopMKIII: {
-        specs: {
-          CPU: "Ryzen R9 3900X",
-          RAM: "32 GB @ 3600Mhz",
-          GPU: "Radeon RX 5700 XT",
-          Storage: "6.5 TB 2 SSDs, 3 HDDs",
-          PSU: "Corsair CX 750M",
-          MotherBoard: "ASUS TUF Gaming 570X Plus WiFi",
-          OS: "Windows 10 Pro",
-        },
-        Peripherals: {
-          mouse: "Logitech G502",
-          keyboard: "Logitech G513 Carbon (GX Brown)",
-          monitors: {
-            monitor1: "LG 27\" 4k with FreeSync",
-            monitor2: "Samsung 27\" 1440p"
-          }
-        }
-      }
+import axios from "axios";
+
+import { FavoriteList } from "../models/list.model.js";
+import { Manga } from "../models/manga.model.js";
+import { Anime } from "../models/anime.model.js";
+
+// again I can get rid of this later when we move to graphql
+const jikanApi = axios.create({
+  baseURL: "https://api.jikan.moe/v3/",
+});
+
+// First get endpoint
+export const getManga = async (req, res) => {
+  const manga = await Manga.find();
+  if (!manga) {
+    return res.status(400).json({ Message: `No manga found` });
+  }
+  res.json(manga);
+};
+
+// This is just how the api I was using before worked. When we get to GraphQL, I'll be able to get rid of this.
+export const getMangaDetail = async (req, res) => {
+  try {
+    const { data } = await jikanApi.get(`/manga/${req.body.mal_id}`);
+    res.json(data);
+  } catch (err) {
+    res.status(400).json({Message: `Couldnl't fetch detail. ${err}`});
+  }
+};
+
+// Third Get
+export const getList = async (res, req) => {
+  console.log(req.body)
+  const uid = req.body.uid;
+  console.log(uid);
+  try {
+    const list = await FavoriteList.findOne({
+      uid: uid,
+    });
+    res.json(list);
+  } catch (err) {
+    res.status(400).json({ Message: `Could not find list ${err}` });
+  }
+};
+
+// put
+export const editFavoriteList = async (res, req) => {
+  const favID = req.body._id;
+  const newList = {
+    list: req.body.list,
+    type: req.body.type,
+    uid: req.body.uid,
+  };
+  try {
+    const list = await FavoriteList.findByIdAndUpdate(favID, newList, {
+      new: true,
+    });
+    res.json(list);
+  } catch (err) {
+    res.status(400).json({ Message: `Could not update${err}` });
+  }
+};
+
+// delete
+export const deleteFavoriteList = async (req, res) => {
+  const favID = req.body._id;
+  try {
+    const deletedList = FavoriteList.findByIdAndDelete(favID);
+    if (!deletedList) {
+      return res.status(400).json({ Message: "No list to delete" });
     }
-  })
-})
+    res.sendStatus();
+  } catch (err) {
+    res.status(400).json({ Message: `Could not delete${err}` });
+  }
+};
+
+// POST
+export const createNewFavoriteList = async (req, res) => {
+  const newList = new FavoriteList({
+    animeList: req.body.animeList,
+    mangaList: req.body.mangaList,
+    uid: req.body.uid,
+  });
+  try {
+    newList.save();
+  } catch (err) {
+    res.status(400).json({ Message: `Could not create${err}` });
+  }
+};
+
+// First get endpoint
+export const getAnime = async (req, res) => {
+  console.log(req);
+  const anime = await Anime.find();
+  if (!anime) {
+    return res.status(400).json({ Message: `No anime found` });
+  }
+  res.status(200).json(anime);
+};
+
+// This is just how the api I was using before worked. When we get to GraphQL, I'll be able to get rid of this.
+export const getAnimeDetail = async (req, res) => {
+  try {
+    const { data } = await jikanApi.get(`/anime/${req.body.mal_id}`);
+    res.json(data);
+  } catch (err) {
+    res.status(400).json({Message: `Couldnl't fetch detail. ${err}`});
+  }
+};
