@@ -6,7 +6,8 @@ import {
   getMangaDetail,
   editFavoriteList,
   deleteFavoriteList,
-} from "../controllers/manga.controller";
+  createNewFavoriteList
+} from "../controllers/manga.controller.js";
 
 export const mangaRouter = Router();
 
@@ -19,3 +20,5 @@ mangaRouter.put("/editList", editFavoriteList);
 mangaRouter.delete("/deleteList", deleteFavoriteList);
 
 mangaRouter.get("/mangaDetail", getMangaDetail);
+
+mangaRouter.post("/createList", createNewFavoriteList);

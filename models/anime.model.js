@@ -25,4 +25,4 @@ const animeSchema = new Schema({
   }
 });
 
-export default Anime = mongoose.model("Anime", animeSchema);
+export const Anime = mongoose.model("Anime", animeSchema);

@@ -6,7 +6,8 @@ import {
   getAnimeDetail,
   editFavoriteList,
   deleteFavoriteList,
-} from "../controllers/anime.controller";
+  createNewFavoriteList
+} from "../controllers/anime.controller.js";
 
 export const animeRouter = Router();
 
@@ -19,3 +20,5 @@ animeRouter.put("/editList", editFavoriteList);
 animeRouter.delete("/deleteList", deleteFavoriteList);
 
 animeRouter.get("/animeDetail", getAnimeDetail);
+
+animeRouter.post("/createList", createNewFavoriteList);

@@ -25,4 +25,4 @@ const mangaSchema = new Schema({
   }
 });
 
-export default Manga = mongoose.model("Manga", mangaSchema);
+export const Manga = mongoose.model("Manga", mangaSchema);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import FavoriteList from "../models/list.model";
-import Manga from "../models/manga.model";
+import {FavoriteList} from "../models/list.model.js";
+import {Manga} from "../models/manga.model.js";
 
 // again I can get rid of this later when we move to graphql
 const jikanApi = axios.create({
@@ -55,6 +55,7 @@ export const editFavoriteList = async (res, req) => {
   }
 };
 
+// delete
 export const deleteFavoriteList = async (req, res) => {
   const favID = req.body._id;
   try {
@@ -67,3 +68,17 @@ export const deleteFavoriteList = async (req, res) => {
     res.status(400).json({Message: `Could not delete${err}`})
   }
 };
+
+// POST
+export const createNewFavoriteList = async (req, res) => {
+  const newList = new FavoriteList({
+    "list": req.body.newList,
+    "type": req.body.type,
+    "uid": req.body.uid
+  });
+  try {
+    newList.save()
+  } catch (err) {
+    res.status(400).json({Message: `Could not create${err}`});
+  }
+}

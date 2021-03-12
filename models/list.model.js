@@ -17,4 +17,4 @@ const listSchema = new Schema({
   }
 });
 
-export default List = mongoose.model("Favorite List", listSchema);
+export const FavoriteList = mongoose.model("Favorite List", listSchema);

@@ -3,14 +3,8 @@ import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
-import { animeRouter } from "./routes/anime.route";
-import { mangaRouter } from "./routes/manga.route";
-
-const notFoundJSON = {
-  Message: "route not found see the readme file."
-}
-
-mongoose.set('useFindandModify', false);
+import { animeRouter } from "./routes/anime.route.js";
+import { mangaRouter } from "./routes/manga.route.js";
 
 dotenv.config();
 
@@ -28,7 +22,9 @@ app.use("/anime", animeRouter);
 app.use("/manga", mangaRouter);
 
 app.use((req, res, next) => {
-  res.status(404).json(notFoundJSON);
+  res.status(404).json({
+    Message: "route not found see the readme file."
+  });
 })
 
 const main = async () => {
