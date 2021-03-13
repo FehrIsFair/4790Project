@@ -29,22 +29,21 @@ export const getMangaDetail = async (req, res) => {
 };
 
 // Third Get
-export const getList = async (res, req) => {
-  console.log(req.body)
-  const uid = req.body.uid;
-  console.log(uid);
+export const getList = (req, res) => {
+  let data;
   try {
-    const list = await FavoriteList.findOne({
-      uid: uid,
-    });
-    res.json(list);
+    FavoriteList.find().where({uid: req.body.uid})
+    .exec((err, list) => {
+      if (err) res.status(400).json({Message: `Couldn't find a list with that UID ${err}`});
+      res.json(list);
+    })
   } catch (err) {
-    res.status(400).json({ Message: `Could not find list ${err}` });
+    res.status(400).json({Message: `Invalid User ID ${err}`});
   }
 };
 
 // put
-export const editFavoriteList = async (res, req) => {
+export const editFavoriteList = async (req, res) => {
   const favID = req.body._id;
   const newList = {
     list: req.body.list,

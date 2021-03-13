@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const listSchema = new Schema({
-  list: {
+  animeList: {
     type: Array,
     required: true,
   },
-  type: {
-    type: String,
+  mangaList: {
+    type: Array,
     required: true,
   },
   uid: {
-    type: Number,
+    type: String,
     required: true,
   }
 });
 
-export const FavoriteList = mongoose.model("Favorite List", listSchema, "List");
+export const FavoriteList = mongoose.model("FavoriteList", listSchema, "List");
