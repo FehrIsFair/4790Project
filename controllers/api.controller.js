@@ -44,31 +44,31 @@ export const getList = (req, res) => {
 
 // put
 export const editFavoriteList = async (req, res) => {
-  const favID = req.body._id;
+  const favID = req.body._id.$oid;
   const newList = {
-    list: req.body.list,
-    type: req.body.type,
+    animeList: req.body.animeList,
+    mangaList: req.body.mangaList,
     uid: req.body.uid,
   };
   try {
     const list = await FavoriteList.findByIdAndUpdate(favID, newList, {
       new: true,
+      useFindAndModify: true
     });
-    res.json(list);
+    res.status(200).json(list); // mainly for debug reasons.
   } catch (err) {
-    res.status(400).json({ Message: `Could not update${err}` });
+    res.status(400).json({ Message: `Could not update ${err}` });
   }
 };
 
 // delete
 export const deleteFavoriteList = async (req, res) => {
-  const favID = req.body._id;
+  const favID = req.body._id.$oid;
   try {
-    const deletedList = FavoriteList.findByIdAndDelete(favID);
-    if (!deletedList) {
-      return res.status(400).json({ Message: "No list to delete" });
-    }
-    res.sendStatus();
+    FavoriteList.findByIdAndDelete(favID, (err, list) => {
+      if (err) res.status(400).json({Message: `No list to delete ${err}`});
+      res.status(200).json({success: true});
+    });
   } catch (err) {
     res.status(400).json({ Message: `Could not delete${err}` });
   }
@@ -83,6 +83,7 @@ export const createNewFavoriteList = async (req, res) => {
   });
   try {
     newList.save();
+    res.status(200).json({Message: "success"});
   } catch (err) {
     res.status(400).json({ Message: `Could not create${err}` });
   }
