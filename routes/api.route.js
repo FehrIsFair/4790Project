@@ -18,9 +18,9 @@ export const apiRouter = Router();
 
 apiRouter.get("/Anime", getAnime);
 apiRouter.get("/Manga", getManga);
-apiRouter.get("/List", getList);
-apiRouter.get("/AnimeDetail", getAnimeDetail);
-apiRouter.get("/MangaDetail", getMangaDetail);
+apiRouter.get("/List/:uid", getList);
+apiRouter.get("/Anime/:mal_id", getAnimeDetail);
+apiRouter.get("/Manga/:mal_id", getMangaDetail);
 apiRouter.put("/EditList", editFavoriteList);
 apiRouter.delete("/DeleteList", deleteFavoriteList);
 apiRouter.post("/CreateList", createNewFavoriteList);

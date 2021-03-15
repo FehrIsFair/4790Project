@@ -21,10 +21,10 @@ export const getManga = async (req, res) => {
 // This is just how the api I was using before worked. When we get to GraphQL, I'll be able to get rid of this.
 export const getMangaDetail = async (req, res) => {
   try {
-    const { data } = await jikanApi.get(`/manga/${req.body.mal_id}`);
+    const { data } = await jikanApi.get(`/manga/${req.params.mal_id}`);
     res.json(data);
   } catch (err) {
-    res.status(400).json({Message: `Couldnl't fetch detail. ${err}`});
+    res.status(400).json({ Message: `Couldnl't fetch detail. ${err}` });
   }
 };
 
@@ -32,13 +32,17 @@ export const getMangaDetail = async (req, res) => {
 export const getList = (req, res) => {
   let data;
   try {
-    FavoriteList.find().where({uid: req.body.uid})
-    .exec((err, list) => {
-      if (err) res.status(400).json({Message: `Couldn't find a list with that UID ${err}`});
-      res.json(list);
-    })
+    FavoriteList.find()
+      .where({ uid: req.params.uid })
+      .exec((err, list) => {
+        if (err)
+          res
+            .status(400)
+            .json({ Message: `Couldn't find a list with that UID ${err}` });
+        res.json(list);
+      });
   } catch (err) {
-    res.status(400).json({Message: `Invalid User ID ${err}`});
+    res.status(400).json({ Message: `Invalid User ID ${err}` });
   }
 };
 
@@ -53,7 +57,7 @@ export const editFavoriteList = async (req, res) => {
   try {
     const list = await FavoriteList.findByIdAndUpdate(favID, newList, {
       new: true,
-      useFindAndModify: true
+      useFindAndModify: true,
     });
     res.status(200).json(list); // mainly for debug reasons.
   } catch (err) {
@@ -66,8 +70,8 @@ export const deleteFavoriteList = async (req, res) => {
   const favID = req.body._id.$oid;
   try {
     FavoriteList.findByIdAndDelete(favID, (err, list) => {
-      if (err) res.status(400).json({Message: `No list to delete ${err}`});
-      res.status(200).json({success: true});
+      if (err) res.status(400).json({ Message: `No list to delete ${err}` });
+      res.status(200).json({ success: true });
     });
   } catch (err) {
     res.status(400).json({ Message: `Could not delete${err}` });
@@ -83,7 +87,7 @@ export const createNewFavoriteList = async (req, res) => {
   });
   try {
     newList.save();
-    res.status(200).json({Message: "success"});
+    res.status(200).json({ Message: "success" });
   } catch (err) {
     res.status(400).json({ Message: `Could not create${err}` });
   }
@@ -102,9 +106,9 @@ export const getAnime = async (req, res) => {
 // This is just how the api I was using before worked. When we get to GraphQL, I'll be able to get rid of this.
 export const getAnimeDetail = async (req, res) => {
   try {
-    const { data } = await jikanApi.get(`/anime/${req.body.mal_id}`);
+    const { data } = await jikanApi.get(`/anime/${req.params.mal_id}`);
     res.json(data);
   } catch (err) {
-    res.status(400).json({Message: `Couldnl't fetch detail. ${err}`});
+    res.status(400).json({ Message: `Couldnl't fetch detail. ${err}` });
   }
 };
