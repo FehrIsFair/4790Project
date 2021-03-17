@@ -95,7 +95,6 @@ export const createNewFavoriteList = async (req, res) => {
 
 // First get endpoint
 export const getAnime = async (req, res) => {
-  console.log(req);
   const anime = await Anime.find();
   if (!anime) {
     return res.status(400).json({ Message: `No anime found` });
