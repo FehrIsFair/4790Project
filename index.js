@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 // import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
-import seedrandom from "seedrandom";
+// import seedrandom from "seedrandom";
 
 import { apiRouter } from "./routes/api.route.js";
 
@@ -13,6 +13,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.static("public"));
+
+app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 

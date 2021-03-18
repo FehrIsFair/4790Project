@@ -3,13 +3,15 @@ import pkg from "express";
 
 import {
   getAnime,
-  getAnimeDetail,
+  getAnimeByMalId,
   getList,
   getManga,
   getMangaDetail,
   editFavoriteList,
   deleteFavoriteList,
   createNewFavoriteList,
+  getAnimeDetail,
+  getMangaByMalId,
 } from "../controllers/api.controller.js";
 
 const { Router } = pkg;
@@ -19,8 +21,10 @@ export const apiRouter = Router();
 apiRouter.get("/Anime", getAnime);
 apiRouter.get("/Manga", getManga);
 apiRouter.get("/List/:uid", getList);
-apiRouter.get("/Anime/:mal_id", getAnimeDetail);
-apiRouter.get("/Manga/:mal_id", getMangaDetail);
+apiRouter.get("/Anime/:mal_id", getAnimeByMalId);
+apiRouter.get("/Manga/:mal_id", getMangaByMalId);
+apiRouter.get("/Manga/Detail/:mal_id", getMangaDetail);
+apiRouter.get("/Anime/Detail/:mal_id", getAnimeDetail);
 apiRouter.put("/EditList", editFavoriteList);
 apiRouter.delete("/DeleteList", deleteFavoriteList);
 apiRouter.post("/CreateList", createNewFavoriteList);
