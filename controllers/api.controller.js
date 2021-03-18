@@ -77,8 +77,8 @@ export const editFavoriteList = async (req, res) => {
 
 // delete
 export const deleteFavoriteList = async (req, res) => {
-  const favID = req.body._id;
-  console.log(req.body);
+  console.log(req.params);
+  const favID = req.params._id;
   try {
     FavoriteList.findByIdAndDelete(favID, (err, list) => {
       if (err) res.status(400).json({ Message: `No list to delete ${err}` });

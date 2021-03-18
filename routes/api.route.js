@@ -26,5 +26,5 @@ apiRouter.get("/Manga/:mal_id", getMangaByMalId);
 apiRouter.get("/Manga/Detail/:mal_id", getMangaDetail);
 apiRouter.get("/Anime/Detail/:mal_id", getAnimeDetail);
 apiRouter.put("/EditList", editFavoriteList);
-apiRouter.delete("/DeleteList", deleteFavoriteList);
+apiRouter.delete("/DeleteList/:_id", deleteFavoriteList);
 apiRouter.post("/CreateList", createNewFavoriteList);
