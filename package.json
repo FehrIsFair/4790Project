@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "nodemon index.js"
+    "test": "nodemon index.js",
+    "postinstall": "cd client && npm install",
+    
   },
   "author": "Spencer Jensen",
   "license": "ISC",

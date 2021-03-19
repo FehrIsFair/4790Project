@@ -1,0 +1,340 @@
+.favSyn {
+  display: flex;
+  margin: 2%;
+  width: 60%;
+}
+
+.favorite h4 {
+  padding: 2%;
+}
+
+.favSyn img {
+  margin-top: 5%;
+  margin-left: 2%;
+  border: 2px black solid;
+}
+
+.favSyn p {
+  padding: 3%;
+}
+
+.favScore {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+}
+
+.favScore h5 {
+  margin-right: 0.8rem;
+}
+
+div#synopsis {
+  display: block;
+}
+
+#synopsis {
+  background-color: #84bc62 !important;
+}
+
+ul#genreList {
+  display: flex;
+}
+
+div#synopsis img {
+  padding: 2%;
+  float: left;
+}
+
+#root {
+  background-color: #71b55f;
+  width: 100%;
+  min-height: 1200px;
+}
+
+.App {
+  margin: 0 auto;
+  width: 960px;
+}
+
+#loggedOut button {
+  background-color: #459032;
+}
+
+#loggedIn button {
+  background-color: #459032;
+}
+
+#loggedIn button:hover {
+  background-color: #84bc62;
+}
+
+ul li {
+  margin: 2%;
+}
+
+ul a {
+  text-decoration: none;
+}
+
+#loggedOut button:hover {
+  background-color: #84bc62;
+}
+
+h3 {
+  margin: 2% !important;
+}
+
+#scoreSyn {
+  margin: 2%;
+}
+
+#scoreSyn button {
+  margin-top: 1% !important;
+}
+
+#scoreSyn .bold {
+  font-weight: 900;
+}
+
+#synText {
+  padding: 2%;
+}
+
+.MuiCard-root {
+  margin: 2%;
+}
+
+#genreList li {
+  margin: 0 !important;
+  padding: 1% !important;
+}
+
+#container {
+  padding: none;
+}
+
+#source,
+#other-titles,
+#genre {
+  padding: 2%;
+  background-color: #84bc62 !important;
+}
+
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.nav li {
+  width: 25%;
+}
+
+.nav li a button {
+  width: 100%;
+}
+
+form button {
+  width: 15%;
+  margin: 2% !important;
+}
+
+select {
+  width: 100% !important;
+}
+
+#loggedOut,
+#loggedIn {
+  background-color: #112e00 !important;
+  margin-top: 0;
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+
+#login {
+  padding: 2%;
+}
+
+#outlined-basic {
+  width: 100% !important;
+}
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+form div.select {
+  width: 50% !important;
+  margin: 2% !important;
+}
+
+#search {
+  background-color: #459032;
+}
+
+.result {
+  background-color: #84bc62 !important;
+}
+
+.textfield {
+  width: 50%;
+  margin: 2% !important;
+  clear: both;
+}
+
+#searchFunction {
+  display: flex;
+}
+
+#searchFunction button {
+  margin: 2%;
+}
+
+h4.resultTitle {
+  margin: 2%;
+}
+
+.titleScore {
+  display: flex;
+}
+
+.titleScore .MuiLink-root {
+  color: white !important;
+}
+
+.score {
+  font-size: 1.4rem;
+  margin: 2% !important;
+}
+
+#login,
+#signup {
+  background-color: #4b8f79;
+}
+
+.resultImage {
+  float: left;
+  margin: 2%;
+  border: 1px black solid;
+}
+
+.footer {
+  padding: 2% !important;
+  text-align: center;
+  color: white !important;
+  background-color: #112e00 !important;
+  margin-bottom: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.avatar {
+  float: right;
+  margin: 2%;
+  margin-top: 1.5%;
+}
+
+#searchFunction form {
+  display: flex;
+  flex-direction: row;
+}
+
+.favoriteList {
+  background-color: #459032 !important;
+}
+
+.pageTitle {
+  margin: 2% !important;
+}
+
+.favorite {
+  background-color: #84bc62 !important;
+}
+
+#container {
+  background-color: #459032 !important;
+}
+
+#titleContain {
+  display: flex;
+}
+
+#sourse a {
+  margin: 2% !important;
+}
+
+.searchButton {
+  width: 6%;
+  margin-left: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.searchInput {
+  margin-right: 0 !important;
+}
+
+.searchInput div {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: none !important;
+}
+
+@keyframes reRender {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 25%;
+  }
+  50% {
+    width: 50%;
+  }
+  75% {
+    width: 25%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.slide-enter {
+}
+
+.slide-enter-active {
+  animation: reRender 5s ease-in;
+}
+
+.slide-exit {
+}
+
+.slide-exit-active {
+  animation: reRender 5s ease-in;
+}
+
+.switch {
+  margin: .2em;
+  color: #4b8f79;
+}
+
+.switch-text {
+  font-size: 1.4em;
+  padding: 1%;
+}
+
+.switch-contain {
+  display: flex;
+  flex-direction: row;
+}
+
+#true-contain {
+  background-color: rgb(64, 104, 64);
+}
