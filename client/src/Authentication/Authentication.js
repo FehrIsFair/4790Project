@@ -155,7 +155,7 @@ const AuthProvider = ({ children }) => {
       }
     } else {
       if (userList._id) {
-        axios.delete(`/api/DeleteList/${userList._id}`);
+        await axios.delete(`/api/DeleteList/${userList._id}`);
       }
     }
   };
