@@ -214,16 +214,16 @@ const AuthProvider = ({ children }) => {
   const favoriteListHandler = (mal_id, type) => {
     let newList = [];
     if (type === "TV" || type === "Movie") {
-      for (let value of userList.animeList) {
+      for (let value of list) {
         if (value.mal_id !== mal_id) {
-          newList = [...newList, value.mal_id];
+          newList = [...newList, value];
         }
       }
       setList([...newList]);
     } else {
-      for (let value of userList.mangaList) {
+      for (let value of mangaList) {
         if (value.mal_id !== mal_id) {
-          newList = [...newList, value.mal_id];
+          newList = [...newList, value];
         }
       }
       setMangaList([...newList]);
