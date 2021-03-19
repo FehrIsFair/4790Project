@@ -8,7 +8,8 @@
     "start": "node index.js",
     "test": "nodemon index.js",
     "postinstall": "cd client && npm install",
-    
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build": "cd client && npm install && npm run build"
   },
   "author": "Spencer Jensen",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "express": "^4.17.1",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.17",
+    "path": "^0.12.7",
     "pug": "^3.0.0",
     "seedrandom": "^3.0.5"
   },
