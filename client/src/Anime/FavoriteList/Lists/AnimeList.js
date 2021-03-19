@@ -100,14 +100,14 @@ const AnimeList = () => {
                   className="resultImage"
                 />
                 <div classNames="titleScore">
-                  <Link onClick={() => redirectToAnimePage(item.mal_id)}>
+                  <Link onClick={() => redirectToAnimePage(item.mal_id, item.type)}>
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">
                     <Typography variant="h5">{item.score}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.mal_id)}
+                      onClick={() => listChangeTracker(item.mal_id, item.type)}
                     >
                       Remove
                     </Button>
