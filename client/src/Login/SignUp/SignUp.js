@@ -100,18 +100,6 @@ const SignUp = () => {
                 onChange={handleChange}
                 required
               />
-              <TextField
-                id="outlined-basic"
-                name="Favorite"
-                className="textfield"
-                label="Favorite Anime"
-                variant="outlined"
-                value={values.Favorite}
-                onBlur={handleBlur}
-                error={Boolean(touched.Favorite && errors.Favorite)}
-                helpertext={touched.Favorte && errors.Password}
-                onChange={handleChange}
-              />
               <Button
                 className="button"
                 variant="contained"
