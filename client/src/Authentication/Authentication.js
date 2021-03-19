@@ -82,7 +82,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const getList = async (uid) => {
-    const { data } = await axios.get(`/List/${uid}`, {
+    const { data } = await axios.get(`/api/List/${uid}`, {
       params: {
         uid: uid,
       },
@@ -95,7 +95,7 @@ const AuthProvider = ({ children }) => {
   const setupAnimeList = async (user) => {
     let animeArray = [];
     for (let value of user.animeList) {
-      let { data } = await axios.get(`/Anime/${value}`);
+      let { data } = await axios.get(`/api/Anime/${value}`);
       animeArray = [...animeArray, data];
     }
     setList([...animeArray]);
@@ -104,7 +104,7 @@ const AuthProvider = ({ children }) => {
   const setupMangaList = async (data) => {
     let mangaArray = [];
     for (let value of data.mangaList) {
-      let { data } = await axios.get(`/Manga/${value}`);
+      let { data } = await axios.get(`/api/Manga/${value}`);
       mangaArray = [...mangaArray, data];
     }
     setMangaList([...mangaArray]);
@@ -134,10 +134,10 @@ const AuthProvider = ({ children }) => {
   const favoriteListBuilder = async (anime) => {
     if (list || mangaList)
       if (anime.type === "TV" || anime.type === "Movie") {
-        const { data } = await axios.get(`/Anime/${anime.mal_id}`);
+        const { data } = await axios.get(`/api/Anime/${anime.mal_id}`);
         setList([...list, data]);
       } else {
-        const { data } = await axios.get(`/Manga/${anime.mal_id}`);
+        const { data } = await axios.get(`/api/Manga/${anime.mal_id}`);
         setMangaList([...mangaList, data]);
       }
   };
@@ -146,7 +146,7 @@ const AuthProvider = ({ children }) => {
     let animeArray = [];
     let mangaArray = [];
     let dummyState = userList;
-    const { data } = await axios.get(`/List/${state.user.id}`);
+    const { data } = await axios.get(`/api/List/${state.user.id}`);
     if (!deleteList) {
       if (data.animeList.length !== 0) {
         putList(animeArray, mangaArray, dummyState);
@@ -155,7 +155,7 @@ const AuthProvider = ({ children }) => {
       }
     } else {
       if (userList._id) {
-        axios.delete(`/DeleteList/${userList._id}`);
+        axios.delete(`/api/DeleteList/${userList._id}`);
       }
     }
   };
@@ -169,7 +169,7 @@ const AuthProvider = ({ children }) => {
     }
     dummyState.animeList = [...animeArray];
     dummyState.mangaList = [...mangaArray];
-    axios.post("/CreateList", {
+    axios.post("/api/CreateList", {
       uid: dummyState.uid,
       animeList: dummyState.animeList,
       mangaList: dummyState.mangaList,
@@ -185,7 +185,7 @@ const AuthProvider = ({ children }) => {
     }
     dummyState.animeList = [...animeArray];
     dummyState.mangaList = [...mangaArray];
-    axios.put("/EditList", {
+    axios.put("/api/EditList", {
       _id: dummyState._id,
       uid: dummyState.uid,
       animeList: dummyState.animeList,

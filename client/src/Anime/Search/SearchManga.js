@@ -34,7 +34,7 @@ const SearchManga = () => {
   // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
     async function getResults() {
-      const { data } = await axios.get(`/Manga`);
+      const { data } = await axios.get(`/api/Manga`);
 
       console.log(Array.isArray(data));
       return data;

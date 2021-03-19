@@ -37,7 +37,7 @@ const Anime = () => {
       setCompLoad(true);
     }
     async function getAnime(newCall) {
-      const { data } = await axios.get(`/Anime/Detail/${newCall}`);
+      const { data } = await axios.get(`/api/Anime/Detail/${newCall}`);
       setAnime(data);
     }
     getAnime(authContext.clicked);
