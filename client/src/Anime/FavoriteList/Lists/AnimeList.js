@@ -33,8 +33,8 @@ const AnimeList = () => {
   const history = useHistory();
 
   // This is mainly to track if the list has changed or not.
-  const listChangeTracker = (mal_id) => {
-    AuthContext.removeFavorite(mal_id);
+  const listChangeTracker = (mal_id, type) => {
+    AuthContext.removeFavorite(mal_id, type);
     setListChange(true);
   };
 
