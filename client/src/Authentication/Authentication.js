@@ -216,14 +216,14 @@ const AuthProvider = ({ children }) => {
     if (type === "TV" || type === "Movie") {
       for (let value of userList.animeList) {
         if (value.mal_id !== mal_id) {
-          newList = [...newList, value];
+          newList = [...newList, value.mal_id];
         }
       }
       setList([...newList]);
     } else {
       for (let value of userList.mangaList) {
         if (value.mal_id !== mal_id) {
-          newList = [...newList, value];
+          newList = [...newList, value.mal_id];
         }
       }
       setMangaList([...newList]);
