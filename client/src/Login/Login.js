@@ -106,7 +106,7 @@ const Login = () => {
                 disabled={errors.Username || errors.Password}
                 type="Submit"
               >
-                Login Up
+                Login
               </Button>
             </form>
           </Card>
