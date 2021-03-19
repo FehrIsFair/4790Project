@@ -31,28 +31,10 @@ const SearchManga = () => {
   const [searchResults, setSearchResults] = useState(Array);
   const [compLoad, setCompLoad] = useState(false);
 
-  // JikanAPI reference.
-  // const jikanApi = axios.create({
-  //   baseURL: "https://api.jikan.moe/v3/",
-  // });
-
-  // This is sthe search function. This is how the view gets its results.
-  // async function getResults(newCall) {
-  //   // This is configured to ensure the correct anime at least pop up correctly with the mature content filter on.
-  //   // Otherwise titles like Black Clover and My Hero Academia won't ever show up.
-  //   const { data } = await jikanApi.get(
-  //     `search/anime?q=${newCall}&limit=15&genre=12&genre_exclude=0&order_by=members&sort=desc`
-  //   );
-  //   setSearchResults(data.results);
-  // }
-
   // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
-    const backEnd = axios.create({
-      baseURL: "http://localhost:6060/api",
-    });
     async function getResults() {
-      const { data } = await backEnd.get(`/Manga`);
+      const { data } = await axios.get(`/Manga`);
 
       console.log(Array.isArray(data));
       return data;

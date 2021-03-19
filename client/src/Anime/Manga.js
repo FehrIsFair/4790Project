@@ -36,11 +36,8 @@ const Anime = () => {
     if (!compLoad && anime) {
       setCompLoad(true);
     }
-    const backEnd = axios.create({
-      baseURL: "http://localhost:6060/api",
-    });
     async function getAnime(newCall) {
-      const { data } = await backEnd.get(`/Manga/Detail/${newCall}`);
+      const { data } = await axios.get(`/Manga/Detail/${newCall}`);
       setAnime(data);
     }
     getAnime(authContext.clicked);
