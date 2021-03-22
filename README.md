@@ -6,6 +6,14 @@ It's gets revolve around getting Anime/Manga and Lists. For Anime and Manga, its
 
 This is to demonstrate my skill in created a backend that can serve a front end and data from the backend to the front end.
 
+## Explanations
+
+To create a List you need only sign up with a new user, then log out. It will save the list.
+
+If you want to save stuff to the lists then just go to either see anime or see manga and click add. Then log out and log back in. The list should be saved.
+
+To delete just hit delete favorite list on log out. It will delete the list that is associeted with that user. 
+
 ## Commands
 
 All commands can be executed with yarn/npm but better to stick with one when deploying.
