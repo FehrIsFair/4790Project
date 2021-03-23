@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Card } from "@material-ui/core";
+import { Card, Typography, Switch, Button } from "@material-ui/core";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import Transition from "react-transition-group/Transition";
 import LazyLoad from "react-lazyload";
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import sortObjectsArray from "sort-objects-array"
 
 import { Authentication } from "../../Authentication/Authentication";
 import GeneralInfo from "../GeneralInfo/GeneralInfo";
@@ -24,27 +27,44 @@ const transitionStyles = {
   },
 };
 
+const AnimeSwitch = withStyles({
+  switchBase: {
+    color: green[300],
+    '&$checked': {
+      color: green[500],
+    },
+    '&$checked + $track': {
+      backgroundColor: green[500],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 // Main Component
 const Search = () => {
   // Hooks for the component
   const authContext = useContext(Authentication);
   const [searchResults, setSearchResults] = useState(Array);
   const [compLoad, setCompLoad] = useState(false);
-  const [isAscending, setIsAcending] = useState(true);
+  const [isDescending, setIsAcending] = useState(false);
 
   const handleSort = () => {
-    tempArray = searchResults;
-    if (isAscending) {
-      tempArray.sort((a, b) => {
-        return a.title - b.title;
-      });
-    } else {
-      tempArray.sort((a, b) => {
-        return b.title - a.title;
-      });
+    if (!isDescending) {
+      setSearchResults(sortObjectsArray(searchResults, "title"));
     }
-    setSearchResults(tempArray);
-  }
+    else {
+      setSearchResults(sortObjectsArray(searchResults, "title", "reverse"));
+    }
+  };
+
+  const handleChange = () => {
+    if (isDescending) {
+      setIsAcending(false);
+    } else {
+      setIsAcending(true);
+    }
+  };
 
   // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
@@ -55,7 +75,7 @@ const Search = () => {
       return data;
     }
     async function setResults() {
-      setSearchResults( await getResults());
+      setSearchResults(await getResults());
     }
     setResults();
     if (authContext.userList.uid === null && authContext.user !== null) {
@@ -64,22 +84,9 @@ const Search = () => {
   }, [authContext]);
 
   useEffect(() => {
-    const handleSort = () => {
-      tempArray = searchResults;
-      if (isAscending) {
-        tempArray.sort((a, b) => {
-          return a.title - b.title;
-        });
-      } else {
-        tempArray.sort((a, b) => {
-          return b.title - a.title;
-        });
-      }
-      setSearchResults(tempArray);
-    };
     if (!compLoad && searchResults) {
       setCompLoad(true);
-      handleSort();
+      setSearchResults(sortObjectsArray(searchResults, "title"));
     }
   }, [compLoad, searchResults]);
 
@@ -104,6 +111,19 @@ const Search = () => {
               transitionStyles[state])
             }
           >
+            <Card>
+              <Typography variant="p" className="switch-text">
+                Sort: {isDescending ? "Reverse Alpha" : "Alphabetical" }
+              </Typography>
+              <AnimeSwitch
+                className="switch"
+                checked={isDescending}
+                onChange={handleChange}
+                name="searchSort"
+                inputProps={{ "aria-label": "primary-checkbox" }}
+              />
+              <Button onClick={handleSort}>Sort</Button>
+            </Card>
             {searchResults?.map((result) => {
               return (
                 <>
