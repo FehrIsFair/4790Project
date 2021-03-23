@@ -30,6 +30,21 @@ const Search = () => {
   const authContext = useContext(Authentication);
   const [searchResults, setSearchResults] = useState(Array);
   const [compLoad, setCompLoad] = useState(false);
+  const [isAscending, setIsAcending] = useState(true);
+
+  const handleSort = () => {
+    tempArray = searchResults;
+    if (isAscending) {
+      tempArray.sort((a, b) => {
+        return a.title - b.title;
+      });
+    } else {
+      tempArray.sort((a, b) => {
+        return b.title - a.title;
+      });
+    }
+    setSearchResults(tempArray);
+  }
 
   // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
@@ -49,8 +64,22 @@ const Search = () => {
   }, [authContext]);
 
   useEffect(() => {
+    const handleSort = () => {
+      tempArray = searchResults;
+      if (isAscending) {
+        tempArray.sort((a, b) => {
+          return a.title - b.title;
+        });
+      } else {
+        tempArray.sort((a, b) => {
+          return b.title - a.title;
+        });
+      }
+      setSearchResults(tempArray);
+    };
     if (!compLoad && searchResults) {
       setCompLoad(true);
+      handleSort();
     }
   }, [compLoad, searchResults]);
 
