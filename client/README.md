@@ -44,7 +44,7 @@ This lists all the anime in the database. You can add or remove the anime from y
 
 There is also a manga version of the component called SearchManga.js. It serves very much the same function but for Manga.
 
-I took out the actual search functionality because before another api backend handled how to sort all the titles and other titles for me and I didn't want to even give any thought as I wanted to make sure I met the bare minimum first. And even then I couldn't find the time to properly do it. For example: just doing a title sort wouldn't be easy. When you search for an anime/manga, you have to take into account that there might be different titles that different fans might use for it given that when an Anime is translated into English it recieves an English title. For My Hero Academia, the Japanese title is Boku no Hero Academia. Fans who first started reading it before it was fully translated by VIZ call it by its Japanese name and there for use it in a search when searching for information. And the opposite is true as well. I'll do my best to implement an alpha sort (both ascending and decsending) before midnight on Monday.
+I took out the actual search functionality because Anime fans can either call an anime by its Japanese (but romanized eg Boku no Hero Academia vs My Hero Academia) or English name. Most know both but I figured not all would so I just decided to do an alpha sort.
 
 ### Anime.js and Manga.js
 
