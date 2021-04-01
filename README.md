@@ -108,12 +108,16 @@ You can use the same IDs given in /Manga/:mal_id.
 
 ## /EditList / editFavoriteList
 
-This is how the client sends the edited List to be saved.
+This is how the client sends the edited List to be saved. You would need to provide a valid ObjectID so unless you have a valid ObjectID, you won't be saving one.
 
 ## /DeleteList/:_id / deleteFavoriteList
 
 This is how the delete enpoint works. It takes the object ID and then searches for the object and then deletes it.
 
+Again, need a valid object ID.
+
 ## /CreateList / createNewFavoriteList
 
 This is the endpoint that saves all new Lists from new users.
+
+Here is where you can sort of fake it. You can send the data via sending a body in Postman. Then using your fake uid, can call it with /List, edit it with /EditList and delete it with /DeleteList as you will then get a valid objectID as well.
