@@ -80,23 +80,31 @@ Same as /Anime, but for the manga on file.
 
 ## /List/:uid / getList
 
-This gets a the list for the current user. And if it doesn't find a user by that uid, then it returns a new List object to the client. It does not save until logout.
+This gets a the list for the current user. And if it doesn't find a user by that uid, then it returns a new List object to the client. It does not save until logout. To use it in Postman, you need to have the userID not sure how to give that to you.
 
 ## /Anime/:mal_id / getAnimeByMalId
 
 This gets a single anime object that contains the given mal_id.
 
+Examples if you use Postman, are 1, 23273, 16498
+
 ## /Manga/:mal_id / getMangabyMalId
 
 This gets a single manga object that contains the give mal_id.
 
+Some examples, using Postman, are: 789, 1796, 1796
+
 ## /Anime/Detail/:mal_id / getAnimeDetail
 
-This is to get the details on the anime in question as the api I used to get this data scraps data off the site. So I have to make a separate API call to get the details I need
+This is to get the details on the anime in question as the api I used to get this data scraps data off the site. So I have to make a separate API call to get the details I need.
+
+You can use the same IDs given in /Anime/:mal_id.
 
 ## /Manga/Detail/:mal_id / getMangaDetail
 
 This does the same as /Anime/Detail/:mal_id as the manga are gotten in the same way.
+
+You can use the same IDs given in /Manga/:mal_id.
 
 ## /EditList / editFavoriteList
 
