@@ -67,3 +67,45 @@ This is where the list model is. It is imperitive that it is structured like thi
 ## Client
 
 A full README for the client can be found in the client folder.
+
+# Endpoints
+
+## /Anime / getAnime
+
+This just gets all the anime on file, no holds bar.
+
+## /Manga / getManga
+
+Same as /Anime, but for the manga on file.
+
+## /List/:uid / getList
+
+This gets a the list for the current user. And if it doesn't find a user by that uid, then it returns a new List object to the client. It does not save until logout.
+
+## /Anime/:mal_id / getAnimeByMalId
+
+This gets a single anime object that contains the given mal_id.
+
+## /Manga/:mal_id / getMangabyMalId
+
+This gets a single manga object that contains the give mal_id.
+
+## /Anime/Detail/:mal_id / getAnimeDetail
+
+This is to get the details on the anime in question as the api I used to get this data scraps data off the site. So I have to make a separate API call to get the details I need
+
+## /Manga/Detail/:mal_id / getMangaDetail
+
+This does the same as /Anime/Detail/:mal_id as the manga are gotten in the same way.
+
+## /EditList / editFavoriteList
+
+This is how the client sends the edited List to be saved.
+
+## /DeleteList/:_id / deleteFavoriteList
+
+This is how the delete enpoint works. It takes the object ID and then searches for the object and then deletes it.
+
+## /CreateList / createNewFavoriteList
+
+This is the endpoint that saves all new Lists from new users.
