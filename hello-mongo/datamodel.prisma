@@ -1,6 +1,6 @@
 datasource db {
-  provider = "mongodb"
-  url = env("DATABASE_URL")
+  provider = "sqlite"
+  url = env("CONNECTION_STRING")
 }
 
 generator client {
@@ -16,6 +16,7 @@ model Anime {
   genres String[]
   source String
   coverImage Json
+  synonyms String[]
 }
 
 model Manga {
@@ -27,6 +28,7 @@ model Manga {
   genres String[]
   source String
   coverImage Json
+  synonyms String[]
 }
 
 model List {
