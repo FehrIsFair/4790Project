@@ -9,6 +9,7 @@ generator client {
 
 model Anime {
   id Int @id @map("_id")
+  idMal Int
   title Json
   description String
   meanScore Int
@@ -19,6 +20,7 @@ model Anime {
 
 model Manga {
   id Int @id @map("_id")
+  idMal Int
   title Json
   description String
   meanScore Int
