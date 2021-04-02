@@ -7,3 +7,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Anime {
+  id Int @id @map("_id")
+  title Json
+  description String
+  meanScore Int
+  genres String[]
+  source String
+  coverImage Json
+}
+
+model Manga {
+  id Int @id @map("_id")
+  title Json
+  description String
+  meanScore Int
+  genres String[]
+  source String
+  coverImage Json
+}
+
+model List {
+  id Int @id @map("_id")
+  uid String
+  animeList Int[]
+  mangaList Int[]
+}
