@@ -141,7 +141,27 @@ const Mutation = objectType({
         )
       },
       resolve: (_, args, context) => {
-        return context.prisma.post.create({
+        return context.prisma.list.create({
+          data: {
+            uid: args.data.uid,
+            animeList: args.data.animeList,
+            mangaList: args.data.mangaList,
+          }
+        })
+      }
+    })
+
+    t.field("editList", {
+      type: "List",
+      args: {
+        data: nonNull(
+          arg({
+            type: "PostCreateInput",
+          })
+        )
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.list.update({ // not sure if this is correct.
           data: {
             uid: args.data.uid,
             animeList: args.data.animeList,
@@ -161,7 +181,7 @@ const Mutation = objectType({
         )
       },
       resolve: (_, args, context) => {
-        return context.prisma.post.delete({
+        return context.prisma.list.delete({
           where: {
             id: args.id
           }
@@ -186,7 +206,7 @@ const Anime = objectType({
   }
 });
 
-const Anime = objectType({
+const Manga = objectType({
   name: "Manga",
   definition(t) {
     t.nonNull.int("id");
@@ -201,8 +221,8 @@ const Anime = objectType({
   }
 });
 
-const Anime = objectType({
-  name: "Anime",
+const List = objectType({
+  name: "List",
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.string("uid");
