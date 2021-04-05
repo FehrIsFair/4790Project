@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -11,7 +11,7 @@ generator client {
 }
 
 model Anime {
-  id Int @id @default(autoincrement())
+  id Int @id @map("_id")
   idMal Int
   title Json
   descrition String
@@ -23,7 +23,7 @@ model Anime {
 }
 
 model Manga {
-  id Int @id @default(autoincrement())
+  id Int @id @map("_id")
   idMal Int
   title Json
   descrition String
@@ -35,7 +35,7 @@ model Manga {
 }
 
 model List {
-  id Int @id @default(autoincrement())
+  id Int @id @map("_id")
   uid String
   animeList Int[]
   mangaList Int[]
