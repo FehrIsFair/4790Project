@@ -9,9 +9,6 @@ const {
   asNexusMethod,
   enumType,
 } = require("nexus");
-const { GraphQLDateTime } = require("graphql-iso-date");
-
-const DateTime = asNexusMethod(GraphQLDateTime, "date");
 
 const Query = objectType({
   name: "Query",
