@@ -135,7 +135,7 @@ const Mutation = objectType({
           arg({
             type: "PostCreateInput",
           })
-        )
+        ),
       },
       resolve: (_, args, context) => {
         return context.prisma.list.create({
@@ -143,10 +143,10 @@ const Mutation = objectType({
             uid: args.data.uid,
             animeList: args.data.animeList,
             mangaList: args.data.mangaList,
-          }
-        })
-      }
-    })
+          },
+        });
+      },
+    });
 
     t.field("editList", {
       type: "List",
@@ -155,36 +155,37 @@ const Mutation = objectType({
           arg({
             type: "PostCreateInput",
           })
-        )
+        ),
       },
       resolve: (_, args, context) => {
-        return context.prisma.list.update({ // not sure if this is correct.
+        return context.prisma.list.update({
+          // not sure if this is correct.
           data: {
             uid: args.data.uid,
             animeList: args.data.animeList,
             mangaList: args.data.mangaList,
-          }
-        })
-      }
-    })
+          },
+        });
+      },
+    });
 
     t.field("deleteList", {
       type: "List",
       args: {
         data: nonNull(
           arg({
-            id: nonNull(intArg())
+            id: nonNull(intArg()),
           })
-        )
+        ),
       },
       resolve: (_, args, context) => {
         return context.prisma.list.delete({
           where: {
-            id: args.id
-          }
-        })
-      }
-    })
+            id: args.id,
+          },
+        });
+      },
+    });
   },
 });
 
@@ -193,14 +194,14 @@ const Anime = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.nonNull.string("title");// actually object
+    t.nonNull.string("title"); // actually object
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
-    t.nonNull.string("genres");// actually a string array
+    t.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.string("synonyms");
-    t.nonNull.string("coverImage");// actually object
-  }
+    t.nonNull.string("coverImage"); // actually object
+  },
 });
 
 const Manga = objectType({
@@ -208,14 +209,14 @@ const Manga = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.nonNull.string("title");// actually object
+    t.nonNull.string("title"); // actually object
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
-    t.nonNull.string("genres");// actually a string array
+    t.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.string("synonyms");
-    t.nonNull.string("coverImage");// actually object
-  }
+    t.nonNull.string("coverImage"); // actually object
+  },
 });
 
 const List = objectType({
@@ -223,7 +224,27 @@ const List = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.string("uid");
-    t.nonNull.int("animeList");// actually array
-    t.nonNull.int("mangaList");// actually array
-  }
+    t.nonNull.int("animeList"); // actually array
+    t.nonNull.int("mangaList"); // actually array
+  },
 });
+
+const schema = makeSchema({
+  types: [Query, Mutation, Anime, Manga, List],
+  outputs: {
+    schema: __dirname + "/..schema.graphql",
+    typegen: __dirname + "generated/nexus.ts",
+  },
+  sourceTypes: {
+    modules: [
+      {
+        module: "@prisma/client",
+        alias: "prisma",
+      },
+    ],
+  },
+});
+
+module.exports = {
+  shemea: schema,
+};
