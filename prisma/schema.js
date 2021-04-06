@@ -82,7 +82,7 @@ const Query = objectType({
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
-    t.list.field("searchResults", {
+    t.list.field("searchAnime", {
       type: "Anime",
       args: {
         data: notNull(
@@ -105,7 +105,7 @@ const Mutation = objectType({
       },
     });
 
-    t.list.field("searchResults", {
+    t.list.field("searchManga", {
       type: "Manga",
       args: {
         data: notNull(

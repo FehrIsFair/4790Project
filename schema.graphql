@@ -42,3 +42,19 @@ type List {
   animeList: [Int!]
   mangaList: [Int!]
 }
+
+type Mutation {
+  searchAnime(data: AnimeSearchInput!, term: String): [Anime!]
+  searchManga(data: MnagaSearchInput!, term: String): [Manga!]
+  saveList: List!
+  editList: List!
+  deleteList: List!
+}
+
+type Query {
+  allAnime: [Anime!]!
+  allManga: [Manga!]!
+  singleList: List!
+  singleAnime: Anime!
+  singleManga: Manga!
+}
