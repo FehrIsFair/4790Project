@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -11,31 +11,47 @@ generator client {
 }
 
 model Anime {
-  id Int @id @map("_id")
+  id Int @id @default(autoincrement())
   idMal Int
-  title Json
+  Title Int
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  coverImage Json
+  CoverImage Int
 }
 
 model Manga {
-  id Int @id @map("_id")
+  id Int @id @default(autoincrement())
   idMal Int
-  title Json
+  Title Int
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  coverImage Json
+  CoverImage Int
+}
+
+model Title {
+  id Int @id @default(autoincrement())
+  romanji String
+  english String
+  native String
+  userPreferred String
+}
+
+model CoverImage {
+  id Int @id @default(autoincrement())
+  extraLarge String
+  large String
+  medium String
+  color String
 }
 
 model List {
-  id Int @id @map("_id")
+  id Int @id @default(autoincrement())
   uid String
   animeList Int[]
   mangaList Int[]
