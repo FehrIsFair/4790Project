@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
@@ -13,25 +10,29 @@ generator client {
 model Anime {
   id Int @id @default(autoincrement())
   idMal Int
-  Title Int
+  title Title @relation(fields: [titleID], references: [id])
+  titleID Int
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  CoverImage Int
+  coverImage CoverImage @relation(fields: [coverImageID], references: [id])
+  coverImageID Int
 }
 
 model Manga {
   id Int @id @default(autoincrement())
   idMal Int
-  Title Int
+  title Title @relation(fields: [titleID], references: [id])
+  titleID Int
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  CoverImage Int
+  coverImageID Int
+  coverImage CoverImage @relation(fields: [coverImageID], references: [id])
 }
 
 model Title {

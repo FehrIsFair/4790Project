@@ -87,7 +87,7 @@ const Mutation = objectType({
       args: {
         data: notNull(
           arg({
-            type: "UserCreateInput",
+            type: "AnimeSearchInput",
           })
         ),
       },
@@ -133,7 +133,7 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: "PostCreateInput",
+            type: "ClientInput",
           })
         ),
       },
@@ -153,7 +153,7 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: "PostCreateInput",
+            type: "ClientInput",
           })
         ),
       },
@@ -248,3 +248,5 @@ const schema = makeSchema({
 module.exports = {
   shemea: schema,
 };
+
+export default schema
