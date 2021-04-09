@@ -197,8 +197,8 @@ const Anime = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.field('title', {
-      type: 'Title',
+    t.field("title", {
+      type: "Title",
       resolve: (parent, _, context) => {
         return context.prisma.title
           .findUnique({
@@ -212,8 +212,8 @@ const Anime = objectType({
     t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
-    t.field('coverImage', {
-      type: 'CoverImage',
+    t.field("coverImage", {
+      type: "CoverImage",
       resolve: (parent, _, context) => {
         return context.prisma.coverImage
           .findUnique({
@@ -230,8 +230,8 @@ const Manga = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.field('title', {
-      type: 'Title',
+    t.field("title", {
+      type: "Title",
       resolve: (parent, _, context) => {
         return context.prisma.title
           .findUnique({
@@ -245,8 +245,8 @@ const Manga = objectType({
     t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
-    t.field('coverImage', {
-      type: 'CoverImage',
+    t.field("coverImage", {
+      type: "CoverImage",
       resolve: (parent, _, context) => {
         return context.prisma.coverImage
           .findUnique({
@@ -266,7 +266,7 @@ const Title = objectType({
     t.nonNull.string("english");
     t.nonNull.string("native");
     t.nonNull.string("userPreferred");
-  }
+  },
 });
 
 const CoverImage = objectType({
@@ -277,8 +277,8 @@ const CoverImage = objectType({
     t.nonNull.string("large");
     t.nonNull.string("medium");
     t.nonNull.string("color");
-  }
-});;
+  },
+});
 
 const List = objectType({
   name: "List",
@@ -286,15 +286,15 @@ const List = objectType({
     t.nonNull.int("id");
     t.nonNull.string("uid");
     t.nonNull.list.nonNull.int("animeList");
-    t.nonNull.list.nonNull.int("mangaList"); 
+    t.nonNull.list.nonNull.int("mangaList");
   },
 });
 
 const SearchInput = createObjectType({
   name: "SearchInput",
   definition(t) {
-    t.nonNull.string('SearchString')
-  }
+    t.nonNull.string("SearchString");
+  },
 });
 
 const ClientSaveInput = createObjectType({
@@ -303,35 +303,46 @@ const ClientSaveInput = createObjectType({
     t.nonNull.string("uid");
     t.nonNull.list.nonNull.int("animeList");
     t.nonNull.list.nonNull.int("mangaList");
-  }
+  },
 });
 
 const ClientEditInput = createObjectType({
   name: "ClientEditInput",
   definition(t) {
-    t.nonNull.int("id")
+    t.nonNull.int("id");
     t.nonNull.string("uid");
     t.nonNull.list.nonNull.int("animeList");
     t.nonNull.list.nonNull.int("mangaList");
-  }
+  },
 });
 
 const ClientLoadInput = createObjectType({
   name: "ClientLoadInput",
   definition(t) {
     t.nonNull.string("uid");
-  }
+  },
 });
 
 const ClickInput = createObjectType({
   name: "ClickInput",
   definition(t) {
     t.nonNull.int("idMal");
-  }
- });
+  },
+});
 
 const schema = makeSchema({
-  types: [Query, Mutation, Anime, Manga, List],
+  types: [
+    Query,
+    Mutation,
+    Anime,
+    Manga,
+    List,
+    SearchInput,
+    ClientEditInput,
+    ClientLoadInput,
+    ClientSaveInput,
+    ClickInput,
+  ],
   outputs: {
     schema: __dirname + "/..schema.graphql",
     typegen: __dirname + "generated/nexus.ts",
@@ -350,4 +361,4 @@ module.exports = {
   shemea: schema,
 };
 
-export default schema
+export default schema;
