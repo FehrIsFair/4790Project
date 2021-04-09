@@ -1,0 +1,402 @@
+[
+  {
+    "title": {
+      "romaji": "Cowboy Bebop",
+      "english": "Cowboy Bebop",
+      "native": "カウボーイビバップ",
+      "userPreferred": "Cowboy Bebop"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Cowboy Bebop: Tengoku no Tobira",
+      "english": "Cowboy Bebop: The Movie - Knockin' on Heaven's Door",
+      "native": "カウボーイビバップ天国の扉",
+      "userPreferred": "Cowboy Bebop: Tengoku no Tobira"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Trigun",
+      "english": "Trigun",
+      "native": "トライガン",
+      "userPreferred": "Trigun"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Witch Hunter Robin",
+      "english": "Witch Hunter Robin",
+      "native": "ウィッチハンター ロビン",
+      "userPreferred": "Witch Hunter Robin"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Bouken Ou Beet",
+      "english": "Beet the Vandel Buster",
+      "native": "冒険王ビィト",
+      "userPreferred": "Bouken Ou Beet"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Eyeshield 21",
+      "english": null,
+      "native": "アイシールド21",
+      "userPreferred": "Eyeshield 21"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Hachimitsu to Clover",
+      "english": "Honey and Clover",
+      "native": "ハチミツとクローバー",
+      "userPreferred": "Hachimitsu to Clover"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Hungry Heart: Wild Striker",
+      "english": null,
+      "native": "ハングリーハート Wild Striker",
+      "userPreferred": "Hungry Heart: Wild Striker"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Initial D Fourth Stage",
+      "english": null,
+      "native": "頭文字〈イニシャル〉D FOURTH STAGE",
+      "userPreferred": "Initial D Fourth Stage"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Monster",
+      "english": "Monster",
+      "native": "MONSTER",
+      "userPreferred": "Monster"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Naruto",
+      "english": "Naruto",
+      "native": "ナルト",
+      "userPreferred": "Naruto"
+    }
+  },
+  {
+    "title": {
+      "romaji": "One Piece",
+      "english": "One Piece",
+      "native": "ワンピース",
+      "userPreferred": "One Piece"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Tennis no Ouji-sama",
+      "english": "The Prince of Tennis",
+      "native": "テニスの王子様",
+      "userPreferred": "Tennis no Ouji-sama"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Ring ni Kakero 1",
+      "english": null,
+      "native": "リングにかけろ１",
+      "userPreferred": "Ring ni Kakero 1"
+    }
+  },
+  {
+    "title": {
+      "romaji": "School Rumble",
+      "english": null,
+      "native": "スクールランブル",
+      "userPreferred": "School Rumble"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Sunabouzu",
+      "english": "Desert Punk",
+      "native": "砂ぼうず",
+      "userPreferred": "Sunabouzu"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Texhnolyze",
+      "english": "Texhnolyze",
+      "native": "TEXHNOLYZE テクノライズ",
+      "userPreferred": "Texhnolyze"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Trinity Blood",
+      "english": "Trinity Blood",
+      "native": "トリニティ・ブラッド",
+      "userPreferred": "Trinity Blood"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Yakitate!! Japan",
+      "english": null,
+      "native": "焼きたて!! ジャぱん",
+      "userPreferred": "Yakitate!! Japan"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Zipang",
+      "english": null,
+      "native": "ジパング",
+      "userPreferred": "Zipang"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Shin Seiki Evangelion",
+      "english": "Neon Genesis Evangelion",
+      "native": "新世紀エヴァンゲリオン",
+      "userPreferred": "Shin Seiki Evangelion"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Shin Seiki Evangelion Gekijouban: Shi to Shinsei",
+      "english": "Neon Genesis Evangelion: Death & Rebirth",
+      "native": "新世紀エヴァンゲリオン劇場版 シト新生",
+      "userPreferred": "Shin Seiki Evangelion Gekijouban: Shi to Shinsei"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Shin Seiki Evangelion: THE END OF EVANGELION",
+      "english": "Neon Genesis Evangelion: The End of Evangelion",
+      "native": "新世紀エヴァンゲリオン劇場版 THE END OF EVANGELION",
+      "userPreferred": "Shin Seiki Evangelion: THE END OF EVANGELION"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Kenpuu Denki Berserk",
+      "english": "Berserk",
+      "native": "剣風伝奇ベルセルク",
+      "userPreferred": "Kenpuu Denki Berserk"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Koukaku Kidoutai",
+      "english": "Ghost in the Shell",
+      "native": "攻殻機動隊",
+      "userPreferred": "Koukaku Kidoutai"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen",
+      "english": "Samurai X: Trust and Betrayal",
+      "native": "るろうに剣心―明治剣客浪漫譚―追憶編",
+      "userPreferred": "Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+      "english": "Rurouni Kenshin",
+      "native": "るろうに剣心 -明治剣客浪漫譚-",
+      "userPreferred": "Rurouni Kenshin: Meiji Kenkaku Romantan"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan - Ishinshishi e no Requiem",
+      "english": "Samurai X: The Motion Picture",
+      "native": "るろうに剣心 -明治剣客浪漫譚- 維新志士への鎮魂歌",
+      "userPreferred": "Rurouni Kenshin: Meiji Kenkaku Romantan - Ishinshishi e no Requiem"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Akira",
+      "english": "Akira",
+      "native": "AKIRA",
+      "userPreferred": "Akira"
+    }
+  },
+  {
+    "title": {
+      "romaji": ".hack//Sign",
+      "english": ".hack//Sign",
+      "native": ".hack//SIGN",
+      "userPreferred": ".hack//Sign"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Aa! Megami-sama!",
+      "english": "Oh! My Goddess",
+      "native": "ああっ女神さまっ",
+      "userPreferred": "Aa! Megami-sama!"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Aa! Megami-sama! (TV)",
+      "english": "Oh! My Goddess",
+      "native": "ああっ女神さまっ",
+      "userPreferred": "Aa! Megami-sama! (TV)"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Tenshi Kinryouku",
+      "english": "Angel Sanctuary",
+      "native": "天使禁猟区",
+      "userPreferred": "Tenshi Kinryouku"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Kidou Tenshi Angelic Layer",
+      "english": "Angelic Layer",
+      "native": "機動天使エンジェリックレイヤー",
+      "userPreferred": "Kidou Tenshi Angelic Layer"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Ai Yori Aoshi",
+      "english": "Ai Yori Aoshi",
+      "native": "藍より青し",
+      "userPreferred": "Ai Yori Aoshi"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Appleseed (Movie)",
+      "english": null,
+      "native": "アップルシード",
+      "userPreferred": "Appleseed (Movie)"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Arc the Lad",
+      "english": null,
+      "native": "アークザラッド",
+      "userPreferred": "Arc the Lad"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Avenger",
+      "english": null,
+      "native": "アヴェンジャー",
+      "userPreferred": "Avenger"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Beck",
+      "english": "Beck: Mongolian Chop Squad",
+      "native": "ベック",
+      "userPreferred": "Beck"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Blue Gender",
+      "english": null,
+      "native": "ブルージェンダー",
+      "userPreferred": "Blue Gender"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Chobits",
+      "english": "Chobits",
+      "native": "ちょびっツ",
+      "userPreferred": "Chobits"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Chrno Crusade",
+      "english": "Chrono Crusade",
+      "native": "クロノクルセイド",
+      "userPreferred": "Chrno Crusade"
+    }
+  },
+  {
+    "title": {
+      "romaji": "D.N.Angel",
+      "english": "D.N.Angel",
+      "native": "Ｄ・Ｎ・ＡＮＧＥＬ",
+      "userPreferred": "D.N.Angel"
+    }
+  },
+  {
+    "title": {
+      "romaji": "D.C.: Da Capo",
+      "english": "D.C.~Da Capo~",
+      "native": "D.C.～ダ・カーポ～",
+      "userPreferred": "D.C.: Da Capo"
+    }
+  },
+  {
+    "title": {
+      "romaji": "DearS",
+      "english": null,
+      "native": "ディアーズ",
+      "userPreferred": "DearS"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Rozen Maiden",
+      "english": "Rozen Maiden",
+      "native": "ローゼンメイデン",
+      "userPreferred": "Rozen Maiden"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Rozen Maiden: Träumend",
+      "english": "Rozen Maiden: Dreaming",
+      "native": "ローゼンメイデン ~ トロイメント",
+      "userPreferred": "Rozen Maiden: Träumend"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Azumanga Daioh",
+      "english": "Azumanga Daioh",
+      "native": "あずまんが大王",
+      "userPreferred": "Azumanga Daioh"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Basilisk: Kouga Ninpouchou",
+      "english": "Basilisk: The Kouga Ninja Scrolls",
+      "native": "バジリスク 甲賀忍法帖",
+      "userPreferred": "Basilisk: Kouga Ninpouchou"
+    }
+  },
+  {
+    "title": {
+      "romaji": "Black Cat",
+      "english": "Black Cat",
+      "native": "ブラックキャット",
+      "userPreferred": "Black Cat"
+    }
+  }
+]

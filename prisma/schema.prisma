@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,8 +17,8 @@ model Anime {
   genres String[]
   source String
   synonyms String[]
-  coverImage CoverImage @relation(fields: [coverImageID], references: [id])
-  coverImageID Int
+  coverImage CoverImage @relation(fields: [coverImageId], references: [id])
+  coverImageId Int
 }
 
 model Manga {
