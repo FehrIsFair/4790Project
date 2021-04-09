@@ -1,3 +1,5 @@
+import { title } from "node:process";
+
 const {
   intArg,
   makeSchema,
@@ -30,7 +32,7 @@ const Query = objectType({
       args: {
         userUniqueInput: nonNull(
           arg({
-            type: "UserUniqueInput",
+            type: "ClientLoadInput",
           })
         ),
       },
@@ -47,7 +49,7 @@ const Query = objectType({
       args: {
         userUniqueInput: nonNull(
           arg({
-            type: "UserUniqueInput",
+            type: "ClickInput",
           })
         ),
       },
@@ -64,7 +66,7 @@ const Query = objectType({
       args: {
         userUniqueInput: nonNull(
           arg({
-            type: "UserUniqueInput",
+            type: "ClickInput",
           })
         ),
       },
@@ -87,7 +89,7 @@ const Mutation = objectType({
       args: {
         data: notNull(
           arg({
-            type: "AnimeSearchInput",
+            type: "SearchInput",
           })
         ),
       },
@@ -110,7 +112,7 @@ const Mutation = objectType({
       args: {
         data: notNull(
           arg({
-            type: "UserCreateInput",
+            type: "SearchInput",
           })
         ),
       },
@@ -133,7 +135,7 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: "ClientInput",
+            type: "ClientSaveInput",
           })
         ),
       },
@@ -153,7 +155,7 @@ const Mutation = objectType({
       args: {
         data: nonNull(
           arg({
-            type: "ClientInput",
+            type: "ClientEditInput",
           })
         ),
       },
@@ -161,6 +163,7 @@ const Mutation = objectType({
         return context.prisma.list.update({
           // not sure if this is correct.
           data: {
+            id: args.data.id,
             uid: args.data.uid,
             animeList: args.data.animeList,
             mangaList: args.data.mangaList,
@@ -194,13 +197,31 @@ const Anime = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.nonNull.string("title"); // actually object
+    t.field('title', {
+      type: 'Title',
+      resolve: (parent, _, context) => {
+        return context.prisma.title
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .title();
+      },
+    }); // actually object
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
-    t.nonNull.string("genres"); // actually a string array
+    t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
-    t.nonNull.string("synonyms");
-    t.nonNull.string("coverImage"); // actually object
+    t.nonNull.list.nonNull.string("synonyms");
+    t.field('coverImage', {
+      type: 'CoverImage',
+      resolve: (parent, _, context) => {
+        return context.prisma.coverImage
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .coverImage();
+      },
+    });
   },
 });
 
@@ -209,25 +230,105 @@ const Manga = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.nonNull.string("title"); // actually object
+    t.field('title', {
+      type: 'Title',
+      resolve: (parent, _, context) => {
+        return context.prisma.title
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .title();
+      },
+    });
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
-    t.nonNull.string("genres"); // actually a string array
+    t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
-    t.nonNull.string("synonyms");
-    t.nonNull.string("coverImage"); // actually object
+    t.nonNull.list.nonNull.string("synonyms");
+    t.field('coverImage', {
+      type: 'CoverImage',
+      resolve: (parent, _, context) => {
+        return context.prisma.coverImage
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .coverImage();
+      },
+    });
   },
 });
+
+const Title = objectType({
+  name: "Title",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("romanji");
+    t.nonNull.string("english");
+    t.nonNull.string("native");
+    t.nonNull.string("userPreferred");
+  }
+});
+
+const CoverImage = objectType({
+  name: "Title",
+  definition(t) {
+    t.nonNull.int("id");
+    t.nonNull.string("extraLarge");
+    t.nonNull.string("large");
+    t.nonNull.string("medium");
+    t.nonNull.string("color");
+  }
+});;
 
 const List = objectType({
   name: "List",
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.string("uid");
-    t.nonNull.int("animeList"); // actually array
-    t.nonNull.int("mangaList"); // actually array
+    t.nonNull.list.nonNull.int("animeList");
+    t.nonNull.list.nonNull.int("mangaList"); 
   },
 });
+
+const SearchInput = createObjectType({
+  name: "SearchInput",
+  definition(t) {
+    t.nonNull.string('SearchString')
+  }
+});
+
+const ClientSaveInput = createObjectType({
+  name: "ClientSaveInput",
+  definition(t) {
+    t.nonNull.string("uid");
+    t.nonNull.list.nonNull.int("animeList");
+    t.nonNull.list.nonNull.int("mangaList");
+  }
+});
+
+const ClientEditInput = createObjectType({
+  name: "ClientEditInput",
+  definition(t) {
+    t.nonNull.int("id")
+    t.nonNull.string("uid");
+    t.nonNull.list.nonNull.int("animeList");
+    t.nonNull.list.nonNull.int("mangaList");
+  }
+});
+
+const ClientLoadInput = createObjectType({
+  name: "ClientLoadInput",
+  definition(t) {
+    t.nonNull.string("uid");
+  }
+});
+
+const ClickInput = createObjectType({
+  name: "ClickInput",
+  definition(t) {
+    t.nonNull.int("idMal");
+  }
+ });
 
 const schema = makeSchema({
   types: [Query, Mutation, Anime, Manga, List],
