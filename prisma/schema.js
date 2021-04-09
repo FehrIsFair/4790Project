@@ -290,14 +290,14 @@ const List = objectType({
   },
 });
 
-const SearchInput = createObjectType({
+const SearchInput = inputObjectType({
   name: "SearchInput",
   definition(t) {
     t.nonNull.string("SearchString");
   },
 });
 
-const ClientSaveInput = createObjectType({
+const ClientSaveInput = inputObjectType({
   name: "ClientSaveInput",
   definition(t) {
     t.nonNull.string("uid");
@@ -306,7 +306,7 @@ const ClientSaveInput = createObjectType({
   },
 });
 
-const ClientEditInput = createObjectType({
+const ClientEditInput = inputObjectType({
   name: "ClientEditInput",
   definition(t) {
     t.nonNull.int("id");
@@ -316,14 +316,14 @@ const ClientEditInput = createObjectType({
   },
 });
 
-const ClientLoadInput = createObjectType({
+const ClientLoadInput = inputObjectType({
   name: "ClientLoadInput",
   definition(t) {
     t.nonNull.string("uid");
   },
 });
 
-const ClickInput = createObjectType({
+const ClickInput = inputObjectType({
   name: "ClickInput",
   definition(t) {
     t.nonNull.int("idMal");
