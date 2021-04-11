@@ -10,29 +10,29 @@ generator client {
 model Anime {
   id Int @id @default(autoincrement())
   idMal Int
-  title Title @relation(fields: [titleID], references: [id])
-  titleID Int
+  title Title? @relation(fields: [titleID], references: [id])
+  titleID Int?
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  coverImage CoverImage @relation(fields: [coverImageId], references: [id])
-  coverImageId Int
+  coverImage CoverImage? @relation(fields: [coverImageId], references: [id])
+  coverImageId Int?
 }
 
 model Manga {
   id Int @id @default(autoincrement())
   idMal Int
-  title Title @relation(fields: [titleID], references: [id])
-  titleID Int
+  title Title? @relation(fields: [titleID], references: [id])
+  titleID Int?
   descrition String
   meanScore Int
   genres String[]
   source String
   synonyms String[]
-  coverImageID Int
-  coverImage CoverImage @relation(fields: [coverImageID], references: [id])
+  coverImageID Int?
+  coverImage CoverImage? @relation(fields: [coverImageID], references: [id])
 }
 
 model Title {
