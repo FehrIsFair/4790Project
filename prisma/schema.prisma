@@ -7,24 +7,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Anime {
+model anime {
   id           Int         @id @default(autoincrement())
   idMal        Int
-  title        Title?      @relation(fields: [titleID], references: [id])
+  title        title?      @relation(fields: [titleID], references: [id])
   titleID      Int?
   descrition   String
   meanScore    Int
   genres       String[]
   source       String
   synonyms     String[]
-  coverImage   CoverImage? @relation(fields: [coverImageId], references: [id])
+  coverImage   coverImage? @relation(fields: [coverImageId], references: [id])
   coverImageId Int?
 }
 
-model Manga {
+model manga {
   id           Int         @id @default(autoincrement())
   idMal        Int
-  title        Title?      @relation(fields: [titleID], references: [id])
+  title        title?      @relation(fields: [titleID], references: [id])
   titleID      Int?
   descrition   String
   meanScore    Int
@@ -32,30 +32,30 @@ model Manga {
   source       String
   synonyms     String[]
   coverImageID Int?
-  coverImage   CoverImage? @relation(fields: [coverImageID], references: [id])
+  coverImage   coverImage? @relation(fields: [coverImageID], references: [id])
 }
 
-model Title {
+model title {
   id            Int     @id @default(autoincrement())
   romanji       String
   english       String
   native        String
   userPreferred String
-  Anime         Anime[]
-  Manga         Manga[]
+  Anime         anime[]
+  Manga         manga[]
 }
 
-model CoverImage {
+model coverImage {
   id         Int     @id @default(autoincrement())
   extraLarge String
   large      String
   medium     String
   color      String
-  Anime      Anime[]
-  Manga      Manga[]
+  Anime      anime[]
+  Manga      manga[]
 }
 
-model List {
+model list {
   id        Int    @id @default(autoincrement())
   uid       String
   animeList Int[]
