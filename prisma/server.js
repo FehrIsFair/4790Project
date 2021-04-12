@@ -1,6 +1,6 @@
-import { ApolloServer } from 'apollo-server';
-import { schema } from './schema.js';
-import { context } from './context.js';
+const { ApolloServer } = require('apollo-server');
+const { schema } = require('./schema.js');
+const { context } = require('./context.js');
 
 const server = new ApolloServer({
   schema: schema,

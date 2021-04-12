@@ -1,7 +1,8 @@
 // It made me do this on my machine.
-import pkg from "express";
+const {Router} = require("express");
+const { builtinModules } = require("node:module");
 
-import {
+const {
   getAnime,
   getAnimeByMalId,
   getList,
@@ -12,11 +13,9 @@ import {
   createNewFavoriteList,
   getAnimeDetail,
   getMangaByMalId,
-} from "../controllers/api.controller.js";
+} = require("../controllers/api.controller.js");
 
-const { Router } = pkg;
-
-export const apiRouter = Router();
+const apiRouter = Router();
 
 apiRouter.get("/Anime", getAnime);
 apiRouter.get("/Manga", getManga);
@@ -28,3 +27,7 @@ apiRouter.get("/Anime/Detail/:mal_id", getAnimeDetail);
 apiRouter.put("/EditList", editFavoriteList);
 apiRouter.delete("/DeleteList/:_id", deleteFavoriteList);
 apiRouter.post("/CreateList", createNewFavoriteList);
+
+module.exports = {
+  apiRouter: apiRouter
+}
