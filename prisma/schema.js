@@ -1,10 +1,22 @@
-const {
+// const {
+//   intArg,
+//   makeSchema,
+//   nonNull,
+//   inputObjectType,
+//   arg,
+// } = require("nexus");
+
+import {
   intArg,
   makeSchema,
   nonNull,
   inputObjectType,
+  objectType,
   arg,
-} = require("nexus");
+} from "nexus"
+import path from "path"
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const Query = objectType({
   name: "Query",
@@ -324,7 +336,7 @@ const ClickInput = inputObjectType({
   },
 });
 
-const schema = makeSchema({
+export const schema = makeSchema({
   types: [
     Query,
     Mutation,
@@ -350,9 +362,3 @@ const schema = makeSchema({
     ],
   },
 });
-
-module.exports = {
-  shemea: schema,
-};
-
-export default schema;

@@ -12,11 +12,13 @@
     "postinstall": "cd client && npm install",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "build": "cd client && npm install && npm run build",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "gql": "nodemon prisma/server.js"
   },
   "author": "Spencer Jensen",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^2.20.1",
     "apollo-server": "^2.22.2",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
@@ -33,7 +35,7 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@types/node": "^14.14.22",
+    "@types/node": "^14.14.37",
     "nodemon": "^2.0.7",
     "prisma": "^2.20.1"
   }
