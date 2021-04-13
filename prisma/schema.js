@@ -4,12 +4,13 @@ const {
   nonNull,
   inputObjectType,
   arg,
+  objectType,
 } = require("nexus");
 
 const Query = objectType({
   name: "Query",
   definition(t) {
-    t.notNull.list.nonNull.field("allAnime", {
+    t.nonNull.list.nonNull.field("allAnime", {
       type: "Anime",
       resolve: (_parent, _args, context) => {
         return context.prisma.Anime.findMany();
@@ -81,7 +82,7 @@ const Mutation = objectType({
     t.list.field("searchAnime", {
       type: "Anime",
       args: {
-        data: notNull(
+        data: nonNull(
           arg({
             type: "SearchInput",
           })
@@ -104,7 +105,7 @@ const Mutation = objectType({
     t.list.field("searchManga", {
       type: "Manga",
       args: {
-        data: notNull(
+        data: nonNull(
           arg({
             type: "SearchInput",
           })
@@ -172,6 +173,7 @@ const Mutation = objectType({
         data: nonNull(
           arg({
             id: nonNull(intArg()),
+            type: "ClientDeleteInput",
           })
         ),
       },
@@ -191,31 +193,13 @@ const Anime = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.field("title", {
-      type: "Title",
-      resolve: (parent, _, context) => {
-        return context.prisma.title
-          .findUnique({
-            where: { id: parent.id || undefined },
-          })
-          .title();
-      },
-    }); // actually object
+    t.nonNull.string("title");
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
     t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
-    t.field("coverImage", {
-      type: "CoverImage",
-      resolve: (parent, _, context) => {
-        return context.prisma.coverImage
-          .findUnique({
-            where: { id: parent.id || undefined },
-          })
-          .coverImage();
-      },
-    });
+    t.nonNull.string("coverImage");
   },
 });
 
@@ -224,53 +208,13 @@ const Manga = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.int("idMal");
-    t.field("title", {
-      type: "Title",
-      resolve: (parent, _, context) => {
-        return context.prisma.title
-          .findUnique({
-            where: { id: parent.id || undefined },
-          })
-          .title();
-      },
-    });
+    t.nonNull.string("title");
     t.nonNull.string("description");
     t.nonNull.int("meanScore");
     t.nonNull.list.nonNull.string("genres"); // actually a string array
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
-    t.field("coverImage", {
-      type: "CoverImage",
-      resolve: (parent, _, context) => {
-        return context.prisma.coverImage
-          .findUnique({
-            where: { id: parent.id || undefined },
-          })
-          .coverImage();
-      },
-    });
-  },
-});
-
-const Title = objectType({
-  name: "Title",
-  definition(t) {
-    t.nonNull.int("id");
-    t.nonNull.string("romanji");
-    t.nonNull.string("english");
-    t.nonNull.string("native");
-    t.nonNull.string("userPreferred");
-  },
-});
-
-const CoverImage = objectType({
-  name: "Title",
-  definition(t) {
-    t.nonNull.int("id");
-    t.nonNull.string("extraLarge");
-    t.nonNull.string("large");
-    t.nonNull.string("medium");
-    t.nonNull.string("color");
+    t.nonNull.string("coverImage");
   },
 });
 
@@ -310,6 +254,13 @@ const ClientEditInput = inputObjectType({
   },
 });
 
+const ClientDeleteInput = inputObjectType({
+  name: "ClientDeleteInput",
+  definition(t) {
+    t.nonNull.int("id");
+  },
+});
+
 const ClientLoadInput = inputObjectType({
   name: "ClientLoadInput",
   definition(t) {
@@ -335,6 +286,7 @@ const schema = makeSchema({
     ClientEditInput,
     ClientLoadInput,
     ClientSaveInput,
+    ClientDeleteInput,
     ClickInput,
   ],
   outputs: {
