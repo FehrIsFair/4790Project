@@ -8,51 +8,27 @@ generator client {
 }
 
 model anime {
-  id           Int         @id @default(autoincrement())
-  idMal        Int
-  title        title?      @relation(fields: [titleID], references: [id])
-  titleID      Int?
-  descrition   String
-  meanScore    Int
-  genres       String[]
-  source       String
-  synonyms     String[]
-  coverImage   coverImage? @relation(fields: [coverImageId], references: [id])
-  coverImageId Int?
+  id          Int      @id @default(autoincrement())
+  idMal       Int
+  title       String
+  description String
+  meanScore   Int
+  genres      String[]
+  source      String
+  synonyms    String[]
+  coverImage  String
 }
 
 model manga {
-  id           Int         @id @default(autoincrement())
-  idMal        Int
-  title        title?      @relation(fields: [titleID], references: [id])
-  titleID      Int?
-  descrition   String
-  meanScore    Int
-  genres       String[]
-  source       String
-  synonyms     String[]
-  coverImageID Int?
-  coverImage   coverImage? @relation(fields: [coverImageID], references: [id])
-}
-
-model title {
-  id            Int     @id @default(autoincrement())
-  romanji       String
-  english       String
-  native        String
-  userPreferred String
-  Anime         anime[]
-  Manga         manga[]
-}
-
-model coverImage {
-  id         Int     @id @default(autoincrement())
-  extraLarge String
-  large      String
-  medium     String
-  color      String
-  Anime      anime[]
-  Manga      manga[]
+  id          Int      @id @default(autoincrement())
+  idMal       Int
+  title       String
+  description String
+  meanScore   Int
+  genres      String[]
+  source      String
+  synonyms    String[]
+  coverImage  String
 }
 
 model list {

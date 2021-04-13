@@ -13,57 +13,50 @@ async function main() {
   console.log("Start seeding...");
   for (const i of animeData) {
     try {
-      for (const i of animeData) {
-        const title = await prisma.title.create({
-          data: i.title,
-        });
-        const coverImage = await prisma.coverImage.create({
-          data: i.coverImage,
-        });
-        let constructedAnime = {
-          idMal: i.idMal,
-          titleID: title.id,
-          description: i.description,
-          meanScore: i.meanScore,
-          genres: i.genres,
-          synonyms: i.synonyms,
-          source: i.source,
-          coverImageID: coverImage.id,
-        };
-        const anime = await prisma.anime.create({
-          data: constructedAnime
-        });
-      }
-      for (const i of mangaData) {
-        const title = await prisma.title.create({
-          data: i.title,
-        });
-        const coverImage = await prisma.coverImage.create({
-          data: i.coverImage,
-        });
-        let constructedManga = {
-          idMal: i.idMal,
-          titleID: title.id,
-          description: i.description,
-          meanScore: i.meanScore,
-          genres: i.genres,
-          synonyms: i.synonyms,
-          source: i.source,
-          coverImageID: coverImage.id,
-        };
-        const anime = await prisma.manga.create({
-          data: constructedManga
-        });
-      }
-      for (const i of listData) {
-        const list = await prisma.list.create({
-          data: i,
-        })
-      }
+      let constructedAnime = {
+        idMal: i.idMal,
+        title: i.title.userPreferred,
+        description: i.description,
+        meanScore: i.meanScore,
+        genres: i.genres,
+        source: i.source,
+        synonyms: i.synonyms,
+        coverImage: i.coverImage.large,
+      };
+      const anime = await prisma.anime.create({
+        data: constructedAnime,
+      });
     } catch (error) {
       console.log(`Error when creating record: ${error}`);
     }
   }
+  for (const i of mangaData) {
+    try {
+      let constructedManga = {
+        idMal: i.idMal,
+        title: i.title.userPreferred,
+        description: i.description,
+        meanScore: i.meanScore,
+        source: i.source,
+        synonyms: i.synonyms,
+        coverImage: i.coverImage.large,
+      };
+      const manga = await prisma.manga.create({
+        data: constructedManga,
+      });
+    } catch (error) {
+      console.log(`Error when creating record: ${error}`);
+    }
+  }
+  for (const i of listData) {
+    try {
+      const list = await prisma.list.create({
+        data: i,
+      });
+    } catch (error) {
+    console.log(`Error when createing record: ${error}`)
+  }
+  } 
 }
 
 main().catch((e) => {

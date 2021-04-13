@@ -1,18 +1,17 @@
-[{
-  "_id": {
-    "$oid": "60481ab9ac0939bf6c89f194"
-  },
-  "uid": "J2poV9g5fufhgEJpyfeZTk882On1",
-  "animeList": [
-    5114,
-    1535,
-    1
-  ],
-  "mangaList": [
-    25,
-    2939,
-    789,
-    4231,
-    1819
-  ]
-}]
+[
+  {
+    "uid": "J2poV9g5fufhgEJpyfeZTk882On1",
+    "animeList": [
+      5114,
+      1535,
+      1
+    ],
+    "mangaList": [
+      25,
+      2939,
+      789,
+      4231,
+      1819
+    ]
+  }
+]
