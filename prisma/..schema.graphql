@@ -62,16 +62,16 @@ type Mutation {
   deleteList(data: ClientDeleteInput!): List
   editList(data: ClientEditInput!): List
   saveList(data: ClientSaveInput!): List
-  searchAnime(data: SearchInput!): [Anime]
-  searchManga(data: SearchInput!): [Manga]
+  searchAnime(searchQuery: String): [Anime]
+  searchManga(searchQuery: String): [Manga]
 }
 
 type Query {
   allAnime: [Anime!]!
   allManga: [Manga!]!
-  singleAnime(userUniqueInput: ClickInput!): [Anime]
-  singleList(userUniqueInput: ClientLoadInput!): [List]
-  singleManga(userUniqueInput: ClickInput!): [Manga]
+  singleAnime(idMal: Int!): [Anime]
+  singleList(uid: String!): [List]
+  singleManga(id: Int!): [Manga]
 }
 
 input SearchInput {

@@ -5,6 +5,7 @@ const {
   inputObjectType,
   arg,
   objectType,
+  stringArg,
 } = require("nexus");
 
 const Query = objectType({
@@ -19,22 +20,18 @@ const Query = objectType({
     t.nonNull.list.nonNull.field("allManga", {
       type: "Manga",
       resolve: (_parent, _args, context) => {
-        return context.prisma.aanga.findMany();
+        return context.prisma.manga.findMany();
       },
     });
     t.list.field("singleList", {
       type: "List",
       args: {
-        userUniqueInput: nonNull(
-          arg({
-            type: "ClientLoadInput",
-          })
-        ),
+        uid: nonNull(stringArg()),
       },
-      resolve: (_parent, _args, context) => {
-        return context.prisma.list.findUnique({
+      resolve: (_parent, args, context) => {
+        return context.prisma.list.findMany({
           where: {
-            uid: args.userUniqueInput.uid,
+            uid: args.uid,
           },
         });
       },
@@ -42,16 +39,12 @@ const Query = objectType({
     t.list.field("singleAnime", {
       type: "Anime",
       args: {
-        userUniqueInput: nonNull(
-          arg({
-            type: "ClickInput",
-          })
-        ),
+        idMal: nonNull(intArg()),
       },
       resolve: (_parent, _args, context) => {
-        return context.prisma.list.findUnique({
+        return context.prisma.anime.findMany({
           where: {
-            idMal: args.userUniqueInput.idMal,
+            idMal: _args.idMal,
           },
         });
       },
@@ -59,16 +52,12 @@ const Query = objectType({
     t.list.field("singleManga", {
       type: "Manga",
       args: {
-        userUniqueInput: nonNull(
-          arg({
-            type: "ClickInput",
-          })
-        ),
+        id: nonNull(intArg()),
       },
       resolve: (_parent, _args, context) => {
-        return context.prisma.list.findUnique({
+        return context.prisma.manga.findMany({
           where: {
-            idMal: args.userUniqueInput.idMal,
+            idMal: _args.idMal,
           },
         });
       },
@@ -82,46 +71,32 @@ const Mutation = objectType({
     t.list.field("searchAnime", {
       type: "Anime",
       args: {
-        data: nonNull(
-          arg({
-            type: "SearchInput",
-          })
-        ),
+        searchQuery: stringArg(),
       },
       resolve: (_, args, context) => {
-        const searchData = args.data.results
-          ? args.data.results.map((result) => {
-              return {
-                title: result.title,
-                meanScore: result.meanScore,
-                coverImage: result.coverImage,
-                description: result.description,
-              };
-            })
-          : [];
+        return context.prisma.anime.findMany({
+          where: {
+            title: {
+              contains: args.searchQuery,
+            },
+          }
+        })
       },
     });
 
     t.list.field("searchManga", {
       type: "Manga",
       args: {
-        data: nonNull(
-          arg({
-            type: "SearchInput",
-          })
-        ),
+        searchQuery: stringArg(),
       },
       resolve: (_, args, context) => {
-        const searchData = args.data.results
-          ? args.data.results.map((result) => {
-              return {
-                title: result.title,
-                meanScore: result.meanScore,
-                coverImage: result.coverImage,
-                description: result.description,
-              };
-            })
-          : [];
+        return context.prisma.anime.findMany({
+          where: {
+            title: {
+              contains: args.searchQuery,
+            },
+          },
+        })
       },
     });
 
@@ -155,11 +130,11 @@ const Mutation = objectType({
         ),
       },
       resolve: (_, args, context) => {
-        return context.prisma.list.update({
-          // not sure if this is correct.
-          data: {
+        return context.prisma.list.upsert({
+          where: {
             id: args.data.id,
-            uid: args.data.uid,
+          },
+          update: {
             animeList: args.data.animeList,
             mangaList: args.data.mangaList,
           },

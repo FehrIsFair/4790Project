@@ -195,21 +195,21 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['ClientSaveInput']; // ClientSaveInput!
     }
     searchAnime: { // args
-      data: NexusGenInputs['SearchInput']; // SearchInput!
+      searchQuery?: string | null; // String
     }
     searchManga: { // args
-      data: NexusGenInputs['SearchInput']; // SearchInput!
+      searchQuery?: string | null; // String
     }
   }
   Query: {
     singleAnime: { // args
-      userUniqueInput: NexusGenInputs['ClickInput']; // ClickInput!
+      idMal: number; // Int!
     }
     singleList: { // args
-      userUniqueInput: NexusGenInputs['ClientLoadInput']; // ClientLoadInput!
+      uid: string; // String!
     }
     singleManga: { // args
-      userUniqueInput: NexusGenInputs['ClickInput']; // ClickInput!
+      id: number; // Int!
     }
   }
 }
