@@ -13,13 +13,13 @@ const Query = objectType({
     t.nonNull.list.nonNull.field("allAnime", {
       type: "Anime",
       resolve: (_parent, _args, context) => {
-        return context.prisma.Anime.findMany();
+        return context.prisma.anime.findMany();
       },
     });
     t.nonNull.list.nonNull.field("allManga", {
       type: "Manga",
       resolve: (_parent, _args, context) => {
-        return context.prisma.Manga.findMany();
+        return context.prisma.aanga.findMany();
       },
     });
     t.list.field("singleList", {
@@ -32,7 +32,7 @@ const Query = objectType({
         ),
       },
       resolve: (_parent, _args, context) => {
-        return context.prisma.List.findUnique({
+        return context.prisma.list.findUnique({
           where: {
             uid: args.userUniqueInput.uid,
           },
@@ -49,7 +49,7 @@ const Query = objectType({
         ),
       },
       resolve: (_parent, _args, context) => {
-        return context.prisma.List.findUnique({
+        return context.prisma.list.findUnique({
           where: {
             idMal: args.userUniqueInput.idMal,
           },
@@ -66,7 +66,7 @@ const Query = objectType({
         ),
       },
       resolve: (_parent, _args, context) => {
-        return context.prisma.List.findUnique({
+        return context.prisma.list.findUnique({
           where: {
             idMal: args.userUniqueInput.idMal,
           },
