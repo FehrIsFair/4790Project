@@ -12,25 +12,13 @@ type Anime {
   source: String!
   synonyms: [String!]!
   title: String!
-}
-
-input ClickInput {
-  idMal: Int!
-}
-
-input ClientDeleteInput {
-  id: Int!
+  type: String!
 }
 
 input ClientEditInput {
   animeList: [Int!]!
   id: Int!
   mangaList: [Int!]!
-  uid: String!
-}
-
-input ClientLoadInput {
-  uid: String!
 }
 
 input ClientSaveInput {
@@ -56,6 +44,7 @@ type Manga {
   source: String!
   synonyms: [String!]!
   title: String!
+  type: String!
 }
 
 type Mutation {
@@ -69,11 +58,8 @@ type Mutation {
 type Query {
   allAnime: [Anime!]!
   allManga: [Manga!]!
+  listById(id: Int!): [List]
   singleAnime(idMal: Int!): [Anime]
   singleList(uid: String!): [List]
   singleManga(id: Int!): [Manga]
-}
-
-input SearchInput {
-  SearchString: String!
 }

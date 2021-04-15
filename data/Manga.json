@@ -22,7 +22,8 @@
       "Thriller"
     ],
     "source": "ORIGINAL",
-    "meanScore": 90
+    "meanScore": 90,
+    "type": "MANGA"
   },
   {
     "idMal": 2,
@@ -60,7 +61,8 @@
       "Psychological"
     ],
     "source": "ORIGINAL",
-    "meanScore": 91
+    "meanScore": 91,
+    "type": "MANGA"
   },
   {
     "idMal": 3,
@@ -91,7 +93,8 @@
       "Sci-Fi"
     ],
     "source": "ORIGINAL",
-    "meanScore": 87
+    "meanScore": 87,
+    "type": "MANGA"
   },
   {
     "idMal": 4,
@@ -120,7 +123,8 @@
       "Slice of Life"
     ],
     "source": "ORIGINAL",
-    "meanScore": 86
+    "meanScore": 86,
+    "type": "MANGA"
   },
   {
     "idMal": 7,
@@ -150,7 +154,8 @@
       "Sports"
     ],
     "source": "ORIGINAL",
-    "meanScore": 86
+    "meanScore": 86,
+    "type": "MANGA"
   },
   {
     "idMal": 8,
@@ -178,7 +183,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 77
+    "meanScore": 77,
+    "type": "MANGA"
   },
   {
     "idMal": 9,
@@ -206,7 +212,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 80
+    "meanScore": 80,
+    "type": "MANGA"
   },
   {
     "idMal": 10,
@@ -237,7 +244,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 82
+    "meanScore": 81,
+    "type": "MANGA"
   },
   {
     "idMal": 11,
@@ -262,7 +270,8 @@
       "Adventure"
     ],
     "source": "ORIGINAL",
-    "meanScore": 78
+    "meanScore": 78,
+    "type": "MANGA"
   },
   {
     "idMal": 12,
@@ -289,7 +298,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 13,
@@ -317,7 +327,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 90
+    "meanScore": 90,
+    "type": "MANGA"
   },
   {
     "idMal": 14,
@@ -341,7 +352,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 75
+    "meanScore": 75,
+    "type": "MANGA"
   },
   {
     "idMal": 15,
@@ -369,7 +381,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 76
+    "meanScore": 76,
+    "type": "MANGA"
   },
   {
     "idMal": 16,
@@ -393,7 +406,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 75
+    "meanScore": 75,
+    "type": "MANGA"
   },
   {
     "idMal": 17,
@@ -419,7 +433,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 80
+    "meanScore": 80,
+    "type": "MANGA"
   },
   {
     "idMal": 18,
@@ -447,7 +462,8 @@
       "Slice of Life"
     ],
     "source": "ORIGINAL",
-    "meanScore": 80
+    "meanScore": 80,
+    "type": "MANGA"
   },
   {
     "idMal": 19,
@@ -473,7 +489,8 @@
       "Mystery"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 20,
@@ -502,7 +519,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 79
+    "meanScore": 79,
+    "type": "MANGA"
   },
   {
     "idMal": 21,
@@ -530,7 +548,8 @@
       "Thriller"
     ],
     "source": "ORIGINAL",
-    "meanScore": 84
+    "meanScore": 84,
+    "type": "MANGA"
   },
   {
     "idMal": 22,
@@ -558,7 +577,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 83
+    "meanScore": 83,
+    "type": "MANGA"
   },
   {
     "idMal": 23,
@@ -585,7 +605,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 77
+    "meanScore": 77,
+    "type": "MANGA"
   },
   {
     "idMal": 24,
@@ -616,7 +637,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 81
+    "meanScore": 81,
+    "type": "MANGA"
   },
   {
     "idMal": 25,
@@ -647,7 +669,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 88
+    "meanScore": 88,
+    "type": "MANGA"
   },
   {
     "idMal": 26,
@@ -676,7 +699,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 87
+    "meanScore": 87,
+    "type": "MANGA"
   },
   {
     "idMal": 27,
@@ -703,7 +727,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 78
+    "meanScore": 78,
+    "type": "MANGA"
   },
   {
     "idMal": 28,
@@ -730,7 +755,8 @@
       "Slice of Life"
     ],
     "source": "ORIGINAL",
-    "meanScore": 87
+    "meanScore": 87,
+    "type": "MANGA"
   },
   {
     "idMal": 29,
@@ -755,7 +781,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 80
+    "meanScore": 80,
+    "type": "MANGA"
   },
   {
     "idMal": 30,
@@ -783,7 +810,8 @@
       "Slice of Life"
     ],
     "source": "ORIGINAL",
-    "meanScore": 84
+    "meanScore": 84,
+    "type": "MANGA"
   },
   {
     "idMal": 31,
@@ -811,7 +839,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 81
+    "meanScore": 81,
+    "type": "MANGA"
   },
   {
     "idMal": 32,
@@ -839,7 +868,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 70
+    "meanScore": 70,
+    "type": "MANGA"
   },
   {
     "idMal": 33,
@@ -866,7 +896,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 71
+    "meanScore": 71,
+    "type": "MANGA"
   },
   {
     "idMal": 34,
@@ -890,7 +921,8 @@
       "Sci-Fi"
     ],
     "source": "OTHER",
-    "meanScore": 61
+    "meanScore": 60,
+    "type": "MANGA"
   },
   {
     "idMal": 35,
@@ -918,7 +950,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 68
+    "meanScore": 68,
+    "type": "MANGA"
   },
   {
     "idMal": 36,
@@ -948,7 +981,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 75
+    "meanScore": 75,
+    "type": "MANGA"
   },
   {
     "idMal": 37,
@@ -983,7 +1017,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 38,
@@ -1009,7 +1044,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 73
+    "meanScore": 73,
+    "type": "MANGA"
   },
   {
     "idMal": 39,
@@ -1038,7 +1074,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 64
+    "meanScore": 64,
+    "type": "MANGA"
   },
   {
     "idMal": 40,
@@ -1065,7 +1102,8 @@
       "Fantasy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 41,
@@ -1093,7 +1131,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 68
+    "meanScore": 68,
+    "type": "MANGA"
   },
   {
     "idMal": 42,
@@ -1123,7 +1162,8 @@
       "Sci-Fi"
     ],
     "source": "ORIGINAL",
-    "meanScore": 82
+    "meanScore": 82,
+    "type": "MANGA"
   },
   {
     "idMal": 43,
@@ -1146,7 +1186,8 @@
       "Sports"
     ],
     "source": "ORIGINAL",
-    "meanScore": 83
+    "meanScore": 83,
+    "type": "MANGA"
   },
   {
     "idMal": 44,
@@ -1176,7 +1217,8 @@
       "Sci-Fi"
     ],
     "source": "ORIGINAL",
-    "meanScore": 87
+    "meanScore": 87,
+    "type": "MANGA"
   },
   {
     "idMal": 45,
@@ -1201,7 +1243,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 46,
@@ -1224,7 +1267,8 @@
       "Mystery"
     ],
     "source": "ORIGINAL",
-    "meanScore": 68
+    "meanScore": 68,
+    "type": "MANGA"
   },
   {
     "idMal": 47,
@@ -1250,7 +1294,8 @@
       "Comedy"
     ],
     "source": "ORIGINAL",
-    "meanScore": 77
+    "meanScore": 77,
+    "type": "MANGA"
   },
   {
     "idMal": 48,
@@ -1274,7 +1319,8 @@
       "Romance"
     ],
     "source": "ORIGINAL",
-    "meanScore": 71
+    "meanScore": 71,
+    "type": "MANGA"
   },
   {
     "idMal": 49,
@@ -1300,7 +1346,8 @@
       "Sports"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   },
   {
     "idMal": 50,
@@ -1330,7 +1377,8 @@
       "Supernatural"
     ],
     "source": "ORIGINAL",
-    "meanScore": 76
+    "meanScore": 76,
+    "type": "MANGA"
   },
   {
     "idMal": 51,
@@ -1356,7 +1404,8 @@
       "Sports"
     ],
     "source": "ORIGINAL",
-    "meanScore": 89
+    "meanScore": 89,
+    "type": "MANGA"
   },
   {
     "idMal": 52,
@@ -1378,6 +1427,7 @@
       "Sports"
     ],
     "source": "ORIGINAL",
-    "meanScore": 74
+    "meanScore": 74,
+    "type": "MANGA"
   }
 ]

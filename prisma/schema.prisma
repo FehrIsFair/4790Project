@@ -17,6 +17,7 @@ model anime {
   source      String
   synonyms    String[]
   coverImage  String
+  type String
 }
 
 model manga {
@@ -29,6 +30,7 @@ model manga {
   source      String
   synonyms    String[]
   coverImage  String
+  type String
 }
 
 model list {

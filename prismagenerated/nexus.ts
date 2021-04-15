@@ -14,28 +14,15 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  ClickInput: { // input type
-    idMal: number; // Int!
-  }
-  ClientDeleteInput: { // input type
-    id: number; // Int!
-  }
   ClientEditInput: { // input type
     animeList: number[]; // [Int!]!
     id: number; // Int!
     mangaList: number[]; // [Int!]!
-    uid: string; // String!
-  }
-  ClientLoadInput: { // input type
-    uid: string; // String!
   }
   ClientSaveInput: { // input type
     animeList: number[]; // [Int!]!
     mangaList: number[]; // [Int!]!
     uid: string; // String!
-  }
-  SearchInput: { // input type
-    SearchString: string; // String!
   }
 }
 
@@ -61,6 +48,7 @@ export interface NexusGenObjects {
     source: string; // String!
     synonyms: string[]; // [String!]!
     title: string; // String!
+    type: string; // String!
   }
   List: { // root type
     animeList: number[]; // [Int!]!
@@ -78,6 +66,7 @@ export interface NexusGenObjects {
     source: string; // String!
     synonyms: string[]; // [String!]!
     title: string; // String!
+    type: string; // String!
   }
   Mutation: {};
   Query: {};
@@ -104,6 +93,7 @@ export interface NexusGenFieldTypes {
     source: string; // String!
     synonyms: string[]; // [String!]!
     title: string; // String!
+    type: string; // String!
   }
   List: { // field return type
     animeList: number[]; // [Int!]!
@@ -121,6 +111,7 @@ export interface NexusGenFieldTypes {
     source: string; // String!
     synonyms: string[]; // [String!]!
     title: string; // String!
+    type: string; // String!
   }
   Mutation: { // field return type
     deleteList: NexusGenRootTypes['List'] | null; // List
@@ -132,6 +123,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
     allManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
+    listById: Array<NexusGenRootTypes['List'] | null> | null; // [List]
     singleAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
     singleList: Array<NexusGenRootTypes['List'] | null> | null; // [List]
     singleManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
@@ -149,6 +141,7 @@ export interface NexusGenFieldTypeNames {
     source: 'String'
     synonyms: 'String'
     title: 'String'
+    type: 'String'
   }
   List: { // field return type name
     animeList: 'Int'
@@ -166,6 +159,7 @@ export interface NexusGenFieldTypeNames {
     source: 'String'
     synonyms: 'String'
     title: 'String'
+    type: 'String'
   }
   Mutation: { // field return type name
     deleteList: 'List'
@@ -177,6 +171,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allAnime: 'Anime'
     allManga: 'Manga'
+    listById: 'List'
     singleAnime: 'Anime'
     singleList: 'List'
     singleManga: 'Manga'
@@ -202,6 +197,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    listById: { // args
+      id: number; // Int!
+    }
     singleAnime: { // args
       idMal: number; // Int!
     }

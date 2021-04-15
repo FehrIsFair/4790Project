@@ -1,7 +1,89 @@
 import React, { useState, createContext, useReducer, useEffect } from "react";
 import axios from "axios";
 import app from "../lib/firebase";
-import "firebase/firestore";
+import {useLazyQuery, gql} from "@apollo/client"
+
+const GET_LIST = gql`
+  query SingleList($uid: String!){
+    singleList(uid: $uid) {
+      id
+      uid
+      animeList
+      mangaList
+    }
+  }
+`;
+
+const DELETE_LIST = gql`
+  mutation DeleteList($id: Number!) {
+    deleteList(id: $id) {
+      id
+      title
+      animeList
+      mangaList
+    }
+  }
+`;
+
+const EDIT_LIST = gql`
+  mutation EditList($id: Number!) {
+    editList(id: $id) {
+      id
+      title
+      animeList
+      mangaList
+    }
+  }
+`;
+
+const SAVE_LIST = gql`
+  mutation SaveList($id: Number!) {
+    saveList(id: $id) {
+      id
+      title
+      animeList
+      mangaList
+    }
+  }
+`;
+
+// This is to make sure if the user is new.
+const GET_LIST_BY_ID = gql`
+  query ListByID($id: Number!) {
+    listById(id: $id) {
+      id
+      uid
+      animeList
+      mangaList
+    }
+  }
+`;
+
+const GET_ONE_ANIME = gql`
+  query SingleAnime($idMal: Number!) {
+    singleAnime(idMal: $idMal) {
+      idMal
+      title
+      description
+      meanScore
+      coverImage
+      type
+    }
+  }
+`;
+
+const GET_ONE_MANGA = gql`
+  query SingleAnime($idMal: Number!) {
+    singleManga(idMal: $idMal) {
+      idMal
+      title
+      description
+      meanScore
+      coverImage
+      type
+    }
+  }
+`;
 
 // This is just the initial state of the authentication.
 const initialAuthState = {
@@ -70,10 +152,17 @@ const AuthProvider = ({ children }) => {
   const [mangaList, setMangaList] = useState([]);
   const [deleteList, setDeleteList] = useState(false);
   const [userList, setUserList] = useState({
+    id: null,
     uid: null,
     animeList: [],
     mangaList: [],
   });
+
+  // Lazy Queries are your friend
+  const [getList, {loadingList, listData}] = useLazyQuery(GET_LIST);
+  const [getNewList, {loadingNewList, newListData}] = useLazyQuery(GET_LIST_BY_ID);
+  const [getAnime, {loadingAnime, animeData}] = useLazyQuery(GET_ONE_ANIME);
+  const [getManga, {loadingManga, mangaData}] = useLazyQuery(GET_ONE_MANGA);
 
   // This is the back end stuff.
 
@@ -81,22 +170,18 @@ const AuthProvider = ({ children }) => {
     setDeleteList(bool);
   };
 
-  const getList = async (uid) => {
-    const { data } = await axios.get(`/api/List/${uid}`, {
-      params: {
-        uid: uid,
-      },
-    });
-    setupAnimeList(data);
-    setupMangaList(data);
-    setUserList(data);
+  const makeList = async (uid) => {
+    await getList({variables: {uid: uid}});
+    setupAnimeList(listData);
+    setupMangaList(listData);
+    setUserList(listData);
   };
 
   const setupAnimeList = async (user) => {
     let animeArray = [];
     for (let value of user.animeList) {
-      let { data } = await axios.get(`/api/Anime/${value}`);
-      animeArray = [...animeArray, data];
+      await getAnime({variables: value});
+      animeArray = [...animeArray, animeData];
     }
     setList([...animeArray]);
   };
@@ -104,8 +189,8 @@ const AuthProvider = ({ children }) => {
   const setupMangaList = async (data) => {
     let mangaArray = [];
     for (let value of data.mangaList) {
-      let { data } = await axios.get(`/api/Manga/${value}`);
-      mangaArray = [...mangaArray, data];
+      await getManga({variables: value})
+      mangaArray = [...mangaArray, mangaData];
     }
     setMangaList([...mangaArray]);
   };
@@ -133,11 +218,11 @@ const AuthProvider = ({ children }) => {
   // This build the favorite list.
   const favoriteListBuilder = async (anime) => {
     if (list || mangaList)
-      if (anime.type === "TV" || anime.type === "Movie") {
-        const { data } = await axios.get(`/api/Anime/${anime.mal_id}`);
+      if (anime.type === "ANIME") {
+        const { data } = await getAnime({variables: {idMal: anime.idMal}});
         setList([...list, data]);
       } else {
-        const { data } = await axios.get(`/api/Manga/${anime.mal_id}`);
+        const { data } = await getManga({variables: {idMal: anime.idMal}});
         setMangaList([...mangaList, data]);
       }
   };
@@ -146,9 +231,9 @@ const AuthProvider = ({ children }) => {
     let animeArray = [];
     let mangaArray = [];
     let dummyState = userList;
-    const { data } = await axios.get(`/api/List/${state.user.id}`);
+    await getNewList({variables: {id: userList.id}})
     if (!deleteList) {
-      if (data.animeList.length !== 0) {
+      if (!newListData) {
         putList(animeArray, mangaArray, dummyState);
       } else {
         postList(animeArray, mangaArray, dummyState);
@@ -194,16 +279,16 @@ const AuthProvider = ({ children }) => {
   };
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
-  const favoriteListSearcher = (mal_id, type) => {
-    if (type === "TV" || type === "Movie")
+  const favoriteListSearcher = (idMal, type) => {
+    if (type === "ANIME")
       for (let value of list) {
-        if (value.mal_id === mal_id) {
+        if (value.idMal === idMal) {
           return true;
         }
       }
     else {
       for (let value of mangaList) {
-        if (value.mal_id === mal_id) {
+        if (value.idMal === idMal) {
           return true;
         }
       }
@@ -211,18 +296,18 @@ const AuthProvider = ({ children }) => {
     return false;
   };
   // This removes an anime from the list by looking for the anime of the same ID
-  const favoriteListHandler = (mal_id, type) => {
+  const favoriteListHandler = (idMal, type) => {
     let newList = [];
-    if (type === "TV" || type === "Movie") {
+    if (type === "ANIME") {
       for (let value of list) {
-        if (value.mal_id !== mal_id) {
+        if (value.idMal !== idMal) {
           newList = [...newList, value];
         }
       }
       setList([...newList]);
     } else {
       for (let value of mangaList) {
-        if (value.mal_id !== mal_id) {
+        if (value.idMal !== idMal) {
           newList = [...newList, value];
         }
       }
@@ -282,7 +367,7 @@ const AuthProvider = ({ children }) => {
         signInWithGoogle,
         createUserWithEmailAndPassword,
         favoriteHandler: favoriteHandler,
-        getList: getList,
+        setList: makeList,
         deleteHandler: deleteHandler,
         deleteList: deleteList,
         favorite: favorite,

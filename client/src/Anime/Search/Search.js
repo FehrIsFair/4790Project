@@ -1,15 +1,39 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Card, Typography, Switch, Button } from "@material-ui/core";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
 import Transition from "react-transition-group/Transition";
 import LazyLoad from "react-lazyload";
-import { withStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-import sortObjectsArray from "sort-objects-array"
+import { withStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
+import sortObjectsArray from "sort-objects-array";
+import { useQuery, gql, useMutaion } from "@apollo/client";
 
 import { Authentication } from "../../Authentication/Authentication";
 import GeneralInfo from "../GeneralInfo/GeneralInfo";
+
+const ALL_ANIME = gql`
+  query {
+    allAnime {
+      title
+      idMal
+      description
+      meanScore
+      coverImage
+    }
+  }
+`;
+
+const SEARCH_ANIME = gql`
+  mutation SearchAnime($search: String) {
+    searchAnime(searchQuery: $search) {
+      title
+      idMal
+      description
+      meanScore
+      coverImage
+    }
+  }
+`;
 
 // Transistion States
 const transitionStyles = {
@@ -30,10 +54,10 @@ const transitionStyles = {
 const AnimeSwitch = withStyles({
   switchBase: {
     color: green[300],
-    '&$checked': {
+    "&$checked": {
       color: green[500],
     },
-    '&$checked + $track': {
+    "&$checked + $track": {
       backgroundColor: green[500],
     },
   },
@@ -47,13 +71,16 @@ const Search = () => {
   const authContext = useContext(Authentication);
   const [searchResults, setSearchResults] = useState(Array);
   const [compLoad, setCompLoad] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(String);
   const [isDescending, setIsAcending] = useState(false);
+  const {loading, error, animeData} = useQuery(ALL_ANIME);
+  const [searchAnime, {resultData}] = useMutaion(SEARCH_ANIME);
+  
 
   const handleSort = () => {
     if (!isDescending) {
       setSearchResults(sortObjectsArray(searchResults, "title"));
-    }
-    else {
+    } else {
       setSearchResults(sortObjectsArray(searchResults, "title", "reverse"));
     }
   };
@@ -68,20 +95,13 @@ const Search = () => {
 
   // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
-    async function getResults() {
-      const { data } = await axios.get(`/api/Anime`);
-
-      console.log(Array.isArray(data));
-      return data;
+    if (!searchResults && !loading) {
+      setSearchResults(animeData);
     }
-    async function setResults() {
-      setSearchResults(await getResults());
-    }
-    setResults();
     if (authContext.userList.uid === null && authContext.user !== null) {
       authContext.getList(authContext.user.uid);
     }
-  }, [authContext]);
+  }, [authContext, searchResults, loading]);
 
   useEffect(() => {
     if (!compLoad && searchResults) {
@@ -113,7 +133,7 @@ const Search = () => {
           >
             <Card>
               <Typography variant="p" className="switch-text">
-                Sort: {isDescending ? "Reverse Alpha" : "Alphabetical" }
+                Sort: {isDescending ? "Reverse Alpha" : "Alphabetical"}
               </Typography>
               <AnimeSwitch
                 className="switch"

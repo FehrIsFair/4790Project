@@ -36,6 +36,19 @@ const Query = objectType({
         });
       },
     });
+    t.list.field("listById", {
+      type: "List",
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: (_parent, args, context) => {
+        return context.prisma.list.findUnique({
+          where: {
+            id: args.id
+          }
+        });
+      },
+    });
     t.list.field("singleAnime", {
       type: "Anime",
       args: {
@@ -170,6 +183,7 @@ const Anime = objectType({
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
     t.nonNull.string("coverImage");
+    t.nonNull.string("type");
   },
 });
 
@@ -185,6 +199,7 @@ const Manga = objectType({
     t.nonNull.string("source");
     t.nonNull.list.nonNull.string("synonyms");
     t.nonNull.string("coverImage");
+    t.nonNull.string("type");
   },
 });
 

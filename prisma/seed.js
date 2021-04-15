@@ -3,8 +3,7 @@ const {PrismaClient} = require("@prisma/client");
 
 const animeData = require("../data/Anime.json");
 const mangaData = require("../data/Manga.json");
-const titleData = require("../data/Title.json");
-const coverImageData = require("../data/CoverImage.json");
+
 const listData = require("../data/List.json");
 
 const prisma = new PrismaClient();
@@ -22,6 +21,7 @@ async function main() {
         source: i.source,
         synonyms: i.synonyms,
         coverImage: i.coverImage.large,
+        type: i.type,
       };
       const anime = await prisma.anime.create({
         data: constructedAnime,
@@ -40,6 +40,7 @@ async function main() {
         source: i.source,
         synonyms: i.synonyms,
         coverImage: i.coverImage.large,
+        type: i.type,
       };
       const manga = await prisma.manga.create({
         data: constructedManga,
