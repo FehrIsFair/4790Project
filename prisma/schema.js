@@ -198,13 +198,6 @@ const List = objectType({
   },
 });
 
-const SearchInput = inputObjectType({
-  name: "SearchInput",
-  definition(t) {
-    t.nonNull.string("SearchString");
-  },
-});
-
 const ClientSaveInput = inputObjectType({
   name: "ClientSaveInput",
   definition(t) {
@@ -218,30 +211,8 @@ const ClientEditInput = inputObjectType({
   name: "ClientEditInput",
   definition(t) {
     t.nonNull.int("id");
-    t.nonNull.string("uid");
     t.nonNull.list.nonNull.int("animeList");
     t.nonNull.list.nonNull.int("mangaList");
-  },
-});
-
-const ClientDeleteInput = inputObjectType({
-  name: "ClientDeleteInput",
-  definition(t) {
-    t.nonNull.int("id");
-  },
-});
-
-const ClientLoadInput = inputObjectType({
-  name: "ClientLoadInput",
-  definition(t) {
-    t.nonNull.string("uid");
-  },
-});
-
-const ClickInput = inputObjectType({
-  name: "ClickInput",
-  definition(t) {
-    t.nonNull.int("idMal");
   },
 });
 
@@ -252,12 +223,8 @@ const schema = makeSchema({
     Anime,
     Manga,
     List,
-    SearchInput,
     ClientEditInput,
-    ClientLoadInput,
     ClientSaveInput,
-    ClientDeleteInput,
-    ClickInput,
   ],
   outputs: {
     schema: __dirname + "/..schema.graphql",
