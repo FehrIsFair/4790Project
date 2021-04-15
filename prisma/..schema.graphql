@@ -59,7 +59,7 @@ type Manga {
 }
 
 type Mutation {
-  deleteList(data: ClientDeleteInput!): List
+  deleteList(id: Int!): List
   editList(data: ClientEditInput!): List
   saveList(data: ClientSaveInput!): List
   searchAnime(searchQuery: String): [Anime]

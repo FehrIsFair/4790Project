@@ -186,7 +186,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     deleteList: { // args
-      data: NexusGenInputs['ClientDeleteInput']; // ClientDeleteInput!
+      id: number; // Int!
     }
     editList: { // args
       data: NexusGenInputs['ClientEditInput']; // ClientEditInput!

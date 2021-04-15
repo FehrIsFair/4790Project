@@ -130,13 +130,13 @@ const Mutation = objectType({
         ),
       },
       resolve: (_, args, context) => {
-        return context.prisma.list.upsert({
-          where: {
-            id: args.data.id,
-          },
-          update: {
+        return context.prisma.list.update({
+          data: {
             animeList: args.data.animeList,
             mangaList: args.data.mangaList,
+          },
+          where: {
+            id: args.data.id,
           },
         });
       },
@@ -145,12 +145,7 @@ const Mutation = objectType({
     t.field("deleteList", {
       type: "List",
       args: {
-        data: nonNull(
-          arg({
-            id: nonNull(intArg()),
-            type: "ClientDeleteInput",
-          })
-        ),
+        id: nonNull(intArg())
       },
       resolve: (_, args, context) => {
         return context.prisma.list.delete({
