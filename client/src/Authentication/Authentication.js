@@ -1,10 +1,10 @@
 import React, { useState, createContext, useReducer, useEffect } from "react";
 import axios from "axios";
 import app from "../lib/firebase";
-import {useLazyQuery, gql} from "@apollo/client"
+import { useLazyQuery, gql, useMutation } from "@apollo/client";
 
 const GET_LIST = gql`
-  query SingleList($uid: String!){
+  query SingleList($uid: String!) {
     singleList(uid: $uid) {
       id
       uid
@@ -26,8 +26,8 @@ const DELETE_LIST = gql`
 `;
 
 const EDIT_LIST = gql`
-  mutation EditList($id: Number!) {
-    editList(id: $id) {
+  mutation EditList($id: Number!, $animeList: Number[]!, $mangaList: Number[]!) {
+    editList(id: $id, animeList: $animeList, mangaList: $mangaList) {
       id
       title
       animeList
@@ -37,8 +37,8 @@ const EDIT_LIST = gql`
 `;
 
 const SAVE_LIST = gql`
-  mutation SaveList($id: Number!) {
-    saveList(id: $id) {
+  mutation SaveList($uid: String!, $animeList: Number[]!, $mangaList: Number[]!) {
+    saveList(uid: $uid, animeList: $animeList, mangaList: $mangaList) {
       id
       title
       animeList
@@ -159,10 +159,17 @@ const AuthProvider = ({ children }) => {
   });
 
   // Lazy Queries are your friend
-  const [getList, {loadingList, listData}] = useLazyQuery(GET_LIST);
-  const [getNewList, {loadingNewList, newListData}] = useLazyQuery(GET_LIST_BY_ID);
-  const [getAnime, {loadingAnime, animeData}] = useLazyQuery(GET_ONE_ANIME);
-  const [getManga, {loadingManga, mangaData}] = useLazyQuery(GET_ONE_MANGA);
+  const [getList, { loadingList, listData }] = useLazyQuery(GET_LIST);
+  const [getNewList, { loadingNewList, newListData }] = useLazyQuery(
+    GET_LIST_BY_ID
+  );
+  const [getAnime, { loadingAnime, animeData }] = useLazyQuery(GET_ONE_ANIME);
+  const [getManga, { loadingManga, mangaData }] = useLazyQuery(GET_ONE_MANGA);
+
+  // Mutations
+  const [saveList, { saveData }] = useMutation(SAVE_LIST);
+  const [editList, { editData }] = useMutation(EDIT_LIST);
+  const [deleteLists, { deleteData }] = useMutation(DELETE_LIST);
 
   // This is the back end stuff.
 
@@ -171,7 +178,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const makeList = async (uid) => {
-    await getList({variables: {uid: uid}});
+    await getList({ variables: { uid: uid } });
     setupAnimeList(listData);
     setupMangaList(listData);
     setUserList(listData);
@@ -180,7 +187,7 @@ const AuthProvider = ({ children }) => {
   const setupAnimeList = async (user) => {
     let animeArray = [];
     for (let value of user.animeList) {
-      await getAnime({variables: value});
+      await getAnime({ variables: value });
       animeArray = [...animeArray, animeData];
     }
     setList([...animeArray]);
@@ -189,7 +196,7 @@ const AuthProvider = ({ children }) => {
   const setupMangaList = async (data) => {
     let mangaArray = [];
     for (let value of data.mangaList) {
-      await getManga({variables: value})
+      await getManga({ variables: value });
       mangaArray = [...mangaArray, mangaData];
     }
     setMangaList([...mangaArray]);
@@ -219,10 +226,10 @@ const AuthProvider = ({ children }) => {
   const favoriteListBuilder = async (anime) => {
     if (list || mangaList)
       if (anime.type === "ANIME") {
-        const { data } = await getAnime({variables: {idMal: anime.idMal}});
+        const { data } = await getAnime({ variables: { idMal: anime.idMal } });
         setList([...list, data]);
       } else {
-        const { data } = await getManga({variables: {idMal: anime.idMal}});
+        const { data } = await getManga({ variables: { idMal: anime.idMal } });
         setMangaList([...mangaList, data]);
       }
   };
@@ -231,7 +238,7 @@ const AuthProvider = ({ children }) => {
     let animeArray = [];
     let mangaArray = [];
     let dummyState = userList;
-    await getNewList({variables: {id: userList.id}})
+    await getNewList({ variables: { id: userList.id } });
     if (!deleteList) {
       if (!newListData) {
         putList(animeArray, mangaArray, dummyState);
@@ -240,24 +247,26 @@ const AuthProvider = ({ children }) => {
       }
     } else {
       if (userList._id) {
-        await axios.delete(`/api/DeleteList/${userList._id}`);
+        deleteLists({ variables: { id: dummyState.id } });
       }
     }
   };
 
   const postList = (animeArray, mangaArray, dummyState) => {
     for (let value of list) {
-      animeArray.push(value.mal_id);
+      animeArray.push(value.idMal);
     }
     for (let value of mangaList) {
-      mangaArray.push(value.mal_id);
+      mangaArray.push(value.idMal);
     }
     dummyState.animeList = [...animeArray];
     dummyState.mangaList = [...mangaArray];
-    axios.post("/api/CreateList", {
-      uid: dummyState.uid,
-      animeList: dummyState.animeList,
-      mangaList: dummyState.mangaList,
+    saveList({
+      variables: {
+        uid: dummyState.uid,
+        animeList: animeArray,
+        mangaList: mangaArray,
+      },
     });
   };
 
@@ -270,11 +279,12 @@ const AuthProvider = ({ children }) => {
     }
     dummyState.animeList = [...animeArray];
     dummyState.mangaList = [...mangaArray];
-    axios.put("/api/EditList", {
-      _id: dummyState._id,
-      uid: dummyState.uid,
-      animeList: dummyState.animeList,
-      mangaList: dummyState.mangaList,
+    editList({
+      variables: {
+        id: dummyState.id,
+        animeList: dummyState.animeList,
+        mangaList: dummyState.mangaList,
+      }
     });
   };
 
