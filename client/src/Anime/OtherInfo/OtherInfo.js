@@ -17,19 +17,15 @@ const OtherInfo = (props) => {
           </List>
         </div>
       ) : null}
-      {!props.related?.Adaptation?.length ? null : (
         <div id="source" styles="">
           <Typography variant="p">
-            Based on:
+            Source:
             {
               space /*this wouldn't let me put a space here manually so I had to do some trickery*/
             }
-            <Link className="link" href={props.related.Adaptation[0].url}>
-              {props.related.Adaptation[0].name}
-            </Link>
+            {props.source[0].name}
           </Typography>
         </div>
-      )}
     </Card>
   );
 };

@@ -1,13 +1,29 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { Card } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import Transition from "react-transition-group/Transition";
+import { useQuery, gql } from "@apollo/client";
 
 import GenreList from "./GenreList/GenreList";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import OtherInfo from "./OtherInfo/OtherInfo";
 import { Authentication } from "../Authentication/Authentication";
+
+const GET_ONE_MANGA = gql`
+  query SingleManga($idMal: Number!) {
+    singleManga(idMal: $idMal) {
+      idMal
+      title
+      description
+      genres
+      meanScore
+      coverImage
+      synonyms
+      type
+      source
+    }
+  }
+`;
 
 // Transistion States
 const transitionStyles = {
@@ -27,21 +43,19 @@ const transitionStyles = {
 
 const Anime = () => {
   // Hooks needed in order for the view to function.
-  const [anime, setAnime] = useState();
   const [compLoad, setCompLoad] = useState(false);
   const authContext = useContext(Authentication);
+  const { loading, error, data } = useQuery(GET_ONE_MANGA, {variables: {
+    idMal: authContext.clicked
+  }});
 
   // Logic for setting up the view for the view
   useEffect(() => {
-    if (!compLoad && anime) {
+    if (!compLoad && !loading) {
       setCompLoad(true);
     }
-    async function getAnime(newCall) {
-      const { data } = await axios.get(`/api/Manga/Detail/${newCall}`);
-      setAnime(data);
-    }
-    getAnime(authContext.clicked);
-  }, [setAnime, authContext.clicked, compLoad, anime]);
+    
+  }, [compLoad, loading]);
 
   // Route Gaurding
   if (!authContext.isAuthenticated) {
@@ -49,7 +63,7 @@ const Anime = () => {
   }
 
   // Ensuring the view is populated while the anime is being called on.
-  if (!anime) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -65,15 +79,15 @@ const Anime = () => {
             transitionStyles[state])
           }
         >
-          <GeneralInfo anime={anime} searchResult={false} styles={null} />
+          <GeneralInfo anime={data} searchResult={false} styles={null} />
           {/* These components are mainly static and don't have any special function
           They only take the props given and map them out. In some cases only if they have something to map out.
     */}
-          <GenreList genres={anime?.genres} />
+          <GenreList genres={data.genres} />
           <OtherInfo
-            title_synonyms={anime?.title_synonyms}
-            genres={anime?.genres}
-            related={anime?.related}
+            title_synonyms={data.synonyms}
+            genres={data.genres}
+            related={data.source}
           />
         </Card>
       )}

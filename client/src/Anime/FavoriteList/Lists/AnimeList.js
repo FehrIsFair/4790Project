@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
 
 import { Authentication } from "../../../Authentication/Authentication";
@@ -33,14 +33,14 @@ const AnimeList = () => {
   const history = useHistory();
 
   // This is mainly to track if the list has changed or not.
-  const listChangeTracker = (mal_id, type) => {
-    AuthContext.removeFavorite(mal_id, type);
+  const listChangeTracker = (idMal, type) => {
+    AuthContext.removeFavorite(idMal, type);
     setListChange(true);
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
-  const redirectToAnimePage = (malID) => {
-    AuthContext.click(malID);
+  const redirectToAnimePage = (idMal) => {
+    AuthContext.click(idMal);
     history.push("/Anime");
   };
 
@@ -91,7 +91,7 @@ const AnimeList = () => {
                 }
               >
                 <img
-                  src={item.image_url}
+                  src={item.coverImage}
                   alt={`${item.title} Promotional Art`}
                   style={{
                     width: "225px !important",
@@ -100,14 +100,14 @@ const AnimeList = () => {
                   className="resultImage"
                 />
                 <div classNames="titleScore">
-                  <Link onClick={() => redirectToAnimePage(item.mal_id, item.type)}>
+                  <Link onClick={() => redirectToAnimePage(item.idMal, item.type)}>
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">
-                    <Typography variant="h5">{item.score}</Typography>
+                    <Typography variant="h5">{item.meanScore}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.mal_id, item.type)}
+                      onClick={() => listChangeTracker(item.idMal, item.type)}
                     >
                       Remove
                     </Button>
@@ -115,7 +115,7 @@ const AnimeList = () => {
                 </div>
                 <div className="favSyn">
                   <Typography variant="p" className="">
-                    {item.synopsis}
+                    {item.description}
                   </Typography>
                 </div>
               </Card>

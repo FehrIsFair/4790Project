@@ -1,5 +1,4 @@
 import React, { useState, createContext, useReducer, useEffect } from "react";
-import axios from "axios";
 import app from "../lib/firebase";
 import { useLazyQuery, gql, useMutation } from "@apollo/client";
 

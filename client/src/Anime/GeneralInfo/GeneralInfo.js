@@ -13,16 +13,16 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
   // Bunching up removing and adding favorites here to save lines of code
   const addRemoveFavorite = () => {
     if (added) {
-      authContext.removeFavorite(anime.mal_id, anime.type);
+      authContext.removeFavorite(anime.idmal, anime.type);
     } else {
       authContext.addFavorite(anime);
     }
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
-  const redirectToCorrectPage = (malID, type) => {
-    authContext.click(malID);
-    if (type === "TV" || type === "Movie") {
+  const redirectToCorrectPage = (idMal, type) => {
+    authContext.click(idMal);
+    if (type === "ANIME") {
       history.push("/Anime");
     } else {
       history.push("/Manga");
@@ -31,7 +31,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
 
   // This is her to conditinally render the text of the button
   useEffect(() => {
-    if (authContext.searchList(anime.mal_id, anime.type)) {
+    if (authContext.searchList(anime.idMal, anime.type)) {
       setAdded(true);
     } else {
       setAdded(false);
@@ -41,7 +41,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
   return (
     <Card id="synopsis" style={styles}>
       <img
-        src={anime.image_url}
+        src={anime.coverImage}
         alt={`${anime.title} Promotional Art`}
         style={{
           width: "225px !important",
@@ -51,7 +51,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
       <div id="scoreSyn">
         <div id="titleContain">
           {searchResult ? (
-            <Link onClick={() => redirectToCorrectPage(anime.mal_id, anime.type)}>
+            <Link onClick={() => redirectToCorrectPage(anime.idMal, anime.type)}>
               <Typography id="animeTitle" variant="h4">
                 {anime.title}
               </Typography>
@@ -72,12 +72,12 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
         </Button>
 
         <Typography className="score">
-          <span className="bold">Score:</span> {anime.score}/10
+          <span className="bold">Score:</span> {anime.meanScore}
         </Typography>
 
         <div id="synText">
           <Typography>Synopsis:</Typography>
-          <Typography>{anime.synopsis}</Typography>
+          <Typography>{anime.description}</Typography>
         </div>
       </div>
     </Card>
