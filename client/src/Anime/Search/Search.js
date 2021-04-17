@@ -6,7 +6,7 @@ import LazyLoad from "react-lazyload";
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import sortObjectsArray from "sort-objects-array";
-import { useQuery, gql, useMutaion } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { Authentication } from "../../Authentication/Authentication";
 import GeneralInfo from "../GeneralInfo/GeneralInfo";
@@ -74,7 +74,7 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState(String);
   const [isDescending, setIsAcending] = useState(false);
   const {loading, error, animeData} = useQuery(ALL_ANIME);
-  const [searchAnime, {resultData}] = useMutaion(SEARCH_ANIME);
+  const [searchAnime, {resultData}] = useMutation(SEARCH_ANIME);
   
 
   const handleSort = () => {
@@ -101,7 +101,7 @@ const Search = () => {
     if (authContext.userList.uid === null && authContext.user !== null) {
       authContext.getList(authContext.user.uid);
     }
-  }, [authContext, searchResults, loading]);
+  }, [animeData, authContext, searchResults, loading]);
 
   useEffect(() => {
     if (!compLoad && searchResults) {

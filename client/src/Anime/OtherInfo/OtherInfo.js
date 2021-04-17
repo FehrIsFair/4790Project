@@ -11,7 +11,7 @@ const OtherInfo = (props) => {
         <div id="other-titles">
           <Typography variant="h4">Other Titles:</Typography>
           <List className="liststyle">
-            {props.title_synonyms.map((value) => {
+            {props.synonyms.map((value) => {
               return <ListItem>{value}</ListItem>;
             })}
           </List>
@@ -23,7 +23,7 @@ const OtherInfo = (props) => {
             {
               space /*this wouldn't let me put a space here manually so I had to do some trickery*/
             }
-            {props.source[0].name}
+            {props.source}
           </Typography>
         </div>
     </Card>
