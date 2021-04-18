@@ -1,6 +1,5 @@
 // It made me do this on my machine.
 const {Router} = require("express");
-const { builtinModules } = require("node:module");
 
 const {
   getAnime,

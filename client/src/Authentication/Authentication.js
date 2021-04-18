@@ -25,7 +25,7 @@ const DELETE_LIST = gql`
 `;
 
 const EDIT_LIST = gql`
-  mutation EditList($id: Number!, $animeList: Number[]!, $mangaList: Number[]!) {
+  mutation EditList($id: Number!, $animeList: Array!, $mangaList: Array!) {
     editList(id: $id, animeList: $animeList, mangaList: $mangaList) {
       id
       title
@@ -36,7 +36,7 @@ const EDIT_LIST = gql`
 `;
 
 const SAVE_LIST = gql`
-  mutation SaveList($uid: String!, $animeList: Number[]!, $mangaList: Number[]!) {
+  mutation SaveList($uid: String!, $animeList: Array!, $mangaList: Array!) {
     saveList(uid: $uid, animeList: $animeList, mangaList: $mangaList) {
       id
       title
