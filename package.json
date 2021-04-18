@@ -12,7 +12,7 @@
     "postinstall": "cd client && npm install",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "build": "cd client && npm install && npm run build",
-    "gqlDev": "concurrently --kill-others \"nodemon index.js\" \"nodemon prisma/server.js\" \"cd client && npm start\"",
+    "gqlDev": "concurrently --kill-others \"npm run test\" \"cd prisma && npm run dev\" \"cd client && npm start\"",
     "seed": "node prisma/seed.js",
     "gql": "nodemon prisma/server.js"
   },

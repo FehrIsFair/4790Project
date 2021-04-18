@@ -1,7 +1,7 @@
 // It made me do this on my machine.
-const {Router} = require("express");
+import {Router} from "express";
 
-const {
+import {
   getAnime,
   getAnimeByMalId,
   getList,
@@ -12,7 +12,7 @@ const {
   createNewFavoriteList,
   getAnimeDetail,
   getMangaByMalId,
-} = require("../controllers/api.controller.js");
+} from "../controllers/api.controller.js";
 
 const apiRouter = Router();
 
@@ -27,6 +27,4 @@ apiRouter.put("/EditList", editFavoriteList);
 apiRouter.delete("/DeleteList/:_id", deleteFavoriteList);
 apiRouter.post("/CreateList", createNewFavoriteList);
 
-module.exports = {
-  apiRouter: apiRouter
-}
+export default apiRouter
