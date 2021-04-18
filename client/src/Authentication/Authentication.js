@@ -3,8 +3,8 @@ import app from "../lib/firebase";
 import { useLazyQuery, gql, useMutation } from "@apollo/client";
 
 const GET_LIST = gql`
-  query SingleList($uid: String!) {
-    singleList(uid: $uid) {
+  query SingleList($_uid: String!) {
+    singleList(uid: $_uid) {
       id
       uid
       animeList
@@ -159,9 +159,7 @@ const AuthProvider = ({ children }) => {
 
   // Lazy Queries are your friend
   const [getList, { loadingList, listData }] = useLazyQuery(GET_LIST);
-  const [getNewList, { loadingNewList, newListData }] = useLazyQuery(
-    GET_LIST_BY_ID
-  );
+  const [getNewList, { loadingNewList, newListData }] = useLazyQuery(GET_LIST_BY_ID);
   const [getAnime, { loadingAnime, animeData }] = useLazyQuery(GET_ONE_ANIME);
   const [getManga, { loadingManga, mangaData }] = useLazyQuery(GET_ONE_MANGA);
 
@@ -177,7 +175,10 @@ const AuthProvider = ({ children }) => {
   };
 
   const makeList = async (uid) => {
-    await getList({ variables: { uid: uid } });
+    debugger;
+    while (loadingList) {
+      getList({ variables: { _uid: uid } });
+    }
     setupAnimeList(listData);
     setupMangaList(listData);
     setUserList(listData);
@@ -376,7 +377,7 @@ const AuthProvider = ({ children }) => {
         signInWithGoogle,
         createUserWithEmailAndPassword,
         favoriteHandler: favoriteHandler,
-        setList: makeList,
+        getList: makeList,
         deleteHandler: deleteHandler,
         deleteList: deleteList,
         favorite: favorite,

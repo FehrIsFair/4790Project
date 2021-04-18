@@ -36,13 +36,17 @@ app.use((req, res, next) => {
   });
 });
 
-mongoose
-  .connect(`${process.env.CONNECTION_STRING}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Listening at http://localhost:${port}`);
-    });
-  });
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
+});
+
+// mongoose
+//   .connect(`${process.env.CONNECTION_STRING}`, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     app.listen(port, () => {
+//       console.log(`Listening at http://localhost:${port}`);
+//     });
+//   });

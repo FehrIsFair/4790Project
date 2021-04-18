@@ -10,15 +10,15 @@ import AuthProvider from "./Authentication/Authentication";
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
-});
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <AuthProvider>
         <App />
-      </ApolloProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
