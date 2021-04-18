@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 import Anime from "./Anime/Anime";
 import Login from "./Login/Login";
@@ -12,15 +11,9 @@ import SearchManga from "./Anime/Search/SearchManga";
 import Footer from "./Anime/Footer";
 import Manga from "./Anime/Manga";
 
-const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql/",
-  cache: new InMemoryCache(),
-});
-
 function App() {
   return (
     <BrowserRouter>
-      <ApolloProvider client={client}>
         <div className="App">
           <NavBar />
           <Route path="/" exact component={Login} />
@@ -32,7 +25,6 @@ function App() {
           <Route path="/Manga" exact component={Manga} />
           <Footer />
         </div>
-      </ApolloProvider>
     </BrowserRouter>
   );
 }
