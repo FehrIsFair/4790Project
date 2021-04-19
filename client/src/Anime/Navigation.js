@@ -11,7 +11,7 @@ const NavContent = () => {
 
   useEffect(() => {}, [authContext.logout]);
 
-  if (!authContext.isAuthenticated)
+  if (authContext.userName === null)
     return (
       <Card id="loggedOut">
         <ul className="nav">
@@ -20,15 +20,10 @@ const NavContent = () => {
               <Button>Sign In</Button>
             </Link>
           </li>
-          <li>
-            <Link to="/SignUp">
-              <Button>Sign Up</Button>
-            </Link>
-          </li>
         </ul>
       </Card>
     );
-  if (authContext.isAuthenticated)
+  if (authContext.userName !== null)
     return (
       <Card id="loggedIn">
         <Avatar className="avatar" src={authContext.user.photoURL} />

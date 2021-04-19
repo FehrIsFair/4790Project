@@ -1,10 +1,9 @@
-import React, { useState, createContext, useReducer, useEffect } from "react";
-import app from "../lib/firebase";
-import { useLazyQuery, gql, useMutation } from "@apollo/client";
+import React, { useState, createContext } from "react";
+import { useQuery, gql, useMutation } from "@apollo/client";
 
-const GET_LIST = gql`
-  query SingleList($_uid: String!) {
-    singleList(uid: $_uid) {
+const GET_LISTS = gql`
+  query {
+    singleList {
       id
       uid
       animeList
@@ -13,13 +12,40 @@ const GET_LIST = gql`
   }
 `;
 
+const ALL_ANIME = gql`
+  query{
+    allAnime {
+      idMal
+      title
+      description
+      genres
+      synonyms
+      coverImage
+      meanScore
+      source
+    }
+  }
+`;
+
+const ALL_MANGA = gql`
+  query{
+    allManga {
+      idMal
+      title
+      description
+      genres
+      synonyms
+      coverImage
+      meanScore
+      source
+    }
+  }
+`;
+
 const DELETE_LIST = gql`
   mutation DeleteList($id: Number!) {
     deleteList(id: $id) {
       id
-      title
-      animeList
-      mangaList
     }
   }
 `;
@@ -27,8 +53,6 @@ const DELETE_LIST = gql`
 const EDIT_LIST = gql`
   mutation EditList($id: Number!, $animeList: Array!, $mangaList: Array!) {
     editList(id: $id, animeList: $animeList, mangaList: $mangaList) {
-      id
-      title
       animeList
       mangaList
     }
@@ -39,18 +63,6 @@ const SAVE_LIST = gql`
   mutation SaveList($uid: String!, $animeList: Array!, $mangaList: Array!) {
     saveList(uid: $uid, animeList: $animeList, mangaList: $mangaList) {
       id
-      title
-      animeList
-      mangaList
-    }
-  }
-`;
-
-// This is to make sure if the user is new.
-const GET_LIST_BY_ID = gql`
-  query ListByID($id: Number!) {
-    listById(id: $id) {
-      id
       uid
       animeList
       mangaList
@@ -58,85 +70,13 @@ const GET_LIST_BY_ID = gql`
   }
 `;
 
-const GET_ONE_ANIME = gql`
-  query SingleAnime($idMal: Number!) {
-    singleAnime(idMal: $idMal) {
-      idMal
-      title
-      description
-      meanScore
-      coverImage
-      type
-    }
-  }
-`;
-
-const GET_ONE_MANGA = gql`
-  query SingleAnime($idMal: Number!) {
-    singleManga(idMal: $idMal) {
-      idMal
-      title
-      description
-      meanScore
-      coverImage
-      type
-    }
-  }
-`;
-
 // This is just the initial state of the authentication.
-const initialAuthState = {
-  isAuthenticated: false,
-  isInitialized: false,
-  user: null,
-  favoriteList: [],
-  userList: {},
-  clickedAnime: "",
-  login: () => {},
-  logout: () => {},
-  signup: () => {},
-  click: () => {},
-  searchList: () => {},
-  addFavorite: () => {},
-  getList: () => {},
-  loadData: () => {},
-  sendData: () => {},
-  removeFavorite: () => {},
-};
-
-// This reducer returns the state an objecgt based on if the user successfully authenticated.
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "AUTH_STATE_CHANGED": {
-      const { isAuthenticated, user } = action.payload;
-      return {
-        ...state,
-        isAuthenticated,
-        isInitialized: true,
-        user,
-      };
-    }
-    default: {
-      return {
-        ...state,
-      };
-    }
-  }
-};
 
 // This is the context of the entire application.
 // It is what allows all views to be able to load what it needs to load.
 // Like Anime.js, gets the clickedAnime prop to load the anime the user requested.
 // It also handles the search and favorites. As well as the authentication process.
 export const Authentication = createContext({
-  ...initialAuthState,
-  method: "appAuth",
-  signInWithGoogle: () => Promise.resolve(),
-  signInWithEmailAndPassword: () => Promise.resolve(),
-  createUserWithEmailAndPassword: () => Promise.resolve(),
-  loadAppData: () => Promise.resolve(),
-  logout: () => Promise.resolve(),
-  sendAppData: () => Promise.resolve(),
   clickedAnime: "",
   favoriteList: [],
 });
@@ -144,267 +84,88 @@ export const Authentication = createContext({
 // This is the Provider and lets the rest of the compoments access things globally without needing to pass a prop everywhere.
 const AuthProvider = ({ children }) => {
   // Here are my hooks that trigger states and keep track of things accross the app.
-  const [state, dispatch] = useReducer(reducer, initialAuthState);
-  const [favorite, setFavorite] = useState();
   const [clicked, setClicked] = useState();
-  const [list, setList] = useState([]); // animeList
-  const [mangaList, setMangaList] = useState([]);
-  const [deleteList, setDeleteList] = useState(false);
-  const [userList, setUserList] = useState({
-    id: null,
-    uid: null,
-    animeList: [],
-    mangaList: [],
-  });
+  const [userName, setUserName] = useState(null);
 
   // Lazy Queries are your friend
-  const [getList, { loading: loadingList, data: listData }] = useLazyQuery(
-    GET_LIST
-  );
-  const [
-    getNewList,
-    { loading: loadingNewList, data: newListData },
-  ] = useLazyQuery(GET_LIST_BY_ID);
-  const [getAnime, { loading: loadingAnime, data: animeData }] = useLazyQuery(
-    GET_ONE_ANIME
-  );
-  const [getManga, { loading: loadingManga, data: mangaData }] = useLazyQuery(
-    GET_ONE_MANGA
-  );
+  const {loading: loadingList, error: listError, data: listData } = useQuery(GET_LISTS);
+  const {loading: loadingAnime, error: animeError, data: animeData} = useQuery(ALL_ANIME);
+  const {loading: loadingManga, error: mangaError, data: mangaData} = useQuery(ALL_MANGA);
 
   // Mutations
-  const [saveList, { saveData }] = useMutation(SAVE_LIST);
-  const [editList, { editData }] = useMutation(EDIT_LIST);
-  const [deleteLists, { deleteData }] = useMutation(DELETE_LIST);
+  const [saveList] = useMutation(SAVE_LIST);
+  const [editList] = useMutation(EDIT_LIST);
+  const [deleteLists] = useMutation(DELETE_LIST);
 
-  // This is the back end stuff.
+  const userNameHandler = (_userName) => {
+    setUserName(_userName);
+  }
 
-  const deleteHandler = (bool) => {
-    setDeleteList(bool);
-  };
+  const logOutHandler = () => {
+    setUserName(null)
+  }
 
-  // const makeList = async (uid) => {
-  //   debugger;
-  //   await getList({ variables: { _uid: uid } });
-  //   setupAnimeList(listData);
-  //   setupMangaList(listData);
-  //   setUserList(listData);
+  // const setupList = async () => {
+  //   if (!loadingList) {
+  //     setupAnimeList(listData);
+  //     setupMangaList(listData);
+  //   }
   // };
 
-  const setupList = async () => {
-    if (!loadingList) {
-      setupAnimeList(listData);
-      setupMangaList(listData);
-    }
-  };
+  // const setupAnimeList = async (data) => {
+  //   let animeArray = [];
+  //   for (let value of data.animeList) {
+  //     await getAnime({ variables: value });
+  //     animeArray = [...animeArray, animeData];
+  //   }
+  //   setList([...animeArray]);
+  // };
 
-  const setupAnimeList = async (data) => {
-    let animeArray = [];
-    for (let value of data.animeList) {
-      await getAnime({ variables: value });
-      animeArray = [...animeArray, animeData];
-    }
-    setList([...animeArray]);
-  };
+  // const setupMangaList = async (data) => {
+  //   let mangaArray = [];
+  //   for (let value of data.mangaList) {
+  //     await getManga({ variables: value });
+  //     mangaArray = [...mangaArray, mangaData];
+  //   }
+  //   setMangaList([...mangaArray]);
+  // };
 
-  const setupMangaList = async (data) => {
-    let mangaArray = [];
-    for (let value of data.mangaList) {
-      await getManga({ variables: value });
-      mangaArray = [...mangaArray, mangaData];
-    }
-    setMangaList([...mangaArray]);
-  };
-
-  // This handles the now depricated
-  const favoriteHandler = (_favorite) => {
-    setFavorite(_favorite);
-  };
-  // This group handles the sign up and login functinality. Email/Password, Google Account, and hanldes crateing an account with an email and password.
-  const signInWithEmailAndPassword = async (email, password) => {
-    return app.auth().signInWithEmailAndPassword(email, password);
-  };
-  const createUserWithEmailAndPassword = async (email, password) => {
-    return app.auth().createUserWithEmailAndPassword(email, password);
-  };
-  const signInWithGoogle = () => {
-    const provider = new app.auth.GoogleAuthProvider();
-    return app.auth().signInWithPopup(provider);
-  };
-  // Just the logout function
-  const logoutHandler = () => {
-    determinePutPostDelete();
-    return app.auth().signOut();
-  };
   // This build the favorite list.
   const favoriteListBuilder = async (anime) => {
-    if (list || mangaList)
-      if (anime.type === "ANIME") {
-        const { data } = await getAnime({ variables: { idMal: anime.idMal } });
-        setList([...list, data]);
-      } else {
-        const { data } = await getManga({ variables: { idMal: anime.idMal } });
-        setMangaList([...mangaList, data]);
-      }
-  };
-
-  const determinePutPostDelete = async () => {
-    let animeArray = [];
-    let mangaArray = [];
-    let dummyState = userList;
-    await getNewList({ variables: { id: userList.id } });
-    if (!deleteList) {
-      if (!newListData) {
-        putList(animeArray, mangaArray, dummyState);
-      } else {
-        postList(animeArray, mangaArray, dummyState);
-      }
-    } else {
-      if (userList._id) {
-        deleteLists({ variables: { id: dummyState.id } });
-      }
-    }
-  };
-
-  const postList = (animeArray, mangaArray, dummyState) => {
-    for (let value of list) {
-      animeArray.push(value.idMal);
-    }
-    for (let value of mangaList) {
-      mangaArray.push(value.idMal);
-    }
-    dummyState.animeList = [...animeArray];
-    dummyState.mangaList = [...mangaArray];
-    saveList({
-      variables: {
-        uid: dummyState.uid,
-        animeList: animeArray,
-        mangaList: mangaArray,
-      },
-    });
-  };
-
-  const putList = (animeArray, mangaArray, dummyState) => {
-    for (let value of list) {
-      animeArray.push(value.mal_id);
-    }
-    for (let value of mangaList) {
-      mangaArray.push(value.mal_id);
-    }
-    dummyState.animeList = [...animeArray];
-    dummyState.mangaList = [...mangaArray];
-    editList({
-      variables: {
-        id: dummyState.id,
-        animeList: dummyState.animeList,
-        mangaList: dummyState.mangaList,
-      },
-    });
+    
   };
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
   const favoriteListSearcher = (idMal, type) => {
-    if (type === "ANIME")
-      for (let value of list) {
-        if (value.idMal === idMal) {
-          return true;
-        }
-      }
-    else {
-      for (let value of mangaList) {
-        if (value.idMal === idMal) {
-          return true;
-        }
-      }
-    }
-    return false;
+    
   };
   // This removes an anime from the list by looking for the anime of the same ID
   const favoriteListHandler = (idMal, type) => {
-    let newList = [];
-    if (type === "ANIME") {
-      for (let value of list) {
-        if (value.idMal !== idMal) {
-          newList = [...newList, value];
-        }
-      }
-      setList([...newList]);
-    } else {
-      for (let value of mangaList) {
-        if (value.idMal !== idMal) {
-          newList = [...newList, value];
-        }
-      }
-      setMangaList([...newList]);
-    }
+    
   };
   // This makes sure that the clicked anime is remembered after going towards the anime page.
   const setClickedHandler = (click) => {
     setClicked(click);
   };
 
-  // This is juse the logic used to make sure the user is authenticated between sessions and if they logout correctly sets the state so that isAuthenticated returns false.
-  useEffect(
-    (admin) => {
-      const unsubscribe = app.auth().onAuthStateChanged((user) => {
-        if (user) {
-          dispatch({
-            type: "AUTH_STATE_CHANGED",
-            payload: {
-              isAuthenticated: true,
-              user: {
-                id: user.uid,
-                avatar: user.photoURL,
-                email: user.email,
-                name: user.displayName || user.email,
-                tier: "Premium",
-              },
-            },
-          });
-          getList({
-            variables: {
-              _uid: user.uid,
-            },
-          });
-        } else {
-          dispatch({
-            type: "AUTH_STATE_CHANGED",
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      });
-      return unsubscribe;
-    },
-    [dispatch]
-  );
-  // This useEffect makes sure to load and save the favorite list every time a rerender is made (basically whenever the button in GeneralInfo needs to change its text)
 
   return (
     <Authentication.Provider
       value={{
-        ...state,
-        method: "firebaseAuth",
-        logout: logoutHandler,
-        signInWithEmailAndPassword,
+        userNameHandler: userNameHandler,
         click: setClickedHandler,
         addFavorite: favoriteListBuilder,
         removeFavorite: favoriteListHandler,
         searchList: favoriteListSearcher,
-        signInWithGoogle,
-        createUserWithEmailAndPassword,
-        favoriteHandler: favoriteHandler,
-        deleteHandler: deleteHandler,
-        setupList: setupList,
-        deleteList: deleteList,
-        favorite: favorite,
+        userName: userName,
         clicked: clicked,
-        userList: userList,
-        favoriteList: list,
-        mangaList: mangaList,
-        user: app.auth().currentUser,
+        allAnime: animeData,
+        allManga: mangaData,
+        allLists: listData,
+        loadingAnime: loadingAnime,
+        loadingLists: loadingList,
+        loadingManga: loadingManga,
+        logout: logOutHandler,
       }}
     >
       {children}

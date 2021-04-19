@@ -11,17 +11,6 @@ const SignUp = () => {
   const authContext = useContext(Authentication);
   const history = useHistory();
   // This separates the sign in functions form the context.
-  const { createUserWithEmailAndPassword, signInWithGoogle } = authContext;
-
-  // This hanldes the google login by wrapping it in an asynchronous function.
-  const handleGoogleClick = async () => {
-    try {
-      await signInWithGoogle();
-      history.push("/Search");
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   if (authContext.isAuthenticated) {
     history.push("/Search");
@@ -34,30 +23,18 @@ const SignUp = () => {
         {/* Using Formik, we set the expected values, then steup the logic and validation. After that its a pretty simple form */}
         <Formik
           initialValues={{
-            Email: "",
-            Password: "",
-            Submit: null,
+            UserName: "",
           }}
           validationSchema={Yup.object().shape({
-            Email: Yup.string()
+            UserName: Yup.string()
               .min(10, "Too short")
               .max(50, "Too long")
               .required("Must enter an email"),
-            Password: Yup.string()
-              .min(8, "Too short")
-              .max(50, "Too long")
-              .required("Must enter a password"),
-            Favorite: Yup.string().min(4, "Too Short").max(100, "Too Long"),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
-              await createUserWithEmailAndPassword(
-                values.Email,
-                values.Password
-              );
-              authContext.favorteHandler(values.Favorite);
+              authContext.userNameHandler(values.UserName)
               history.push("/Search");
-              console.log(values.Email, values.Email);
             } catch (err) {
               console.error(err);
             }
@@ -76,9 +53,9 @@ const SignUp = () => {
               <TextField
                 autoFocus
                 id="outlined-basic"
-                name="Email"
+                name="UserName"
                 className="textfield"
-                label="Email"
+                label="username"
                 variant="outlined"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -86,19 +63,6 @@ const SignUp = () => {
                 required
                 error={Boolean(touched.Email && errors.Email)}
                 helpertext={touched.Email && errors.Email}
-              />
-              <TextField
-                id="outlined-basic"
-                name="Password"
-                className="textfield"
-                label="Password"
-                variant="outlined"
-                value={values.Password}
-                onBlur={handleBlur}
-                error={Boolean(touched.Password && errors.Password)}
-                helpertext={touched.Password && errors.Password}
-                onChange={handleChange}
-                required
               />
               <Button
                 className="button"
@@ -112,15 +76,6 @@ const SignUp = () => {
           )}
         </Formik>
       </Card>
-      {/* This is the button that logs in with google. */}
-      <Button
-        fullWidth
-        onClick={handleGoogleClick}
-        size="large"
-        variant="contained"
-      >
-        Sign in With Google
-      </Button>
     </Card>
   );
 };

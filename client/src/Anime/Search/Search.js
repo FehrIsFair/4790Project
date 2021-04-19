@@ -6,34 +6,9 @@ import LazyLoad from "react-lazyload";
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import sortObjectsArray from "sort-objects-array";
-import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { Authentication } from "../../Authentication/Authentication";
 import GeneralInfo from "../GeneralInfo/GeneralInfo";
-
-const ALL_ANIME = gql`
-  query {
-    allAnime {
-      title
-      idMal
-      description
-      meanScore
-      coverImage
-    }
-  }
-`;
-
-const SEARCH_ANIME = gql`
-  mutation SearchAnime($search: String) {
-    searchAnime(searchQuery: $search) {
-      title
-      idMal
-      description
-      meanScore
-      coverImage
-    }
-  }
-`;
 
 // Transistion States
 const transitionStyles = {
@@ -69,19 +44,15 @@ const AnimeSwitch = withStyles({
 const Search = () => {
   // Hooks for the component
   const authContext = useContext(Authentication);
-  const [searchResults, setSearchResults] = useState(Array);
   const [compLoad, setCompLoad] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(String);
   const [isDescending, setIsAcending] = useState(false);
-  const {loading, error, animeData} = useQuery(ALL_ANIME);
-  const [searchAnime, {resultData}] = useMutation(SEARCH_ANIME);
   
 
   const handleSort = () => {
     if (!isDescending) {
-      setSearchResults(sortObjectsArray(searchResults, "title"));
+      sortObjectsArray(authContext.allAnime, "title");
     } else {
-      setSearchResults(sortObjectsArray(searchResults, "title", "reverse"));
+      sortObjectsArray(authContext.allAnime, "title", "reverse");
     }
   };
 
@@ -93,31 +64,20 @@ const Search = () => {
     }
   };
 
-  // The logic needed to re render upon a new search and use the favorite attribute of the context that I might remove (inb4 I forget to remove this comment)
   useEffect(() => {
-    if (!searchResults && !loading) {
-      setSearchResults(animeData);
-    }
-    if (authContext.userList.uid === null && authContext.user !== null) {
-      debugger;
-      authContext.setupList();
-    }
-  }, [animeData, authContext, searchResults, loading]);
-
-  useEffect(() => {
-    if (!compLoad && searchResults) {
+    if (!compLoad && !authContext.loadingAnime) {
       setCompLoad(true);
-      setSearchResults(sortObjectsArray(searchResults, "title"));
+      sortObjectsArray(authContext.allAnime, "title");
     }
-  }, [compLoad, searchResults]);
+  }, [compLoad, authContext.allAnime, authContext.loadingAnime]);
 
   // Route Gauarding
-  if (!authContext.isAuthenticated) {
+  if (authContext.userName === null) {
     return <Redirect to="/" />;
   }
 
   // conditional rendering to keep the view populated between searches.
-  if (!searchResults) {
+  if (authContext.loadingAnime) {
     return <div>Loading...</div>;
   } else {
     return (
@@ -145,11 +105,11 @@ const Search = () => {
               />
               <Button onClick={handleSort}>Sort</Button>
             </Card>
-            {searchResults?.map((result) => {
+            {authContext.allAnime?.map((anime) => {
               return (
                 <>
                   <LazyLoad offset={100}>
-                    <GeneralInfo anime={result} searchResult={true} />
+                    <GeneralInfo anime={anime} searchResult={true} />
                   </LazyLoad>
                 </>
               );

@@ -23,56 +23,10 @@ const Query = objectType({
         return context.prisma.manga.findMany();
       },
     });
-    t.list.field("singleList", {
+    t.list.field("allLists", {
       type: "List",
-      args: {
-        uid: nonNull(stringArg()),
-      },
-      resolve: (_parent, args, context) => {
-        return context.prisma.list.findMany({
-          where: {
-            uid: args.uid,
-          },
-        });
-      },
-    });
-    t.list.field("listById", {
-      type: "List",
-      args: {
-        id: nonNull(intArg()),
-      },
-      resolve: (_parent, args, context) => {
-        return context.prisma.list.findUnique({
-          where: {
-            id: args.id
-          }
-        });
-      },
-    });
-    t.list.field("singleAnime", {
-      type: "Anime",
-      args: {
-        idMal: nonNull(intArg()),
-      },
       resolve: (_parent, _args, context) => {
-        return context.prisma.anime.findMany({
-          where: {
-            idMal: _args.idMal,
-          },
-        });
-      },
-    });
-    t.list.field("singleManga", {
-      type: "Manga",
-      args: {
-        id: nonNull(intArg()),
-      },
-      resolve: (_parent, _args, context) => {
-        return context.prisma.manga.findMany({
-          where: {
-            idMal: _args.idMal,
-          },
-        });
+        return context.prisma.list.findMany();
       },
     });
   },
@@ -81,37 +35,6 @@ const Query = objectType({
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
-    t.list.field("searchAnime", {
-      type: "Anime",
-      args: {
-        searchQuery: stringArg(),
-      },
-      resolve: (_, args, context) => {
-        return context.prisma.anime.findMany({
-          where: {
-            title: {
-              contains: args.searchQuery,
-            },
-          }
-        })
-      },
-    });
-
-    t.list.field("searchManga", {
-      type: "Manga",
-      args: {
-        searchQuery: stringArg(),
-      },
-      resolve: (_, args, context) => {
-        return context.prisma.anime.findMany({
-          where: {
-            title: {
-              contains: args.searchQuery,
-            },
-          },
-        })
-      },
-    });
 
     t.field("saveList", {
       type: "List",
