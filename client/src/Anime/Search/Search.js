@@ -99,7 +99,8 @@ const Search = () => {
       setSearchResults(animeData);
     }
     if (authContext.userList.uid === null && authContext.user !== null) {
-      authContext.getList(authContext.user.uid);
+      debugger;
+      authContext.setupList();
     }
   }, [animeData, authContext, searchResults, loading]);
 

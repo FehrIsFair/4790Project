@@ -158,10 +158,19 @@ const AuthProvider = ({ children }) => {
   });
 
   // Lazy Queries are your friend
-  const [getList, { loadingList, listData }] = useLazyQuery(GET_LIST);
-  const [getNewList, { loadingNewList, newListData }] = useLazyQuery(GET_LIST_BY_ID);
-  const [getAnime, { loadingAnime, animeData }] = useLazyQuery(GET_ONE_ANIME);
-  const [getManga, { loadingManga, mangaData }] = useLazyQuery(GET_ONE_MANGA);
+  const [getList, { loading: loadingList, data: listData }] = useLazyQuery(
+    GET_LIST
+  );
+  const [
+    getNewList,
+    { loading: loadingNewList, data: newListData },
+  ] = useLazyQuery(GET_LIST_BY_ID);
+  const [getAnime, { loading: loadingAnime, data: animeData }] = useLazyQuery(
+    GET_ONE_ANIME
+  );
+  const [getManga, { loading: loadingManga, data: mangaData }] = useLazyQuery(
+    GET_ONE_MANGA
+  );
 
   // Mutations
   const [saveList, { saveData }] = useMutation(SAVE_LIST);
@@ -174,19 +183,24 @@ const AuthProvider = ({ children }) => {
     setDeleteList(bool);
   };
 
-  const makeList = async (uid) => {
-    debugger;
-    while (loadingList) {
-      getList({ variables: { _uid: uid } });
+  // const makeList = async (uid) => {
+  //   debugger;
+  //   await getList({ variables: { _uid: uid } });
+  //   setupAnimeList(listData);
+  //   setupMangaList(listData);
+  //   setUserList(listData);
+  // };
+
+  const setupList = async () => {
+    if (!loadingList) {
+      setupAnimeList(listData);
+      setupMangaList(listData);
     }
-    setupAnimeList(listData);
-    setupMangaList(listData);
-    setUserList(listData);
   };
 
-  const setupAnimeList = async (user) => {
+  const setupAnimeList = async (data) => {
     let animeArray = [];
-    for (let value of user.animeList) {
+    for (let value of data.animeList) {
       await getAnime({ variables: value });
       animeArray = [...animeArray, animeData];
     }
@@ -284,7 +298,7 @@ const AuthProvider = ({ children }) => {
         id: dummyState.id,
         animeList: dummyState.animeList,
         mangaList: dummyState.mangaList,
-      }
+      },
     });
   };
 
@@ -347,6 +361,11 @@ const AuthProvider = ({ children }) => {
               },
             },
           });
+          getList({
+            variables: {
+              _uid: user.uid,
+            },
+          });
         } else {
           dispatch({
             type: "AUTH_STATE_CHANGED",
@@ -377,8 +396,8 @@ const AuthProvider = ({ children }) => {
         signInWithGoogle,
         createUserWithEmailAndPassword,
         favoriteHandler: favoriteHandler,
-        getList: makeList,
         deleteHandler: deleteHandler,
+        setupList: setupList,
         deleteList: deleteList,
         favorite: favorite,
         clicked: clicked,
