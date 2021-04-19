@@ -13,7 +13,7 @@ const GET_LISTS = gql`
 `;
 
 const ALL_ANIME = gql`
-  query{
+  query {
     allAnime {
       idMal
       title
@@ -28,7 +28,7 @@ const ALL_ANIME = gql`
 `;
 
 const ALL_MANGA = gql`
-  query{
+  query {
     allManga {
       idMal
       title
@@ -73,9 +73,7 @@ const SAVE_LIST = gql`
 // This is just the initial state of the authentication.
 
 // This is the context of the entire application.
-// It is what allows all views to be able to load what it needs to load.
-// Like Anime.js, gets the clickedAnime prop to load the anime the user requested.
-// It also handles the search and favorites. As well as the authentication process.
+// This has been immencely simplified to accomodate GraphQL
 export const Authentication = createContext({
   clickedAnime: "",
   favoriteList: [],
@@ -86,76 +84,162 @@ const AuthProvider = ({ children }) => {
   // Here are my hooks that trigger states and keep track of things accross the app.
   const [clicked, setClicked] = useState();
   const [userName, setUserName] = useState(null);
+  const [userList, setUserList] = useState();
+  const [isDelete, setIsDelete] = useState(false);
 
   // Lazy Queries are your friend
-  const {loading: loadingList, error: listError, data: listData } = useQuery(GET_LISTS);
-  const {loading: loadingAnime, error: animeError, data: animeData} = useQuery(ALL_ANIME);
-  const {loading: loadingManga, error: mangaError, data: mangaData} = useQuery(ALL_MANGA);
+  const { 
+    loading: loadingList, 
+    error: listError, 
+    data: listData } = useQuery(GET_LISTS);
+  const {
+    loading: loadingAnime,
+    error: animeError,
+    data: animeData,
+  } = useQuery(ALL_ANIME);
+  const {
+    loading: loadingManga,
+    error: mangaError,
+    data: mangaData,
+  } = useQuery(ALL_MANGA);
 
   // Mutations
   const [saveList] = useMutation(SAVE_LIST);
   const [editList] = useMutation(EDIT_LIST);
-  const [deleteLists] = useMutation(DELETE_LIST);
+  const [deleteList] = useMutation(DELETE_LIST);
 
   const userNameHandler = (_userName) => {
     setUserName(_userName);
-  }
+    listHandler(_userName);
+  };
+
+  const deleteHandler = (bool) => {
+    setIsDelete(bool);
+  };
+
+  const determineIfPutPostDelete = () => {
+    const lists = listData.allLists;
+    if (isDelete) {
+      try {
+        deleteList({ variables: { id: userList.id } });
+      } catch (err) {
+        console.log(`${err}`);
+      }
+    } else if (findList(lists)) {
+      try {
+        editList({
+          variables: {
+            id: userList.id,
+            animeList: userList.animeList,
+            mangaList: userList.mangaList,
+          },
+        });
+      } catch (err) {
+        console.log(`${err}`);
+      }
+    } else {
+      saveList({
+        variables: {
+          uid: userName,
+          animeList: userList.animeList,
+          mangaList: userList.mangaList,
+        },
+      });
+    }
+  };
+
+  const findList = (_lists) => {
+    for (let value of _lists) {
+      if (value.id === userList.id) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const listHandler = (_userName) => {
+    const lists = listData.allLists;
+    for (let value of lists) {
+      if (value.uid === _userName) {
+        setUserList({ ...value });
+        break;
+      }
+    }
+    if (!userList) {
+      setUserList({
+        uid: _userName,
+        animeList: [],
+        mangaList: [],
+      });
+    }
+  };
 
   const logOutHandler = () => {
-    setUserName(null)
-  }
+    determineIfPutPostDelete();
+    setUserName(null);
+  };
 
-  // const setupList = async () => {
-  //   if (!loadingList) {
-  //     setupAnimeList(listData);
-  //     setupMangaList(listData);
-  //   }
-  // };
-
-  // const setupAnimeList = async (data) => {
-  //   let animeArray = [];
-  //   for (let value of data.animeList) {
-  //     await getAnime({ variables: value });
-  //     animeArray = [...animeArray, animeData];
-  //   }
-  //   setList([...animeArray]);
-  // };
-
-  // const setupMangaList = async (data) => {
-  //   let mangaArray = [];
-  //   for (let value of data.mangaList) {
-  //     await getManga({ variables: value });
-  //     mangaArray = [...mangaArray, mangaData];
-  //   }
-  //   setMangaList([...mangaArray]);
-  // };
-
-  // This build the favorite list.
-  const favoriteListBuilder = async (anime) => {
-    
+  // This adds to the favorite list.
+  const addToFavoriteList = async (idMal, type) => {
+    let dummyState = userList;
+    if (type === "ANIME") {
+      dummyState.animeList.push(idMal);
+    } else {
+      dummyState.mangaList.push(idMal);
+    }
+    setUserList({ ...dummyState });
   };
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
   const favoriteListSearcher = (idMal, type) => {
-    
+    if (type === "ANIME") {
+      for (let value of userList.animeList) {
+        if (value === idMal) {
+          return true;
+        }
+      }
+    } else {
+      for (let value of userList.mangaList) {
+        if (value === idMal) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
   // This removes an anime from the list by looking for the anime of the same ID
-  const favoriteListHandler = (idMal, type) => {
-    
+  const deleteFromFavoriteList = (idMal, type) => {
+    let dummyState = userList;
+    let newArray = [];
+    if (type === "ANIME") {
+      for (let value of dummyState.animeList) {
+        if (value !== idMal) {
+          newArray = [value, newArray];
+        }
+      }
+      dummyState.animeList = newArray;
+    } else {
+      for (let value of dummyState.mangaList) {
+        if (value !== idMal) {
+          newArray = [value, newArray];
+        }
+      }
+      dummyState.mangaList = newArray;
+    }
+    setUserList(dummyState);
   };
   // This makes sure that the clicked anime is remembered after going towards the anime page.
   const setClickedHandler = (click) => {
     setClicked(click);
   };
 
-
   return (
     <Authentication.Provider
       value={{
         userNameHandler: userNameHandler,
         click: setClickedHandler,
-        addFavorite: favoriteListBuilder,
-        removeFavorite: favoriteListHandler,
+        addFavorite: addToFavoriteList,
+        removeFavorite: deleteFromFavoriteList,
         searchList: favoriteListSearcher,
         userName: userName,
         clicked: clicked,
@@ -165,6 +249,8 @@ const AuthProvider = ({ children }) => {
         loadingAnime: loadingAnime,
         loadingLists: loadingList,
         loadingManga: loadingManga,
+        deleteList: isDelete,
+        deleteHandler: deleteHandler,
         logout: logOutHandler,
       }}
     >

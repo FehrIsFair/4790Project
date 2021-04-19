@@ -1,6 +1,6 @@
 import React from "react";
 import "../../anime.css";
-import { Card, Typography, List, ListItem, Link } from "@material-ui/core";
+import { Card, Typography, List, ListItem } from "@material-ui/core";
 
 // This literally just renders the other titles info and the adaptation info if ther eis info to display.
 const OtherInfo = (props) => {
