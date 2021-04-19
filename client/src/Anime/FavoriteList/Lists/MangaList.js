@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
 
 import { Authentication } from "../../../Authentication/Authentication";

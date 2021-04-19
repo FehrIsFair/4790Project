@@ -13,7 +13,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
   // Bunching up removing and adding favorites here to save lines of code
   const addRemoveFavorite = () => {
     if (added) {
-      authContext.removeFavorite(anime.idmal, anime.type);
+      authContext.removeFavorite(anime.idMal, anime.type);
     } else {
       authContext.addFavorite(anime);
     }
