@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
+import { useLazyQuery, gql } from "@apollo/client";
 
 import { Authentication } from "../../../Authentication/Authentication";
 
@@ -21,6 +22,18 @@ const transitionStyles = {
   },
 };
 
+const GET_SOME_ANIME = gql`
+  query GetSomeAnime($idArray: Array) {
+    findSomeAnime(idMalArray: $idArray) {
+      idMal
+      title
+      description
+      coverImage
+      meanScore
+    }
+  }
+`;
+
 // The Component proper
 // Because of the way I constructed this component, using the GeneralInfo Component causes an infinite loop
 // So, this will stay the way it is because I didn't want to debug that.
@@ -31,32 +44,44 @@ const AnimeList = () => {
   const [listChange, setListChange] = useState(true);
   const [compLoad, setCompLoad] = useState(false);
   const history = useHistory();
+  const [
+    getSomeAnime,
+    { loading: loadingSomeAnime, data: someAnimeData },
+  ] = useLazyQuery(GET_SOME_ANIME);
 
   // This is mainly to track if the list has changed or not.
-  const listChangeTracker = (idMal, type) => {
-    AuthContext.removeFavorite(idMal, type);
+  const listChangeTracker = (mal_id) => {
+    AuthContext.removeFavorite(mal_id);
     setListChange(true);
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
-  const redirectToAnimePage = (idMal) => {
-    AuthContext.click(idMal);
-    history.push("/Anime");
+  const redirectToAnimePage = (malID) => {
+    AuthContext.click(malID);
+    history.push("/Manga");
   };
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!compLoad && fullList) {
+    if (!loadingSomeAnime) {
+      setFullList(someAnimeData.findSomeAnime);
+    }
+    if (!compLoad && !loadingSomeAnime) {
       setCompLoad(true);
     }
-    const setListRender = async () => {
-      if (listChange) {
-        await setFullList(AuthContext.favoriteList);
-        setListChange(false);
-      }
-    };
-    setListRender();
-  }, [listChange, AuthContext.favoriteList, compLoad, fullList]);
+    getSomeAnime({
+      variables: {
+        idMalArray: AuthContext.userList.mangaList,
+      },
+    });
+  }, [
+    listChange,
+    getSomeAnime,
+    AuthContext.userList.mangaList,
+    compLoad,
+    loadingSomeAnime,
+    someAnimeData.findSomeAnime
+  ]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
   if (!fullList) {
@@ -91,7 +116,7 @@ const AnimeList = () => {
                 }
               >
                 <img
-                  src={item.coverImage}
+                  src={item.image_url}
                   alt={`${item.title} Promotional Art`}
                   style={{
                     width: "225px !important",
@@ -100,14 +125,14 @@ const AnimeList = () => {
                   className="resultImage"
                 />
                 <div classNames="titleScore">
-                  <Link onClick={() => redirectToAnimePage(item.idMal, item.type)}>
+                  <Link onClick={() => redirectToAnimePage(item.mal_id)}>
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">
-                    <Typography variant="h5">{item.meanScore}</Typography>
+                    <Typography variant="h5">{item.score}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.idMal, item.type)}
+                      onClick={() => listChangeTracker(item.mal_id)}
                     >
                       Remove
                     </Button>
@@ -115,7 +140,7 @@ const AnimeList = () => {
                 </div>
                 <div className="favSyn">
                   <Typography variant="p" className="">
-                    {item.description}
+                    {item.synopsis}
                   </Typography>
                 </div>
               </Card>

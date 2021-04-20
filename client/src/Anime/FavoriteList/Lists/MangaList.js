@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
+import { useLazyQuery, gql } from "@apollo/client";
 
 import { Authentication } from "../../../Authentication/Authentication";
 
@@ -21,6 +22,18 @@ const transitionStyles = {
   },
 };
 
+const GET_SOME_MANGA = gql`
+  query GetSomeManga($idArray: Array) {
+    findSomeManga(idMalArray: $idArray) {
+      idMal
+      title
+      description
+      coverImage
+      meanScore
+    }
+  }
+`;
+
 // The Component proper
 // Because of the way I constructed this component, using the GeneralInfo Component causes an infinite loop
 // So, this will stay the way it is because I didn't want to debug that.
@@ -31,6 +44,10 @@ const MangaList = () => {
   const [listChange, setListChange] = useState(true);
   const [compLoad, setCompLoad] = useState(false);
   const history = useHistory();
+  const [
+    getSomeManga,
+    { loading: loadingSomeAnime, data: someAnimeData },
+  ] = useLazyQuery(GET_SOME_MANGA);
 
   // This is mainly to track if the list has changed or not.
   const listChangeTracker = (mal_id) => {
@@ -46,17 +63,25 @@ const MangaList = () => {
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!compLoad && fullList) {
+    if (!loadingSomeAnime) {
+      setFullList(someAnimeData.findSomeAnime);
+    }
+    if (!compLoad && !loadingSomeAnime) {
       setCompLoad(true);
     }
-    const setListRender = async () => {
-      if (listChange) {
-        await setFullList(AuthContext.mangaList);
-        setListChange(false);
-      }
-    };
-    setListRender();
-  }, [listChange, AuthContext.mangaList, compLoad, fullList]);
+    getSomeManga({
+      variables: {
+        idMalArray: AuthContext.userList.mangaList,
+      },
+    });
+  }, [
+    listChange,
+    getSomeManga,
+    AuthContext.userList.mangaList,
+    compLoad,
+    loadingSomeAnime,
+    someAnimeData.findSomeAnime
+  ]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
   if (!fullList) {

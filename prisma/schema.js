@@ -29,13 +29,38 @@ const Query = objectType({
         return context.prisma.list.findMany();
       },
     });
+    t.list.field("findSomeAnime", {
+      type: "Anime",
+      args: {
+        idMalArray: nonNull().list.nonNull(intArg()),
+      },
+      resolve: (_parent, args, context) => {
+        return context.prisma.anime.findMany({
+          where: {
+            idMal: { in: args.idMalArray },
+          },
+        });
+      },
+    });
+    t.list.field("findSomeManga", {
+      type: "Manga",
+      args: {
+        idMalArray: nonNull().list.nonNull(intArg()),
+      },
+      resolve: (_parent, args, context) => {
+        return context.prisma.manga.findMany({
+          where: {
+            idMal: { in: args.idMalArray },
+          },
+        });
+      },
+    });
   },
 });
 
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
-
     t.field("saveList", {
       type: "List",
       args: {
@@ -81,7 +106,7 @@ const Mutation = objectType({
     t.field("deleteList", {
       type: "List",
       args: {
-        id: nonNull(intArg())
+        id: nonNull(intArg()),
       },
       resolve: (_, args, context) => {
         return context.prisma.list.delete({
@@ -179,5 +204,5 @@ const schema = makeSchema({
 });
 
 module.exports = {
-  schema: schema
-}
+  schema: schema,
+};
