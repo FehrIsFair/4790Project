@@ -43,7 +43,7 @@ const FavoriteList = () => {
     }
   };
 
-  if (!authContext.isAuthenticated) {
+  if (authContext.userName === null) {
     return <Redirect to="/" />;
   }
 

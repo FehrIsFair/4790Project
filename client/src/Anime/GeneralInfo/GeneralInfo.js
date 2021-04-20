@@ -13,16 +13,16 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
   // Bunching up removing and adding favorites here to save lines of code
   const addRemoveFavorite = () => {
     if (added) {
-      authContext.removeFavorite(anime.idMal, anime.type);
+      authContext.removeFavorite(anime.idMal, anime.__typename);
     } else {
-      authContext.addFavorite(anime);
+      authContext.addFavorite(anime.idMal, anime.__typename);
     }
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
   const redirectToCorrectPage = (idMal, type) => {
     authContext.click(idMal);
-    if (type === "ANIME") {
+    if (type === "Anime") {
       history.push("/Anime");
     } else {
       history.push("/Manga");
@@ -31,7 +31,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
 
   // This is her to conditinally render the text of the button
   useEffect(() => {
-    if (authContext.searchList(anime.idMal, anime.type)) {
+    if (authContext.searchList(anime.idMal, anime.__typename)) {
       setAdded(true);
     } else {
       setAdded(false);
@@ -51,7 +51,7 @@ const GeneralInfo = ({ anime, searchResult, styles }) => {
       <div id="scoreSyn">
         <div id="titleContain">
           {searchResult ? (
-            <Link onClick={() => redirectToCorrectPage(anime.idMal, anime.type)}>
+            <Link onClick={() => redirectToCorrectPage(anime.idMal, anime.__typename)}>
               <Typography id="animeTitle" variant="h4">
                 {anime.title}
               </Typography>

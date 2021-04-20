@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Card, Button, Avatar } from "@material-ui/core";
+import { Card, Button } from "@material-ui/core";
 import { CSSTransition } from "react-transition-group";
 
 import { Authentication } from "../Authentication/Authentication";
@@ -26,7 +26,6 @@ const NavContent = () => {
   if (authContext.userName !== null)
     return (
       <Card id="loggedIn">
-        <Avatar className="avatar" src={authContext.user.photoURL} />
         <ul className="nav">
           <li>
             <Link to="/">

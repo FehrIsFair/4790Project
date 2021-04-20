@@ -105,7 +105,7 @@ const SearchManga = () => {
               />
               <Button onClick={handleSort}>Sort</Button>
             </Card>
-            {authContext.allAnime?.map((anime) => {
+            {authContext.allManga?.allManga.map((anime) => {
               return (
                 <>
                   <LazyLoad offset={100}>

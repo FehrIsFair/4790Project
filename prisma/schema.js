@@ -30,7 +30,7 @@ const Query = objectType({
         return context.prisma.list.findMany();
       },
     });
-    t.list.field("findSomeAnime", {
+    t.nonNull.list.nonNull.field("findSomeAnime", {
       type: "Anime",
       args: {
         idMalArray: nonNull(list(intArg())),
@@ -43,7 +43,7 @@ const Query = objectType({
         });
       },
     });
-    t.list.field("findSomeManga", {
+    t.nonNull.list.nonNull.field("findSomeManga", {
       type: "Manga",
       args: {
         idMalArray: nonNull(list(intArg())),

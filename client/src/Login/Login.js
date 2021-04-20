@@ -25,13 +25,12 @@ const Login = () => {
         }}
         validationSchema={Yup.object().shape({
           UserName: Yup.string()
-            .min(10, "Too short")
-            .max(50, "Too long")
+            .min(4, "Too short")
+            .max(15, "Too long")
             .required("Must enter an email"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            debugger;
             console.log(values.UserName)
             authContext.userNameHandler(values.UserName)
             history.push("/Search");

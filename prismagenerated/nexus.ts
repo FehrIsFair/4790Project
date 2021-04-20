@@ -122,8 +122,8 @@ export interface NexusGenFieldTypes {
     allAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
     allLists: NexusGenRootTypes['List'][]; // [List!]!
     allManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
-    findSomeAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
-    findSomeManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
+    findSomeAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
+    findSomeManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
   }
 }
 

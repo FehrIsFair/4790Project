@@ -57,6 +57,6 @@ type Query {
   allAnime: [Anime!]!
   allLists: [List!]!
   allManga: [Manga!]!
-  findSomeAnime(idMalArray: [Int]!): [Anime]
-  findSomeManga(idMalArray: [Int]!): [Manga]
+  findSomeAnime(idMalArray: [Int]!): [Anime!]!
+  findSomeManga(idMalArray: [Int]!): [Manga!]!
 }

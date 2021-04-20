@@ -119,6 +119,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const determineIfPutPostDelete = () => {
+    debugger;
     const lists = listData.allLists;
     if (isDelete) {
       try {
@@ -160,13 +161,14 @@ const AuthProvider = ({ children }) => {
 
   const listHandler = (_userName) => {
     const lists = listData.allLists;
+    let dataSet = false;
     for (let value of lists) {
       if (value.uid === _userName) {
-        setUserList({ ...value });
-        break;
+        setUserList(value);
+        dataSet = !dataSet;
       }
     }
-    if (!userList) {
+    if (!dataSet) {
       setUserList({
         uid: _userName,
         animeList: [],
@@ -182,18 +184,25 @@ const AuthProvider = ({ children }) => {
 
   // This adds to the favorite list.
   const addToFavoriteList = async (idMal, type) => {
-    let dummyState = userList;
-    if (type === "ANIME") {
-      dummyState.animeList.push(idMal);
+    let id = userList.id || null;
+    let animeArray = [...userList.animeList];
+    let mangaArray = [...userList.mangaList];
+    if (type === "Anime") {
+      animeArray.push(idMal);
     } else {
-      dummyState.mangaList.push(idMal);
+      mangaArray.push(idMal);
     }
-    setUserList({ ...dummyState });
+    setUserList({ 
+      id: id,
+      uid: userList.uid,
+      animeList: animeArray,
+      mangaList: mangaArray,
+     });
   };
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
   const favoriteListSearcher = (idMal, type) => {
-    if (type === "ANIME") {
+    if (type === "Anime") {
       for (let value of userList.animeList) {
         if (value === idMal) {
           return true;
@@ -210,19 +219,19 @@ const AuthProvider = ({ children }) => {
   };
   // This removes an anime from the list by looking for the anime of the same ID
   const deleteFromFavoriteList = (idMal, type) => {
-    let dummyState = userList;
+    let dummyState = {...userList};
     let newArray = [];
-    if (type === "ANIME") {
+    if (type === "Anime") {
       for (let value of dummyState.animeList) {
         if (value !== idMal) {
-          newArray = [value, newArray];
+          newArray = [value, ...newArray];
         }
       }
       dummyState.animeList = newArray;
     } else {
       for (let value of dummyState.mangaList) {
         if (value !== idMal) {
-          newArray = [value, newArray];
+          newArray = [value, ...newArray];
         }
       }
       dummyState.mangaList = newArray;
@@ -251,6 +260,7 @@ const AuthProvider = ({ children }) => {
         loadingLists: loadingList,
         loadingManga: loadingManga,
         deleteList: isDelete,
+        userList: userList,
         deleteHandler: deleteHandler,
         logout: logOutHandler,
       }}

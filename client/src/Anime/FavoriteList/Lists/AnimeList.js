@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
-import { useLazyQuery, gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 import { Authentication } from "../../../Authentication/Authentication";
 
@@ -40,56 +40,46 @@ const GET_SOME_ANIME = gql`
 const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
-  const [fullList, setFullList] = useState();
-  const [listChange, setListChange] = useState(true);
   const [compLoad, setCompLoad] = useState(false);
   const history = useHistory();
-  const [
-    getSomeAnime,
-    { loading: loadingSomeAnime, data: someAnimeData },
-  ] = useLazyQuery(GET_SOME_ANIME);
+  const { loading, error, data } = useQuery(GET_SOME_ANIME, {
+    variables: {
+      idMalArray: AuthContext.userList.animeList,
+    },
+  });
 
   // This is mainly to track if the list has changed or not.
-  const listChangeTracker = (mal_id) => {
-    AuthContext.removeFavorite(mal_id);
-    setListChange(true);
+  const listChangeTracker = (idMal) => {
+    AuthContext.removeFavorite(idMal);
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
-  const redirectToAnimePage = (malID) => {
-    AuthContext.click(malID);
-    history.push("/Manga");
+  const redirectToAnimePage = (idMal) => {
+    AuthContext.click(idMal);
+    history.push("/Anime");
   };
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!loadingSomeAnime) {
-      setFullList(someAnimeData.findSomeAnime);
-    }
-    if (!compLoad && !loadingSomeAnime) {
+    if (!compLoad && !loading) {
       setCompLoad(true);
     }
-    getSomeAnime({
-      variables: {
-        idMalArray: AuthContext.userList.mangaList,
-      },
-    });
   }, [
-    listChange,
-    getSomeAnime,
-    AuthContext.userList.mangaList,
     compLoad,
-    loadingSomeAnime,
-    someAnimeData.findSomeAnime
+    loading
   ]);
 
+  if (error) {
+    console.log(error);
+    return <div>Something went wrong. Check the console.</div>
+  }
+
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
-  if (!fullList) {
+  if (loading) {
     return (
       <Card>
         <Typography>
-          You don't have any favorites saved. Click the Add button to add. If
-          you want to remove it, hit the remove button.
+          Loading...
         </Typography>
       </Card>
     );
@@ -102,7 +92,7 @@ const AnimeList = () => {
           <Typography className="pageTitle" variant="h4">
             Favorite List
           </Typography>
-          {fullList.map((item) => {
+          {data.findSomeAnime.map((item) => {
             // Maps the array to the DOM.
             // Having a hard time getting the transition to function similarly to Search.js
             return (
