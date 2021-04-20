@@ -117,16 +117,13 @@ export interface NexusGenFieldTypes {
     deleteList: NexusGenRootTypes['List'] | null; // List
     editList: NexusGenRootTypes['List'] | null; // List
     saveList: NexusGenRootTypes['List'] | null; // List
-    searchAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
-    searchManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
   }
   Query: { // field return type
     allAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
+    allLists: NexusGenRootTypes['List'][]; // [List!]!
     allManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
-    listById: Array<NexusGenRootTypes['List'] | null> | null; // [List]
-    singleAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
-    singleList: Array<NexusGenRootTypes['List'] | null> | null; // [List]
-    singleManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
+    findSomeAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
+    findSomeManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
   }
 }
 
@@ -165,16 +162,13 @@ export interface NexusGenFieldTypeNames {
     deleteList: 'List'
     editList: 'List'
     saveList: 'List'
-    searchAnime: 'Anime'
-    searchManga: 'Manga'
   }
   Query: { // field return type name
     allAnime: 'Anime'
+    allLists: 'List'
     allManga: 'Manga'
-    listById: 'List'
-    singleAnime: 'Anime'
-    singleList: 'List'
-    singleManga: 'Manga'
+    findSomeAnime: 'Anime'
+    findSomeManga: 'Manga'
   }
 }
 
@@ -189,25 +183,13 @@ export interface NexusGenArgTypes {
     saveList: { // args
       data: NexusGenInputs['ClientSaveInput']; // ClientSaveInput!
     }
-    searchAnime: { // args
-      searchQuery?: string | null; // String
-    }
-    searchManga: { // args
-      searchQuery?: string | null; // String
-    }
   }
   Query: {
-    listById: { // args
-      id: number; // Int!
+    findSomeAnime: { // args
+      idMalArray: Array<number | null>; // [Int]!
     }
-    singleAnime: { // args
-      idMal: number; // Int!
-    }
-    singleList: { // args
-      uid: string; // String!
-    }
-    singleManga: { // args
-      id: number; // Int!
+    findSomeManga: { // args
+      idMalArray: Array<number | null>; // [Int]!
     }
   }
 }

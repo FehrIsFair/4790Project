@@ -31,6 +31,8 @@ const Login = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            debugger;
+            console.log(values.UserName)
             authContext.userNameHandler(values.UserName)
             history.push("/Search");
           } catch (err) {
@@ -63,13 +65,13 @@ const Login = () => {
                 onBlur={handleBlur}
                 value={values.Email}
                 required
-                error={Boolean(touched.Email && errors.Email)}
-                helpertext={touched.Email && errors.Email}
+                error={Boolean(touched.UserName && errors.UserName)}
+                helpertext={touched.UserName && errors.UserName}
               />
               <Button
                 className="button"
                 variant="contained"
-                disabled={errors.Username || errors.Password}
+                disabled={errors.Username}
                 type="Submit"
               >
                 Login

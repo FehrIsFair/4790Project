@@ -51,15 +51,12 @@ type Mutation {
   deleteList(id: Int!): List
   editList(data: ClientEditInput!): List
   saveList(data: ClientSaveInput!): List
-  searchAnime(searchQuery: String): [Anime]
-  searchManga(searchQuery: String): [Manga]
 }
 
 type Query {
   allAnime: [Anime!]!
+  allLists: [List!]!
   allManga: [Manga!]!
-  listById(id: Int!): [List]
-  singleAnime(idMal: Int!): [Anime]
-  singleList(uid: String!): [List]
-  singleManga(id: Int!): [Manga]
+  findSomeAnime(idMalArray: [Int]!): [Anime]
+  findSomeManga(idMalArray: [Int]!): [Manga]
 }

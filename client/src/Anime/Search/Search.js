@@ -105,7 +105,7 @@ const Search = () => {
               />
               <Button onClick={handleSort}>Sort</Button>
             </Card>
-            {authContext.allAnime?.map((anime) => {
+            {authContext.allAnime.allAnime?.map((anime) => {
               return (
                 <>
                   <LazyLoad offset={100}>

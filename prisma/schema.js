@@ -6,6 +6,7 @@ const {
   arg,
   objectType,
   stringArg,
+  list,
 } = require("nexus");
 
 const Query = objectType({
@@ -23,7 +24,7 @@ const Query = objectType({
         return context.prisma.manga.findMany();
       },
     });
-    t.list.field("allLists", {
+    t.nonNull.list.nonNull.field("allLists", {
       type: "List",
       resolve: (_parent, _args, context) => {
         return context.prisma.list.findMany();
@@ -32,7 +33,7 @@ const Query = objectType({
     t.list.field("findSomeAnime", {
       type: "Anime",
       args: {
-        idMalArray: nonNull().list.nonNull(intArg()),
+        idMalArray: nonNull(list(intArg())),
       },
       resolve: (_parent, args, context) => {
         return context.prisma.anime.findMany({
@@ -45,7 +46,7 @@ const Query = objectType({
     t.list.field("findSomeManga", {
       type: "Manga",
       args: {
-        idMalArray: nonNull().list.nonNull(intArg()),
+        idMalArray: nonNull(list(intArg())),
       },
       resolve: (_parent, args, context) => {
         return context.prisma.manga.findMany({

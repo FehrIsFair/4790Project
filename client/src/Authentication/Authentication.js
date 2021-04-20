@@ -3,7 +3,7 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 
 const GET_LISTS = gql`
   query {
-    singleList {
+    allLists {
       id
       uid
       animeList
@@ -91,7 +91,8 @@ const AuthProvider = ({ children }) => {
   const { 
     loading: loadingList, 
     error: listError, 
-    data: listData } = useQuery(GET_LISTS);
+    data: listData 
+  } = useQuery(GET_LISTS);
   const {
     loading: loadingAnime,
     error: animeError,
@@ -243,9 +244,9 @@ const AuthProvider = ({ children }) => {
         searchList: favoriteListSearcher,
         userName: userName,
         clicked: clicked,
-        allAnime: animeData.allAnime,
-        allManga: mangaData.allManga,
-        allLists: listData.allLists,
+        allAnime: animeData,
+        allManga: mangaData,
+        allLists: listData,
         loadingAnime: loadingAnime,
         loadingLists: loadingList,
         loadingManga: loadingManga,
