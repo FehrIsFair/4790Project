@@ -16,21 +16,20 @@ type Anime {
 }
 
 input ClientEditInput {
-  animeList: [Int!]!
-  id: Int!
-  mangaList: [Int!]!
+  animeList: [Int]!
+  mangaList: [Int]!
 }
 
 input ClientSaveInput {
-  animeList: [Int!]!
-  mangaList: [Int!]!
+  animeList: [Int]!
+  mangaList: [Int]!
   uid: String!
 }
 
 type List {
-  animeList: [Int!]!
+  animeList: [Int]!
   id: Int!
-  mangaList: [Int!]!
+  mangaList: [Int]!
   uid: String!
 }
 
@@ -49,7 +48,7 @@ type Manga {
 
 type Mutation {
   deleteList(id: Int!): List
-  editList(data: ClientEditInput!): List
+  editList(data: ClientEditInput!, id: Int!): List
   findSomeAnime(idMalArray: [Int]!): [Anime]!
   findSomeManga(idMalArray: [Int]!): [Manga]!
   saveList(data: ClientSaveInput!): List

@@ -45,7 +45,7 @@ const ALL_MANGA = gql`
 `;
 
 const DELETE_LIST = gql`
-  mutation DeleteList($id: Number!) {
+  mutation DeleteList($id: Int!) {
     deleteList(id: $id) {
       id
     }
@@ -53,21 +53,19 @@ const DELETE_LIST = gql`
 `;
 
 const EDIT_LIST = gql`
-  mutation EditList($id: Number!, $animeList: Array!, $mangaList: Array!) {
-    editList(id: $id, animeList: $animeList, mangaList: $mangaList) {
-      animeList
-      mangaList
+  mutation EditList($id: Int!, $animeList: [Int]!, $mangaList: [Int]!) {
+    editList(id: $id, data: { animeList: $animeList, mangaList: $mangaList }) {
+      id
     }
   }
 `;
 
 const SAVE_LIST = gql`
-  mutation SaveList($uid: String!, $animeList: Array!, $mangaList: Array!) {
-    saveList(uid: $uid, animeList: $animeList, mangaList: $mangaList) {
+  mutation SaveList($uid: String!, $animeList: [Int]!, $mangaList: [Int]!) {
+    saveList(
+      data: { uid: $uid, animeList: $animeList, mangaList: $mangaList }
+    ) {
       id
-      uid
-      animeList
-      mangaList
     }
   }
 `;
@@ -88,21 +86,19 @@ const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState(null);
   const [userList, setUserList] = useState();
   const [isDelete, setIsDelete] = useState(false);
+  const [didSignOut, setDidSignOut] = useState(false);
 
-  // Lazy Queries are your friend
+  // GQL Stuff
   const { 
-    loading: loadingList, 
-    error: listError, 
-    data: listData 
+    loading: loadingList,
+     data: listData 
   } = useQuery(GET_LISTS);
   const {
     loading: loadingAnime,
-    error: animeError,
     data: animeData,
   } = useQuery(ALL_ANIME);
   const {
     loading: loadingManga,
-    error: mangaError,
     data: mangaData,
   } = useQuery(ALL_MANGA);
 
@@ -142,15 +138,24 @@ const AuthProvider = ({ children }) => {
         console.log(`${err}`);
       }
     } else {
-      saveList({
-        variables: {
-          uid: userName,
-          animeList: userList.animeList,
-          mangaList: userList.mangaList,
-        },
-      });
+      try {
+        saveList({
+          variables: {
+            uid: userName,
+            animeList: userList.animeList,
+            mangaList: userList.mangaList,
+          },
+        });
+      } catch (err) {
+        console.log(`${err}`);
+      }
     }
+    setDidSignOut(true);
   };
+
+  const didTheySignOut = () => {
+    setDidSignOut(false);
+  }
 
   const findList = (_lists) => {
     for (let value of _lists) {
@@ -194,12 +199,12 @@ const AuthProvider = ({ children }) => {
     } else {
       mangaArray.push(idMal);
     }
-    setUserList({ 
+    setUserList({
       id: id,
       uid: userList.uid,
       animeList: animeArray,
       mangaList: mangaArray,
-     });
+    });
   };
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
@@ -221,7 +226,7 @@ const AuthProvider = ({ children }) => {
   };
   // This removes an anime from the list by looking for the anime of the same ID
   const deleteFromFavoriteList = (idMal, type) => {
-    let dummyState = {...userList};
+    let dummyState = { ...userList };
     let newArray = [];
     if (type === "ANIME") {
       for (let value of dummyState.animeList) {
@@ -253,6 +258,7 @@ const AuthProvider = ({ children }) => {
         addFavorite: addToFavoriteList,
         removeFavorite: deleteFromFavoriteList,
         searchList: favoriteListSearcher,
+        signOutLogicHandler: didTheySignOut,
         userName: userName,
         clicked: clicked,
         allAnime: animeData,
@@ -263,6 +269,7 @@ const AuthProvider = ({ children }) => {
         loadingManga: loadingManga,
         deleteList: isDelete,
         userList: userList,
+        didSignOut: didSignOut,
         deleteHandler: deleteHandler,
         logout: logOutHandler,
       }}

@@ -15,13 +15,12 @@ declare global {
 
 export interface NexusGenInputs {
   ClientEditInput: { // input type
-    animeList: number[]; // [Int!]!
-    id: number; // Int!
-    mangaList: number[]; // [Int!]!
+    animeList: Array<number | null>; // [Int]!
+    mangaList: Array<number | null>; // [Int]!
   }
   ClientSaveInput: { // input type
-    animeList: number[]; // [Int!]!
-    mangaList: number[]; // [Int!]!
+    animeList: Array<number | null>; // [Int]!
+    mangaList: Array<number | null>; // [Int]!
     uid: string; // String!
   }
 }
@@ -51,9 +50,9 @@ export interface NexusGenObjects {
     type: string; // String!
   }
   List: { // root type
-    animeList: number[]; // [Int!]!
+    animeList: Array<number | null>; // [Int]!
     id: number; // Int!
-    mangaList: number[]; // [Int!]!
+    mangaList: Array<number | null>; // [Int]!
     uid: string; // String!
   }
   Manga: { // root type
@@ -96,9 +95,9 @@ export interface NexusGenFieldTypes {
     type: string; // String!
   }
   List: { // field return type
-    animeList: number[]; // [Int!]!
+    animeList: Array<number | null>; // [Int]!
     id: number; // Int!
-    mangaList: number[]; // [Int!]!
+    mangaList: Array<number | null>; // [Int]!
     uid: string; // String!
   }
   Manga: { // field return type
@@ -179,6 +178,7 @@ export interface NexusGenArgTypes {
     }
     editList: { // args
       data: NexusGenInputs['ClientEditInput']; // ClientEditInput!
+      id: number; // Int!
     }
     findSomeAnime: { // args
       idMalArray: Array<number | null>; // [Int]!

@@ -35,7 +35,7 @@ model manga {
 
 model list {
   id        Int    @id @default(autoincrement())
-  uid       String
+  uid       String @unique
   animeList Int[]
   mangaList Int[]
 }

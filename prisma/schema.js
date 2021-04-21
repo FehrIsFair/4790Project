@@ -60,6 +60,7 @@ const Mutation = objectType({
     t.field("editList", {
       type: "List",
       args: {
+        id: nonNull(intArg()),
         data: nonNull(
           arg({
             type: "ClientEditInput",
@@ -73,7 +74,7 @@ const Mutation = objectType({
             mangaList: args.data.mangaList,
           },
           where: {
-            id: args.data.id,
+            id: args.id,
           },
         });
       },
@@ -158,8 +159,8 @@ const List = objectType({
   definition(t) {
     t.nonNull.int("id");
     t.nonNull.string("uid");
-    t.nonNull.list.nonNull.int("animeList");
-    t.nonNull.list.nonNull.int("mangaList");
+    t.nonNull.list.int("animeList");
+    t.nonNull.list.int("mangaList");
   },
 });
 
@@ -167,17 +168,16 @@ const ClientSaveInput = inputObjectType({
   name: "ClientSaveInput",
   definition(t) {
     t.nonNull.string("uid");
-    t.nonNull.list.nonNull.int("animeList");
-    t.nonNull.list.nonNull.int("mangaList");
+    t.nonNull.list.int("animeList");
+    t.nonNull.list.int("mangaList");
   },
 });
 
 const ClientEditInput = inputObjectType({
   name: "ClientEditInput",
   definition(t) {
-    t.nonNull.int("id");
-    t.nonNull.list.nonNull.int("animeList");
-    t.nonNull.list.nonNull.int("mangaList");
+    t.nonNull.list.int("animeList");
+    t.nonNull.list.int("mangaList");
   },
 });
 

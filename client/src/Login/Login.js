@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Card, TextField, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
@@ -14,6 +14,13 @@ const Login = () => {
   if (authContext.isAuthenticated) {
     history.push("/Search");
   }
+
+  useEffect(() => {
+    if (authContext.didSignOut) {
+      authContext.signOutLogicHandler();
+      window.location.reload();
+    }
+  }, [authContext]);
 
   return (
     <Card id="login">
