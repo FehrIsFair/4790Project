@@ -41,6 +41,7 @@ const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
+  const [listChange, setListChange] = useState();
   const history = useHistory();
   const [getSomeManga, {loading, data}] = useMutation(GET_SOME_MANGA);
 
@@ -65,7 +66,13 @@ const AnimeList = () => {
         idMalArray: AuthContext.userList.mangaList,
       }})
     }
-  }, [compLoad, AuthContext.userList.mangaList, getSomeManga, data]);
+    if (listChange) {
+      getSomeManga({variables: {
+        idMalArray: AuthContext.userList.mangaList,
+      }})
+      setListChange(false);
+    }
+  }, [compLoad, AuthContext.userList.mangaList, getSomeManga, data, listChange]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
   if (loading) {
@@ -113,7 +120,7 @@ const AnimeList = () => {
                     <Typography variant="h5">{item.meanScore}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.idMal)}
+                      onClick={() => listChangeTracker(item.idMal, item.type)}
                     >
                       Remove
                     </Button>

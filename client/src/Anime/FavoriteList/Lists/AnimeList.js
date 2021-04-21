@@ -30,6 +30,7 @@ const GET_SOME_ANIME = gql`
       description
       coverImage
       meanScore
+      type
     }
   }
 `;
@@ -41,12 +42,14 @@ const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
+  const [listChange, setListChange] = useState();
   const history = useHistory();
   const [getSomeAnime, {loading, data}] = useMutation(GET_SOME_ANIME);
 
   // This is mainly to track if the list has changed or not.
-  const listChangeTracker = (idMal) => {
-    AuthContext.removeFavorite(idMal);
+  const listChangeTracker = (idMal, type) => {
+    AuthContext.removeFavorite(idMal, type);
+    setListChange(true);
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
@@ -62,10 +65,16 @@ const AnimeList = () => {
     }
     if (!data) {
       getSomeAnime({variables: {
-        idMalArray: AuthContext.userList.mangaList,
+        idMalArray: AuthContext.userList.animeList,
       }})
     }
-  }, [compLoad, AuthContext.userList.mangaList, getSomeAnime, data]);
+    if (listChange) {
+      getSomeAnime({variables: {
+        idMalArray: AuthContext.userList.animeList,
+      }})
+      setListChange(false);
+    }
+  }, [compLoad, AuthContext.userList.animeList, getSomeAnime, data, listChange]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
   if (loading) {
@@ -113,7 +122,7 @@ const AnimeList = () => {
                     <Typography variant="h5">{item.meanScore}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.idMal)}
+                      onClick={() => listChangeTracker(item.idMal, item.type)}
                     >
                       Remove
                     </Button>
