@@ -50,6 +50,8 @@ type Manga {
 type Mutation {
   deleteList(id: Int!): List
   editList(data: ClientEditInput!): List
+  findSomeAnime(idMalArray: [Int]!): Anime
+  findSomeManga(idMalArray: [Int]!): Manga
   saveList(data: ClientSaveInput!): List
 }
 
@@ -57,6 +59,4 @@ type Query {
   allAnime: [Anime!]!
   allLists: [List!]!
   allManga: [Manga!]!
-  findSomeAnime(idMalArray: [Int]!): [Anime!]!
-  findSomeManga(idMalArray: [Int]!): [Manga!]!
 }

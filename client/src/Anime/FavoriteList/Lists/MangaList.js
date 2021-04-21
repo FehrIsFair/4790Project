@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import { Authentication } from "../../../Authentication/Authentication";
 
@@ -23,7 +23,7 @@ const transitionStyles = {
 };
 
 const GET_SOME_MANGA = gql`
-  query GetSomeManga($idArray: Array) {
+  mutation GetSomeManga($idArray: Array) {
     findSomeManga(idMalArray: $idArray) {
       idMal
       title
@@ -37,50 +37,52 @@ const GET_SOME_MANGA = gql`
 // The Component proper
 // Because of the way I constructed this component, using the GeneralInfo Component causes an infinite loop
 // So, this will stay the way it is because I didn't want to debug that.
-const MangaList = () => {
+const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
+  const [renderList, setRenderList] = useState();
+  const [listChange, setListChange] = useState(true);
   const history = useHistory();
-  const { loading, error, data } = useQuery(GET_SOME_MANGA, {
-    variables: {
-      idMalArray: AuthContext.userList.mangaList,
-    },
-  });
+  const [getSomeManga] = useMutation(GET_SOME_MANGA);
 
   // This is mainly to track if the list has changed or not.
   const listChangeTracker = (idMal) => {
     AuthContext.removeFavorite(idMal);
+    if (listChange) {
+      setListChange(false);
+    } else {
+      setListChange(true);
+    }
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
   const redirectToAnimePage = (idMal) => {
     AuthContext.click(idMal);
-    history.push("/Manga");
+    history.push("/Anime");
   };
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!compLoad && !loading) {
+    if (!compLoad && renderList) {
       setCompLoad(true);
     }
-  }, [
-    compLoad,
-    loading
-  ]);
-
-  if (error) {
-    console.log(error);
-    return <div>Something went wrong. Check the console.</div>
-  }
+    if (!renderList && listChange) {
+      setRenderList(
+        getSomeManga({
+          variables: {
+            idMalArray: AuthContext.userList.mangaList,
+          },
+        })
+      );
+    }
+  }, [compLoad, AuthContext.userList.mangaList, renderList, getSomeManga, listChange]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
-  if (loading) {
+  if (!renderList) {
     return (
       <Card>
-        <Typography>
-          Loading...
-        </Typography>
+        <Typography>Loading...</Typography>
       </Card>
     );
   }
@@ -92,7 +94,7 @@ const MangaList = () => {
           <Typography className="pageTitle" variant="h4">
             Favorite List
           </Typography>
-          {data.findSomeManga.map((item) => {
+          {renderList?.findSomeManga?.map((item) => {
             // Maps the array to the DOM.
             // Having a hard time getting the transition to function similarly to Search.js
             return (
@@ -106,7 +108,7 @@ const MangaList = () => {
                 }
               >
                 <img
-                  src={item.image_url}
+                  src={item.coverImage}
                   alt={`${item.title} Promotional Art`}
                   style={{
                     width: "225px !important",
@@ -119,10 +121,10 @@ const MangaList = () => {
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">
-                    <Typography variant="h5">{item.score}</Typography>
+                    <Typography variant="h5">{item.meanScore}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.mal_id)}
+                      onClick={() => listChangeTracker(item.idMal)}
                     >
                       Remove
                     </Button>
@@ -130,7 +132,7 @@ const MangaList = () => {
                 </div>
                 <div className="favSyn">
                   <Typography variant="p" className="">
-                    {item.synopsis}
+                    {item.description}
                   </Typography>
                 </div>
               </Card>
@@ -141,4 +143,4 @@ const MangaList = () => {
     </Transition>
   );
 };
-export default MangaList;
+export default AnimeList;

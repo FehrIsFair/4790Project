@@ -7,11 +7,11 @@ const OtherInfo = (props) => {
   const space = " ";
   return (
     <Card>
-      {props.title_synonyms.length !== 0 ? (
+      {props.synonyms?.length !== 0 ? (
         <div id="other-titles">
           <Typography variant="h4">Other Titles:</Typography>
           <List className="liststyle">
-            {props.synonyms.map((value) => {
+            {props.synonyms?.map((value) => {
               return <ListItem>{value}</ListItem>;
             })}
           </List>

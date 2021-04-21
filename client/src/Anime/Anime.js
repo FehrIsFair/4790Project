@@ -34,7 +34,7 @@ const Anime = () => {
   // Logic for setting up the view for the view
   useEffect(() => {
     if (!anime) {
-      for (let value of authContext.allAnime) {
+      for (let value of authContext.allAnime.allAnime) {
         if (value.idMal === authContext.clicked) {
           setAnime(value);
         }
@@ -73,7 +73,7 @@ const Anime = () => {
     */}
           <GenreList genres={anime?.genres} />
           <OtherInfo
-            title_synonyms={anime?.synonyms}
+            synonyms={anime?.synonyms}
             genres={anime?.genres}
             source={anime?.source}
           />

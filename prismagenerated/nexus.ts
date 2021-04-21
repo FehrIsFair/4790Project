@@ -116,14 +116,14 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     deleteList: NexusGenRootTypes['List'] | null; // List
     editList: NexusGenRootTypes['List'] | null; // List
+    findSomeAnime: NexusGenRootTypes['Anime'] | null; // Anime
+    findSomeManga: NexusGenRootTypes['Manga'] | null; // Manga
     saveList: NexusGenRootTypes['List'] | null; // List
   }
   Query: { // field return type
     allAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
     allLists: NexusGenRootTypes['List'][]; // [List!]!
     allManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
-    findSomeAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
-    findSomeManga: NexusGenRootTypes['Manga'][]; // [Manga!]!
   }
 }
 
@@ -161,14 +161,14 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     deleteList: 'List'
     editList: 'List'
+    findSomeAnime: 'Anime'
+    findSomeManga: 'Manga'
     saveList: 'List'
   }
   Query: { // field return type name
     allAnime: 'Anime'
     allLists: 'List'
     allManga: 'Manga'
-    findSomeAnime: 'Anime'
-    findSomeManga: 'Manga'
   }
 }
 
@@ -180,16 +180,14 @@ export interface NexusGenArgTypes {
     editList: { // args
       data: NexusGenInputs['ClientEditInput']; // ClientEditInput!
     }
-    saveList: { // args
-      data: NexusGenInputs['ClientSaveInput']; // ClientSaveInput!
-    }
-  }
-  Query: {
     findSomeAnime: { // args
       idMalArray: Array<number | null>; // [Int]!
     }
     findSomeManga: { // args
       idMalArray: Array<number | null>; // [Int]!
+    }
+    saveList: { // args
+      data: NexusGenInputs['ClientSaveInput']; // ClientSaveInput!
     }
   }
 }

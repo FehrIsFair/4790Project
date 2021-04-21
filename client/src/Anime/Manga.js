@@ -34,7 +34,7 @@ const Manga = () => {
   // Logic for setting up the view for the view
   useEffect(() => {
     if (!anime) {
-      for (let value of authContext.allAnime) {
+      for (let value of authContext.allManga.allManga) {
         if (value.idMal === authContext.clicked) {
           setAnime(value);
         }
@@ -43,7 +43,7 @@ const Manga = () => {
     if (!compLoad && !anime) {
       setCompLoad(true);
     }
-  }, [compLoad, anime, authContext.allAnime, authContext.clicked]);
+  }, [compLoad, anime, authContext.allManga.allManga, authContext.clicked]);
 
   // Route Gaurding
   if (!authContext.userName) {
@@ -73,7 +73,7 @@ const Manga = () => {
     */}
           <GenreList genres={anime?.genres} />
           <OtherInfo
-            title_synonyms={anime?.synonyms}
+            synonyms={anime?.synonyms}
             genres={anime?.genres}
             source={anime?.source}
           />

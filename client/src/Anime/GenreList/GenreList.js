@@ -8,7 +8,7 @@ const GenreList = ({ genres }) => {
       <Typography variant="h4">Genres</Typography>
       <List id="genreList">
         {genres.map((genre, index) => {
-          return <ListItem>{genre.name}</ListItem>;
+          return <ListItem>{genre}</ListItem>;
         })}
       </List>
     </Card>

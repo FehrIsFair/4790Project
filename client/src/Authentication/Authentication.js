@@ -23,6 +23,7 @@ const ALL_ANIME = gql`
       coverImage
       meanScore
       source
+      type
     }
   }
 `;
@@ -38,6 +39,7 @@ const ALL_MANGA = gql`
       coverImage
       meanScore
       source
+      type
     }
   }
 `;
@@ -187,7 +189,7 @@ const AuthProvider = ({ children }) => {
     let id = userList.id || null;
     let animeArray = [...userList.animeList];
     let mangaArray = [...userList.mangaList];
-    if (type === "Anime") {
+    if (type === "ANIME") {
       animeArray.push(idMal);
     } else {
       mangaArray.push(idMal);
@@ -202,7 +204,7 @@ const AuthProvider = ({ children }) => {
 
   // Searches the list and returns a bool that determines if the add button is a remove button and vice versa.
   const favoriteListSearcher = (idMal, type) => {
-    if (type === "Anime") {
+    if (type === "ANIME") {
       for (let value of userList.animeList) {
         if (value === idMal) {
           return true;
@@ -221,7 +223,7 @@ const AuthProvider = ({ children }) => {
   const deleteFromFavoriteList = (idMal, type) => {
     let dummyState = {...userList};
     let newArray = [];
-    if (type === "Anime") {
+    if (type === "ANIME") {
       for (let value of dummyState.animeList) {
         if (value !== idMal) {
           newArray = [value, ...newArray];

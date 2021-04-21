@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Card, Typography, Button, Link } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Transition } from "react-transition-group";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import { Authentication } from "../../../Authentication/Authentication";
 
@@ -23,7 +23,7 @@ const transitionStyles = {
 };
 
 const GET_SOME_ANIME = gql`
-  query GetSomeAnime($idArray: Array) {
+  mutation GetSomeAnime($idArray: Array) {
     findSomeAnime(idMalArray: $idArray) {
       idMal
       title
@@ -41,16 +41,19 @@ const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
+  const [renderList, setRenderList] = useState();
+  const [listChange, setListChange] = useState(true);
   const history = useHistory();
-  const { loading, error, data } = useQuery(GET_SOME_ANIME, {
-    variables: {
-      idMalArray: AuthContext.userList.animeList,
-    },
-  });
+  const [getSomeAnime] = useMutation(GET_SOME_ANIME);
 
   // This is mainly to track if the list has changed or not.
   const listChangeTracker = (idMal) => {
     AuthContext.removeFavorite(idMal);
+    if (listChange) {
+      setListChange(false);
+    } else {
+      setListChange(true);
+    }
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
@@ -61,26 +64,25 @@ const AnimeList = () => {
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!compLoad && !loading) {
+    if (!compLoad && renderList) {
       setCompLoad(true);
     }
-  }, [
-    compLoad,
-    loading
-  ]);
-
-  if (error) {
-    console.log(error);
-    return <div>Something went wrong. Check the console.</div>
-  }
+    if (!renderList && listChange) {
+      setRenderList(
+        getSomeAnime({
+          variables: {
+            idMalArray: AuthContext.userList.animeList,
+          },
+        })
+      );
+    }
+  }, [compLoad, AuthContext.userList.animeList, renderList, getSomeAnime, listChange]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
-  if (loading) {
+  if (!renderList) {
     return (
       <Card>
-        <Typography>
-          Loading...
-        </Typography>
+        <Typography>Loading...</Typography>
       </Card>
     );
   }
@@ -92,7 +94,7 @@ const AnimeList = () => {
           <Typography className="pageTitle" variant="h4">
             Favorite List
           </Typography>
-          {data.findSomeAnime.map((item) => {
+          {renderList?.findSomeAnime?.map((item) => {
             // Maps the array to the DOM.
             // Having a hard time getting the transition to function similarly to Search.js
             return (
@@ -106,7 +108,7 @@ const AnimeList = () => {
                 }
               >
                 <img
-                  src={item.image_url}
+                  src={item.coverImage}
                   alt={`${item.title} Promotional Art`}
                   style={{
                     width: "225px !important",
@@ -119,10 +121,10 @@ const AnimeList = () => {
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">
-                    <Typography variant="h5">{item.score}</Typography>
+                    <Typography variant="h5">{item.meanScore}</Typography>
                     <Button
                       variant="contained"
-                      onClick={() => listChangeTracker(item.mal_id)}
+                      onClick={() => listChangeTracker(item.idMal)}
                     >
                       Remove
                     </Button>
@@ -130,7 +132,7 @@ const AnimeList = () => {
                 </div>
                 <div className="favSyn">
                   <Typography variant="p" className="">
-                    {item.synopsis}
+                    {item.description}
                   </Typography>
                 </div>
               </Card>

@@ -30,32 +30,7 @@ const Query = objectType({
         return context.prisma.list.findMany();
       },
     });
-    t.nonNull.list.nonNull.field("findSomeAnime", {
-      type: "Anime",
-      args: {
-        idMalArray: nonNull(list(intArg())),
-      },
-      resolve: (_parent, args, context) => {
-        return context.prisma.anime.findMany({
-          where: {
-            idMal: { in: args.idMalArray },
-          },
-        });
-      },
-    });
-    t.nonNull.list.nonNull.field("findSomeManga", {
-      type: "Manga",
-      args: {
-        idMalArray: nonNull(list(intArg())),
-      },
-      resolve: (_parent, args, context) => {
-        return context.prisma.manga.findMany({
-          where: {
-            idMal: { in: args.idMalArray },
-          },
-        });
-      },
-    });
+    
   },
 });
 
@@ -113,6 +88,32 @@ const Mutation = objectType({
         return context.prisma.list.delete({
           where: {
             id: args.id,
+          },
+        });
+      },
+    });
+    t.field("findSomeAnime", {
+      type: "Anime",
+      args: {
+        idMalArray: nonNull(list(intArg())),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.anime.findMany({
+          where: {
+            idMal: { in: args.idMalArray },
+          },
+        });
+      },
+    });
+    t.field("findSomeManga", {
+      type: "Manga",
+      args: {
+        idMalArray: nonNull(list(intArg())),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.manga.findMany({
+          where: {
+            idMal: { in: args.idMalArray },
           },
         });
       },
