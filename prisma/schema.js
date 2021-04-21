@@ -92,7 +92,7 @@ const Mutation = objectType({
         });
       },
     });
-    t.field("findSomeAnime", {
+    t.nonNull.list.field("findSomeAnime", {
       type: "Anime",
       args: {
         idMalArray: nonNull(list(intArg())),
@@ -105,7 +105,7 @@ const Mutation = objectType({
         });
       },
     });
-    t.field("findSomeManga", {
+    t.nonNull.list.field("findSomeManga", {
       type: "Manga",
       args: {
         idMalArray: nonNull(list(intArg())),

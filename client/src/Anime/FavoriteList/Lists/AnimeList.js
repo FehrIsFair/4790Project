@@ -23,8 +23,8 @@ const transitionStyles = {
 };
 
 const GET_SOME_ANIME = gql`
-  mutation GetSomeAnime($idArray: Array) {
-    findSomeAnime(idMalArray: $idArray) {
+  mutation GetSomeAnime($idMalArray: [Int]!) {
+    findSomeAnime(idMalArray: $idMalArray) {
       idMal
       title
       description
@@ -41,19 +41,12 @@ const AnimeList = () => {
   // Hooks needed for the page to function.
   const AuthContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
-  const [renderList, setRenderList] = useState();
-  const [listChange, setListChange] = useState(true);
   const history = useHistory();
-  const [getSomeAnime] = useMutation(GET_SOME_ANIME);
+  const [getSomeAnime, {loading, data}] = useMutation(GET_SOME_ANIME);
 
   // This is mainly to track if the list has changed or not.
   const listChangeTracker = (idMal) => {
     AuthContext.removeFavorite(idMal);
-    if (listChange) {
-      setListChange(false);
-    } else {
-      setListChange(true);
-    }
   };
 
   // this is another redirect to ensure the page is brought up with the correct data.
@@ -64,22 +57,18 @@ const AnimeList = () => {
 
   // The logic to see if the view should rerender.
   useEffect(() => {
-    if (!compLoad && renderList) {
+    if (!compLoad) {
       setCompLoad(true);
     }
-    if (!renderList && listChange) {
-      setRenderList(
-        getSomeAnime({
-          variables: {
-            idMalArray: AuthContext.userList.animeList,
-          },
-        })
-      );
+    if (!data) {
+      getSomeAnime({variables: {
+        idMalArray: AuthContext.userList.mangaList,
+      }})
     }
-  }, [compLoad, AuthContext.userList.animeList, renderList, getSomeAnime, listChange]);
+  }, [compLoad, AuthContext.userList.mangaList, getSomeAnime, data]);
 
   // Tells the user if they don't have any favorites saved. Thought it doesn't seem to work.
-  if (!renderList) {
+  if (loading) {
     return (
       <Card>
         <Typography>Loading...</Typography>
@@ -92,9 +81,9 @@ const AnimeList = () => {
       {(state) => (
         <Card className="favoriteList">
           <Typography className="pageTitle" variant="h4">
-            Favorite List
+            Favorite Anime List
           </Typography>
-          {renderList?.findSomeAnime?.map((item) => {
+          {data?.findSomeAnime?.map((item) => {
             // Maps the array to the DOM.
             // Having a hard time getting the transition to function similarly to Search.js
             return (
@@ -117,7 +106,7 @@ const AnimeList = () => {
                   className="resultImage"
                 />
                 <div classNames="titleScore">
-                  <Link onClick={() => redirectToAnimePage(item.mal_id)}>
+                  <Link onClick={() => redirectToAnimePage(item.idMal)}>
                     <Typography variant="h4">{item.title}</Typography>
                   </Link>
                   <div className="favScore">

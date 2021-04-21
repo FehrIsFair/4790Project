@@ -116,8 +116,8 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     deleteList: NexusGenRootTypes['List'] | null; // List
     editList: NexusGenRootTypes['List'] | null; // List
-    findSomeAnime: NexusGenRootTypes['Anime'] | null; // Anime
-    findSomeManga: NexusGenRootTypes['Manga'] | null; // Manga
+    findSomeAnime: Array<NexusGenRootTypes['Anime'] | null>; // [Anime]!
+    findSomeManga: Array<NexusGenRootTypes['Manga'] | null>; // [Manga]!
     saveList: NexusGenRootTypes['List'] | null; // List
   }
   Query: { // field return type
