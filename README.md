@@ -1,8 +1,8 @@
-# Full Stack RESTful API App
+# Full Stack GraphQL API App
 
-This app talks to a custom MongoDB/Mongoose backend to get data and serve it to you in the form of a "Favorite Anime/Manga List" App.
+This app talks to a custom GraphQL server powerd by prisma, apollo, and nexus. It als uses Postgresql to store its data.
 
-It's gets revolve around getting Anime/Manga and Lists. For Anime and Manga, its mainly by ItemType(Either Anime or Manga) ID and for Lists its both by User ID and Object ID.
+It revolves around getting Anime/Manga and Lists. For Anime and Manga, its mainly by type(Either ANIME or MANGA) ID and for Lists its both by User ID and ID.
 
 This is to demonstrate my skill in created a backend that can serve a front end and data from the backend to the front end.
 
@@ -20,25 +20,11 @@ All commands can be executed with yarn/npm but better to stick with one when dep
 
 "start"
 
-This starts the server. Easy enough.
-
-"test"
-
-this starts it in Nodemon for easy debugging and testing so you can immediately see changes in the code.
-
-"postinstall"
-
-This ensures that we get both the server's dependencies and the backends dependencies installed.
-
-"heroku-postbuild"
-
-This ensures that heroku builds the front end after the front end is built.
-
-"build"
-
-This builds the client for you.
+This just starts the server. Right now id doesn't do much as I've ripped out the RESTful back end from the Front End but it still serves the production version of the front end. Though it will not have the REST stuff in it as at one point I thought we were just going to do what we did with Heroku and just point the browser to the backend and go from there.
 
 ## Files to look for
+
+Note: This is mainly for the REST Stuff which will later be reworked to handle account stuff only later so I can authenticate. It will store passwords in bcrypt and salt them for security purposes.
 
 ### index.js
 
@@ -71,42 +57,16 @@ A full README for the client can be found in the client folder.
 
 # Endpoints
 
-## /Anime / getAnime
+Will be re done for final project.
 
-This just gets all the anime on file, no holds bar.
+# GraphQL and Docker
 
-## /Manga / getManga
+First, if you aren't my professor and aren't already running docker, download it [here](https://docs.docker.com/get-docker/). You may have to restart if you are on Windows.
 
-Same as /Anime, but for the manga on file.
+## Installation
 
-## /List/:uid / getList
+To install you need only run ```docker-compose up -d``` after that you do need to pay attention to a few things:
 
-This gets a the list for the current user. And if it doesn't find a user by that uid, then it returns a new List object to the client. It does not save until logout.
+1. For the front end, go to localhost:3000 and you should be greeted with its sign in page which (at the time of writing) only asks for a username. Make sure, when doing subsequent log ins, that you type the user name correctly, it currently doesn't have any logic to tell the difference between loging in or signing up.
 
-## /Anime/:mal_id / getAnimeByMalId
-
-This gets a single anime object that contains the given mal_id.
-
-## /Manga/:mal_id / getMangabyMalId
-
-This gets a single manga object that contains the give mal_id.
-
-## /Anime/Detail/:mal_id / getAnimeDetail
-
-This is to get the details on the anime in question as the api I used to get this data scraps data off the site. So I have to make a separate API call to get the details I need
-
-## /Manga/Detail/:mal_id / getMangaDetail
-
-This does the same as /Anime/Detail/:mal_id as the manga are gotten in the same way.
-
-## /EditList / editFavoriteList
-
-This is how the client sends the edited List to be saved.
-
-## /DeleteList/:_id / deleteFavoriteList
-
-This is how the delete enpoint works. It takes the object ID and then searches for the object and then deletes it.
-
-## /CreateList / createNewFavoriteList
-
-This is the endpoint that saves all new Lists from new users.
+2. For the graphql server you need only run 
