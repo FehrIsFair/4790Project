@@ -1,10 +1,10 @@
 const {PrismaClient} = require("@prisma/client");
 
 
-const animeData = require("../data/Anime.json");
-const mangaData = require("../data/Manga.json");
+const animeData = require("./data/Anime.json");
+const mangaData = require("./data/Manga.json");
 
-const listData = require("../data/List.json");
+const listData = require("./data/List.json");
 
 const prisma = new PrismaClient();
 

@@ -5,8 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "test",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "migrate": "npx prisma migrate dev --name init",
+    "seed": "node seed.js",
+    "start": "npm run migrate && sleep 5 && npm run seed && nodemon server.js",
+    "dev": "nodemon server.js",
+    "launchDocker": "docker run --name graphql-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres:latest"
   },
   "author": "Spencer Jensen",
   "license": "ISC",
