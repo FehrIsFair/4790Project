@@ -52,6 +52,8 @@ type Mutation {
   findSomeAnime(idMalArray: [Int]!): [Anime]!
   findSomeManga(idMalArray: [Int]!): [Manga]!
   saveList(data: ClientSaveInput!): List
+  searchAnime(searchQuery: String): [Anime]
+  searchManga(searchQuery: String): [Manga]
 }
 
 type Query {

@@ -37,6 +37,38 @@ const Query = objectType({
 const Mutation = objectType({
   name: "Mutation",
   definition(t) {
+    t.list.field("searchAnime", {
+      type: "Anime",
+      args: {
+        searchQuery: stringArg(),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.anime.findMany({
+          where: {
+            title: {
+              contains: args.searchQuery,
+            },
+          }
+        })
+      },
+    });
+
+    t.list.field("searchManga", {
+      type: "Manga",
+      args: {
+        searchQuery: stringArg(),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.anime.findMany({
+          where: {
+            title: {
+              contains: args.searchQuery,
+            },
+          },
+        })
+      },
+    });
+
     t.field("saveList", {
       type: "List",
       args: {
