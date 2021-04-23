@@ -1,10 +1,9 @@
 import express from "express";
 import path from "path"
 import * as dotenv from "dotenv";
-import mongoose from "mongoose";
 import cors from "cors";
 
-import apiRouter from "./routes/api.route.js";
+// import apiRouter from "./routes/api.route.js";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const app = express();
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/api", apiRouter);
+// app.use("/api", apiRouter);
 
 app.use((req, res, next) => {
   res.status(404).json({
@@ -28,13 +27,6 @@ app.use((req, res, next) => {
   });
 });
 
-mongoose
-  .connect(`${process.env.CONNECTION_STRING}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Listening at http://localhost:${port}`);
-    });
-  });
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
+});
