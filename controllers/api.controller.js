@@ -3,14 +3,19 @@ import bcrypt from "bcrypt"
 import { Users } from "../models/user.model.js";
 
 // First get endpoint
-export const getUser = async (req, res) => {
+export const validateUser = async (req, res) => {
   try {
     const user = await Users.find()
     .where({ UserName: req.params.Username })
     .exec(async (err, user) => {
       if (err) res.status(400).json({Message: "Could not find user with username/password combo"});
-      res.json(user[0]);
+      console.log("Got here");
     });
+    if (!user[1].UserName) {
+      res.status(200).json({
+        auth: true,
+      })
+    }
   } catch (err) {
     res.status(500).json({Message: ``})
   }
@@ -51,15 +56,19 @@ export const deleteUser = async (req, res) => {
 };
 
 // POST
-export const createNewFavoriteList = async (req, res) => {
-  const newList = new Users({
+export const createNewUser = async (req, res) => {
+  let pw = req.body.password;
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(pw, salt, () => {
+
+    })
+  })
+  const newUser = new Users({
     UserName: req.body.userName,
     Password: req.body.password,
-    uid: req.body.uid,
   });
   try {
-    console.log(newList);
-    newList.save();
+    newUser.save();
     res.status(200).json({ Message: "success" });
   } catch (err) {
     res.status(400).json({ Message: `Could not create ${err}` });

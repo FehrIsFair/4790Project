@@ -1,24 +1,16 @@
 import express from "express";
-
 import path from "path"
 import * as dotenv from "dotenv";
-
-// import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
-
-// import seedrandom from "seedrandom";
 
 import apiRouter from "./routes/api.route.js";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
-dotenv.config();
-
 const app = express();
 const port = process.env.PORT || 5000;
 
-//app.use(express.static("public"));
+dotenv.config();
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
@@ -36,17 +28,13 @@ app.use((req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
-});
-
-// mongoose
-//   .connect(`${process.env.CONNECTION_STRING}`, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     app.listen(port, () => {
-//       console.log(`Listening at http://localhost:${port}`);
-//     });
-//   });
+mongoose
+  .connect(`${process.env.CONNECTION_STRING}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Listening at http://localhost:${port}`);
+    });
+  });
