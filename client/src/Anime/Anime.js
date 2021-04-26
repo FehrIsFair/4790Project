@@ -46,7 +46,7 @@ const Anime = () => {
   }, [compLoad, anime, authContext.allAnime, authContext.clicked]);
 
   // Route Gaurding
-  if (!authContext.userName) {
+  if (!authContext.auth) {
     return <Redirect to="/" />;
   }
 
