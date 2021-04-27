@@ -37,7 +37,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./4790Project/client/src:/client/src
+      - ./4790Project/client/src:/app/client/src
       - /client/node_modules
     stdin_open: true
     tty: true

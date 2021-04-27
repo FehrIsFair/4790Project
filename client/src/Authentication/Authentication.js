@@ -89,7 +89,7 @@ const AuthProvider = ({ children }) => {
   const [userList, setUserList] = useState();
   const [isDelete, setIsDelete] = useState(false);
   const [didSignOut, setDidSignOut] = useState(false);
-  const [isAuth, setIsAuth] = useState();
+  const [isAuth, setIsAuth] = useState(Boolean);
   const [userName, setUserName] = useState();
 
   // GQL Stuff

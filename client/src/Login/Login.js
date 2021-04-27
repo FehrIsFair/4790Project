@@ -1,15 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, TextField, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 import { Authentication } from "../Authentication/Authentication";
+import AuthError from "../Errors/AuthError/AuthError";
 
 const Login = () => {
   // All of the hooks needed to make the component work
   const authContext = useContext(Authentication);
   const history = useHistory();
+  const [isError, setIsError] = useState(Boolean);
 
   if (authContext.isAuthenticated) {
     history.push("/Search");
@@ -25,22 +27,30 @@ const Login = () => {
   return (
     <Card id="login">
       <h4>Login</h4>
+      {isError ? <AuthError /> : null}
       {/* Using Formik, we set the expected values, then steup the logic and validation. After that its a pretty simple form */}
       <Formik
         initialValues={{
           UserName: "",
+          Password: "",
         }}
         validationSchema={Yup.object().shape({
           UserName: Yup.string()
             .min(4, "Too short")
             .max(15, "Too long")
-            .required("Must enter an email"),
+            .required("Must enter an Username"),
+          Password: Yup.string()
+            .min(4, "Too short")
+            .max(15, "Too long")
+            .required("Must enter an password"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            console.log(values.UserName)
-            authContext.userNameHandler(values.UserName)
-            history.push("/Search");
+            if (authContext.signIn(values.UserName, values.Password)) {
+              history.push("/Search");
+            } else {
+              setIsError(true);
+            }
           } catch (err) {
             console.error(err);
             setStatus({ success: false });
@@ -73,6 +83,20 @@ const Login = () => {
                 required
                 error={Boolean(touched.UserName && errors.UserName)}
                 helpertext={touched.UserName && errors.UserName}
+              />
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                name="Password"
+                className="textfield"
+                label="password"
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.Email}
+                required
+                error={Boolean(touched.Password && errors.Password)}
+                helpertext={touched.Password && errors.Password}
               />
               <Button
                 className="button"
