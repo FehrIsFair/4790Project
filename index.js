@@ -6,11 +6,12 @@ import cors from "cors";
 
 import apiRouter from "./routes/api.route.js";
 
+// needs to run before anything else
+dotenv.config();
+
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const app = express();
 const port = process.env.PORT || 5000;
-
-dotenv.config();
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
