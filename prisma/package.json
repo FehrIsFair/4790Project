@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "test",
-    "migrate": "npx prisma migrate dev --name init",
+    "migrate": "npx prisma migrate",
     "seed": "node seed.js",
     "start": "npm run migrate && sleep 5 && npm run seed && nodemon server.js",
     "dev": "nodemon server.js",
