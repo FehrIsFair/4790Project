@@ -21,6 +21,7 @@ export const authUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   let newUser;
+  console.log(req.body)
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(req.body.Password, salt, (err, hash) => {
       if (err) res.status(400).json({Message: `Failed to create new user ${err}`});

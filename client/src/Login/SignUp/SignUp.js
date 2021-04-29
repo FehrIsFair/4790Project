@@ -45,7 +45,6 @@ const SignUp = () => {
               .required("Must confirm your Password"),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            console.log("Got here");
             try {
               if (authContext.signUp(values.UserName, values.Password, values.Confirm)) {
                 history.push("/Search")
