@@ -11,7 +11,7 @@ const NavContent = () => {
 
   useEffect(() => {}, [authContext.logout]);
 
-  if (authContext.isAuth === null)
+  if (!authContext.auth)
     return (
       <Card id="loggedOut">
         <ul className="nav">
@@ -28,7 +28,7 @@ const NavContent = () => {
         </ul>
       </Card>
     );
-  if (authContext.isAuth !== null)
+  if (authContext.auth)
     return (
       <Card id="loggedIn">
         <ul className="nav">

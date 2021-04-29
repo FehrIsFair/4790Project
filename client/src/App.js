@@ -9,6 +9,7 @@ import FavoriteList from "./Anime/FavoriteList/FavoriteList";
 import SearchManga from "./Anime/Search/SearchManga";
 import Footer from "./Anime/Footer";
 import Manga from "./Anime/Manga";
+import SignUp from "./Login/SignUp/SignUp";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <div className="App">
           <NavBar />
           <Route path="/" exact component={Login} />
+          <Route path="/SignUp" exact component={SignUp} />
           <Route path="/Anime" exact component={Anime} />
           <Route path="/Search" exact component={Search} />
           <Route path="/Favorites" exact component={FavoriteList} />

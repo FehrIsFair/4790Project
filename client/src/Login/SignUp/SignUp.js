@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Card, TextField, Button } from "@material-ui/core";
 
 import { Authentication } from "../../Authentication/Authentication";
-import { PasswordError } from "../../Errors/PasswordError/PasswordError"
+import PasswordError from "../../Errors/PasswordError/PasswordError"
 
 const SignUp = () => {
   // All of the hooks needed to make the component work
@@ -27,6 +27,8 @@ const SignUp = () => {
         <Formik
           initialValues={{
             UserName: "",
+            Password: "",
+            Confirm: "",
           }}
           validationSchema={Yup.object().shape({
             UserName: Yup.string()
@@ -43,6 +45,7 @@ const SignUp = () => {
               .required("Must confirm your Password"),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            console.log("Got here");
             try {
               if (authContext.signUp(values.UserName, values.Password, values.Confirm)) {
                 history.push("/Search")
@@ -95,7 +98,7 @@ const SignUp = () => {
               <TextField
                 autoFocus
                 id="outlined-basic"
-                name="Confirm Password"
+                name="Confirm"
                 className="textfield"
                 label="confirm"
                 variant="outlined"
@@ -109,7 +112,7 @@ const SignUp = () => {
               <Button
                 className="button"
                 variant="contained"
-                disabled={errors.Username || errors.Password || errors.Confirm}
+                disabled={errors.Username || errors.Password}
                 type="Submit"
               >
                 Sign Up
