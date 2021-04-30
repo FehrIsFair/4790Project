@@ -118,7 +118,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const signUp = async (_username, _password, _confirm) => {
-    debugger;
     if (_password === _confirm) {
       const { data } = await authMethod.post("/api/Create", {
         UserName: _username,

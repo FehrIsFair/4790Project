@@ -45,7 +45,6 @@ const SignUp = () => {
               .required("Must confirm your Password"),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            debugger;
             try {
               const auth = await authContext.signUp(values.UserName, values.Password, values.Confirm);
               if (auth) {

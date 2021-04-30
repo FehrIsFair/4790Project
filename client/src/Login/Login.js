@@ -45,8 +45,9 @@ const Login = () => {
             .required("Must enter an password"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          const auth = await authContext.signIn(values.UserName, values.Password);
           try {
-            if (authContext.signIn(values.UserName, values.Password)) {
+            if (auth) {
               history.push("/Search");
             } else {
               setIsError(true);
