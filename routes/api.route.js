@@ -11,6 +11,6 @@ const apiRouter = Router();
 
 apiRouter.post("/Auth", authUser);
 apiRouter.post("/Create", createUser);
-apiRouter.delete("/Delete", deleteUser);
+apiRouter.delete("/Delete/:UserName", deleteUser);
 
 export default apiRouter

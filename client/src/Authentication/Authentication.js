@@ -103,7 +103,7 @@ const AuthProvider = ({ children }) => {
   const [deleteList] = useMutation(DELETE_LIST);
 
   const signIn = async (_username, _password) => {
-    const { data } = await authMethod.post("/Auth", {
+    const { data } = await authMethod.post("/api/Auth", {
       UserName: _username,
       Password: _password,
     });
@@ -118,8 +118,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const signUp = async (_username, _password, _confirm) => {
+    debugger;
     if (_password === _confirm) {
-      const { data } = await authMethod.post("/Create", {
+      const { data } = await authMethod.post("/api/Create", {
         UserName: _username,
         Password: _password,
       });
@@ -140,12 +141,13 @@ const AuthProvider = ({ children }) => {
     setIsDelete(bool);
   };
 
-  const determineIfPutPostDelete = () => {
+  const determineIfPutPostDelete = async () => {
     debugger;
     const lists = listData.allLists;
     if (isDelete) {
       try {
         deleteList({ variables: { id: userList.id } });
+        await authMethod.delete(`/api/Delete/${userName}`);
       } catch (err) {
         console.log(`${err}`);
       }

@@ -45,8 +45,10 @@ const SignUp = () => {
               .required("Must confirm your Password"),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            debugger;
             try {
-              if (authContext.signUp(values.UserName, values.Password, values.Confirm)) {
+              const auth = await authContext.signUp(values.UserName, values.Password, values.Confirm);
+              if (auth) {
                 history.push("/Search")
               } else {
                 setPasswordError(true)
