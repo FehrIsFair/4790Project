@@ -44,13 +44,12 @@ export const createUser = (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    Users.deleteOne()
-      .where({ Username: req.params.UserName })
-      .exec((err, user) => {
-        if (err)
-          res.status(400).json({ Message: `Could not delete user: ${err}` });
-        res.status(200).json({ Message: "user Successfully deleted." });
-      });
+    Users.deleteOne({UserName: req.params.UserName}, (err) => {
+      if (err) res.status(400)
+        .json({Message: `Could not find user to delete: ${err}`});
+      res.status(200).json({Message: "Successfully deleted user"});
+    })
+      
   } catch (err) {
     res.status(400).json({ Message: `Could not delete user: ${err}` });
   }

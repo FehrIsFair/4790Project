@@ -141,7 +141,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const determineIfPutPostDelete = async () => {
-    debugger;
     const lists = listData.allLists;
     if (isDelete) {
       try {
