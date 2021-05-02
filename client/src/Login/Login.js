@@ -90,6 +90,7 @@ const Login = () => {
                 id="outlined-basic"
                 name="Password"
                 className="textfield"
+                type="password"
                 label="password"
                 variant="outlined"
                 onChange={handleChange}

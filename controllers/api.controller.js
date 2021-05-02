@@ -25,6 +25,7 @@ export const authUser = (req, res) => {
 };
 
 export const createUser = (req, res) => {
+  console.log(req.body)
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(req.body.Password, salt, (err, hash) => {
       if (err) res.status(400).json({ Message: `Failed to salt: ${err}` });

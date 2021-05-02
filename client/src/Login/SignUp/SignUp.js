@@ -46,6 +46,7 @@ const SignUp = () => {
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
+              debugger;
               const auth = await authContext.signUp(values.UserName, values.Password, values.Confirm);
               if (auth) {
                 history.push("/Search")
@@ -90,6 +91,7 @@ const SignUp = () => {
                 variant="outlined"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                type="password"
                 value={values.Password}
                 required
                 error={Boolean(touched.Password && errors.Password)}
@@ -97,6 +99,7 @@ const SignUp = () => {
               />
               <TextField
                 autoFocus
+                type="password"
                 id="outlined-basic"
                 name="Confirm"
                 className="textfield"
