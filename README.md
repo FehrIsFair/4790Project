@@ -30,7 +30,7 @@ This is the backend entry point. It's how everything is setup and working.
 
 ### api.routes.js
 
-This is how the api routes are configured for the backend.
+This is how the api routes are configured for the backend. Mainly for user auth and character serving.
 
 ### api.controller.js
 
@@ -39,6 +39,10 @@ This is how all the data is served and recieved.
 ### user.model.js
 
 This is the model for user data.
+
+### char.model.js
+
+This is the model for character data.
 
 ## GraphQL Files
 
@@ -97,10 +101,12 @@ First, if you aren't my professor and aren't already running docker, download it
 
 ## Installation
 
-To install you need only run ```docker-compose up -d``` after that you do need to pay attention to a few things:
+Once the root and client directories have the appropriate .envs (prisma feeds off of root's env, if an evn currently exists in /prisma get rid of it) do the following:
 
-1. For the front end, go to localhost:3000 and you should be greeted with its sign in page which (at the time of writing) only asks for a username. Make sure, when doing subsequent log ins, that you type the user name correctly, it currently doesn't have any logic to tell the difference between loging in or signing up.
+First run: ```npm run massInstall```
 
-2. For the graphql server you need only run 
+Second, run: ```npm run setup```
 
-3. You will also need to have .envs with the appropriate info in the root, /prisma, and /client.
+Lastly, run: ```npm run gqlDev```
+
+And that should have you up and running. I'll be available for contact the all day for the week of May 3, 2021 (for furture stumblers of the project), if you have any questions.

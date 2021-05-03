@@ -8,6 +8,7 @@
     "start": "node index.js",
     "setup": "npm run launchDocker && npm run migrate && npm run seed",
     "dev": "nodemon index.js && nodemon prisma/server.js && cd client && npm start",
+    "massInstall": "npm install && cd prisma && npm install && cd ../client && npm install",
     "test": "nodemon index.js",
     "launchDocker": "docker run --name graphql-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres:latest",
     "migrate": "npx prisma migrate dev --name init",
