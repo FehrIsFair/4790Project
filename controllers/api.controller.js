@@ -3,12 +3,14 @@ import bcrypt from "bcrypt";
 import { Users } from "../models/user.model.js";
 
 export const authUser = (req, res) => {
+  console.log(req.body)
   try {
     Users.find()
     .where({ UserName: req.body.UserName })
     .exec(async (err, user) => {
       if (err) res.status(400).json({ Message: `Could not find user: ${err}` });
       const result = await bcrypt.compare(req.body.Password, user[0].Password);
+      console.log(result)
       if (user.length !== 0) {
         if (result) {
           res.status(200).json({ auth: true });
@@ -55,3 +57,21 @@ export const deleteUser = async (req, res) => {
     res.status(400).json({ Message: `Could not delete user: ${err}` });
   }
 };
+
+export const updatePassword = (req, res) => {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.Password, salt, async (err, hash) => {
+      if (err) res.status(400).json({ Message: `Failed to salt: ${err}` });
+      const modifiedUser = {
+        UserName: req.body.UserName,
+        Password: hash,
+      };
+      try {
+        await Users.findOneAndUpdate({UserName: req.body.UserName}, modifiedUser);
+        res.status(200).json({ success: true });
+      } catch (err) {
+        res.status(400).json({ success: false });
+      }
+    });
+  });
+}

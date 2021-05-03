@@ -54,6 +54,11 @@ const NavContent = () => {
               <Button>Favorites</Button>
             </Link>
           </li>
+          <li>
+            <Link to="/Change">
+              <Button>Password</Button>
+            </Link>
+          </li>
         </ul>
       </Card>
     );

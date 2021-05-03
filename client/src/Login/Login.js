@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, TextField, Button } from "@material-ui/core";
+import {
+  Card,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -45,7 +49,10 @@ const Login = () => {
             .required("Must enter an password"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const auth = await authContext.signIn(values.UserName, values.Password);
+          const auth = await authContext.signIn(
+            values.UserName,
+            values.Password
+          );
           try {
             if (auth) {
               history.push("/Search");

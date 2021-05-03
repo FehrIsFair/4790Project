@@ -285,6 +285,7 @@ const AuthProvider = ({ children }) => {
         signOutLogicHandler: didTheySignOut,
         signIn: signIn,
         signUp: signUp,
+        userName: userName,
         clicked: clicked,
         allAnime: animeData,
         allManga: mangaData,
