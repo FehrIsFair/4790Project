@@ -24,8 +24,6 @@ This just starts the server. Right now id doesn't do much as I've ripped out the
 
 ## Files to look for
 
-Note: This is mainly for the REST Stuff which will later be reworked to handle account stuff only later so I can authenticate. It will store passwords in bcrypt and salt them for security purposes.
-
 ### index.js
 
 This is the backend entry point. It's how everything is setup and working.
@@ -38,17 +36,35 @@ This is how the api routes are configured for the backend.
 
 This is how all the data is served and recieved.
 
-### anime.model.js
+### user.model.js
 
-This is the model for anime data. I don't allow for anime to be added, but it does have the skeleton for it.
+This is the model for user data.
 
-### manga.model.js
+## GraphQL Files
 
-This is the model for manga. Same as anime.
+### server.js
 
-### list.model.js
+This is the GraphQL entry point
 
-This is where the list model is. It is imperitive that it is structured like this as it is how lists are saved and how they are edited.
+### seed.js
+
+This seeds the postgres database
+
+### schema.js
+
+This conmtains the resolvers for the GraphQL operations.
+
+### context.js
+
+This contains the Prisma context for the resolvers to work with.
+
+### /data
+
+This contains the data for the seed.js file.
+
+### schema.prisma
+
+This has the schema for prisma to generate the graphql schema.
 
 ## Client
 
@@ -58,6 +74,22 @@ A full README for the client can be found in the client folder.
 # Endpoints
 
 Will be re done for final project.
+
+## /api/Auth
+
+This auths the user by reading the database and confirming the passwords match and sending a message to the client that it confirmed the matching passwords. I use post as a means of concealing user data, otherwise this is basically the get.
+
+## /api/Create
+
+This creates new users. It salts and hashes the password and then sends back an auth message to the client.
+
+## /api/Delete/:UserName
+
+This deletes the user. If the user decided to delete their favorite list it also deletes their user information.
+
+## /api/Change
+
+This updates the user's password if they feel they need to update their password. This is a put.
 
 # GraphQL and Docker
 
@@ -70,3 +102,5 @@ To install you need only run ```docker-compose up -d``` after that you do need t
 1. For the front end, go to localhost:3000 and you should be greeted with its sign in page which (at the time of writing) only asks for a username. Make sure, when doing subsequent log ins, that you type the user name correctly, it currently doesn't have any logic to tell the difference between loging in or signing up.
 
 2. For the graphql server you need only run 
+
+3. You will also need to have .envs with the appropriate info in the root, /prisma, and /client.
