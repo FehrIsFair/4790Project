@@ -39,13 +39,13 @@ const NavContent = () => {
           </li>
           <li>
             <Link to="/Search">
-              <Button>See Anime</Button>
+              <Button>Anime</Button>
             </Link>
           </li>
           <li>
             <Link to="/SearchManga">
               <Button>
-                See Manga
+                Manga
               </Button>
             </Link>
           </li>
@@ -62,6 +62,11 @@ const NavContent = () => {
           <li>
             <Link to="/Profile">
               <Button>Profile</Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/Characters">
+              <Button>Characters</Button>
             </Link>
           </li>
         </ul>

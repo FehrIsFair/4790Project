@@ -11,7 +11,8 @@ import Footer from "./Anime/Footer";
 import Manga from "./Anime/Manga";
 import SignUp from "./Login/SignUp/SignUp";
 import UpdatePassword from "./Anime/UpdatePassword/UpdatePassword";
-import UserProfile from "./UserProfile/UserProfile"
+import UserProfile from "./UserProfile/UserProfile";
+import Characters from "./Anime/Search/Characters";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/Manga" exact component={Manga} />
           <Route path="/Change" exact component={UpdatePassword} />
           <Route path="/Profile" exact component={UserProfile} />
+          <Route path="/Characters" component={Characters} />
           <Footer />
         </div>
     </BrowserRouter>

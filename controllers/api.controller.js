@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 
 import { Users } from "../models/user.model.js";
+import {Character} from "../models/char.model.js"
 
 export const authUser = (req, res) => {
   console.log(req.body);
@@ -109,3 +110,12 @@ export const updatePassword = (req, res) => {
     });
   });
 };
+
+export const getCharacters = async (req, res) => {
+  const chars = await Character.find();
+  if (!chars) {
+    res.status(400).json({Message: "Could not find characters"});
+  } else {
+    res.status(200).json(chars);
+  }
+}
