@@ -117,11 +117,14 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUp = async (_username, _password, _confirm) => {
+  const signUp = async (_username, _password, _confirm, _favAnime, _favCharacter, _favManga) => {
     if (_password === _confirm) {
       const { data } = await authMethod.post("/api/Create", {
         UserName: _username,
         Password: _password,
+        FavCharacter: _favCharacter,
+        FavAnime: _favAnime,
+        FavManga: _favManga,
       });
       if (data.auth) {
         listHandler(_username);

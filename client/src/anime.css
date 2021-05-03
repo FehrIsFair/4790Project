@@ -338,3 +338,22 @@ h4.resultTitle {
 #true-contain {
   background-color: rgb(64, 104, 64);
 }
+
+#profile {
+  background-color: #459032 !important;
+}
+
+#profile h4{
+  margin: 2%;
+}
+
+#profile h5 {
+  margin: 2%;
+}
+#profile span {
+  margin: 3%;
+}
+
+#profile div {
+  padding-bottom: 2%;
+}

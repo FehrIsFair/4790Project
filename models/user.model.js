@@ -11,6 +11,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  FavCharacter: {
+    type: String,
+  },
+  FavAnime: {
+    type: String,
+  },
+  FavManga: {
+    type: String,
+  },
 });
 
 export const Users = mongoose.model("Users", userSchema, "users");

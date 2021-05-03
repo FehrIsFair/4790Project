@@ -10,7 +10,8 @@ import SearchManga from "./Anime/Search/SearchManga";
 import Footer from "./Anime/Footer";
 import Manga from "./Anime/Manga";
 import SignUp from "./Login/SignUp/SignUp";
-import UpdatePassword from "./Anime/UpdatePassword/UpdatePassword"
+import UpdatePassword from "./Anime/UpdatePassword/UpdatePassword";
+import UserProfile from "./UserProfile/UserProfile"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/SearchManga" exact component={SearchManga} />
           <Route path="/Manga" exact component={Manga} />
           <Route path="/Change" exact component={UpdatePassword} />
+          <Route path="/Profile" exact component={UserProfile} />
           <Footer />
         </div>
     </BrowserRouter>

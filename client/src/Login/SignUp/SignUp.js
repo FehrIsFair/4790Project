@@ -29,6 +29,9 @@ const SignUp = () => {
             UserName: "",
             Password: "",
             Confirm: "",
+            FavCharacter: "",
+            FavAnime: "",
+            FavManga: "",
           }}
           validationSchema={Yup.object().shape({
             UserName: Yup.string()
@@ -43,10 +46,21 @@ const SignUp = () => {
               .min(10, "Too short")
               .max(50, "Too long")
               .required("Must confirm your Password"),
+            FavCharacter: Yup.string(),
+            FavAnime: Yup.string(),
+            FavManga: Yup.string(),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            debugger;
             try {
-              const auth = await authContext.signUp(values.UserName, values.Password, values.Confirm);
+              const auth = await authContext.signUp(
+                values.UserName, 
+                values.Password, 
+                values.Confirm, 
+                values.FavAnime, 
+                values.FavCharacter, 
+                values.FavManga
+                );
               if (auth) {
                 history.push("/Search")
               } else {
@@ -110,6 +124,45 @@ const SignUp = () => {
                 required
                 error={Boolean(touched.Confirm && errors.Confirm)}
                 helpertext={touched.Confirm && errors.Confirm}
+              />
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                name="FavAnime"
+                className="textfield"
+                label="favanime"
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.FavAnime}
+                error={Boolean(touched.FavAnime && errors.FavAnime)}
+                helpertext={touched.FavAnime && errors.FavAnime}
+              />
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                name="FavCharacter"
+                className="textfield"
+                label="favcharacter"
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.FavCharacter}
+                error={Boolean(touched.FavCharacter && errors.FavCharacter)}
+                helpertext={touched.FavCharacter && errors.FavCharacter}
+              />
+              <TextField
+                autoFocus
+                id="outlined-basic"
+                name="FavManga"
+                className="textfield"
+                label="favmanga"
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.FavManga}
+                error={Boolean(touched.FavManga && errors.FavManga)}
+                helpertext={touched.FavMagna && errors.FavManga}
               />
               <Button
                 className="button"
