@@ -46,7 +46,7 @@ const Manga = () => {
   }, [compLoad, anime, authContext.allManga.allManga, authContext.clicked]);
 
   // Route Gaurding
-  if (!authContext.userName) {
+  if (!authContext.auth) {
     return <Redirect to="/" />;
   }
 

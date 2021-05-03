@@ -1,14 +1,26 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Card, Typography, Switch, Button } from "@material-ui/core";
+import { Card } from "@material-ui/core";
+// import { SearchIcon } from "@material-ui/icons/Search";
 import { Redirect } from "react-router-dom";
 import Transition from "react-transition-group/Transition";
 import LazyLoad from "react-lazyload";
-import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
-import sortObjectsArray from "sort-objects-array";
+// import { gql, useMutation } from "@apollo/client";
 
 import { Authentication } from "../../Authentication/Authentication";
 import GeneralInfo from "../GeneralInfo/GeneralInfo";
+
+// const SEARCH_ANIME = gql`
+//   mutation SearchAnime($searchQuery: String) {
+//     searchManga(searchQuery: $searchQuery) {
+//       malID
+//       title
+//       description
+//       meanScore
+//       type
+//       coverImage
+//     }
+//   }
+// `;
 
 // Transistion States
 const transitionStyles = {
@@ -26,53 +38,38 @@ const transitionStyles = {
   },
 };
 
-const AnimeSwitch = withStyles({
-  switchBase: {
-    color: green[300],
-    "&$checked": {
-      color: green[500],
-    },
-    "&$checked + $track": {
-      backgroundColor: green[500],
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
 // Main Component
 const Search = () => {
   // Hooks for the component
   const authContext = useContext(Authentication);
   const [compLoad, setCompLoad] = useState(false);
-  const [isDescending, setIsAcending] = useState(false);
-  
+  const [data, setData] = useState();
+  // const [searchTerm, setSearchTerm] = useState();
+  // const [searchAnime, { data: searchData, loading: searchLoading }] = useMutation(SEARCH_ANIME);
 
-  const handleSort = () => {
-    if (!isDescending) {
-      sortObjectsArray(authContext.allAnime, "title");
-    } else {
-      sortObjectsArray(authContext.allAnime, "title", "reverse");
-    }
-  };
-
-  const handleChange = () => {
-    if (isDescending) {
-      setIsAcending(false);
-    } else {
-      setIsAcending(true);
-    }
-  };
+  // const handleChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
+  // const handleSearch = () => {
+  //   searchAnime({
+  //     variables: {
+  //       searchQuery: searchTerm,
+  //     },
+  //   });
+  // }
 
   useEffect(() => {
     if (!compLoad && !authContext.loadingAnime) {
+      setData([...authContext.allAnime.allAnime]);
       setCompLoad(true);
-      sortObjectsArray(authContext.allAnime, "title");
     }
-  }, [compLoad, authContext.allAnime, authContext.loadingAnime]);
+    // if (!searchLoading && !searchData) {
+    //   setData(searchData.searchAnime)
+    // }
+  }, [compLoad, authContext]);
 
   // Route Gauarding
-  if (authContext.userName === null) {
+  if (authContext.auth === null) {
     return <Redirect to="/" />;
   }
 
@@ -92,20 +89,23 @@ const Search = () => {
               transitionStyles[state])
             }
           >
-            <Card>
-              <Typography variant="p" className="switch-text">
-                Sort: {isDescending ? "Reverse Alpha" : "Alphabetical"}
-              </Typography>
-              <AnimeSwitch
-                className="switch"
-                checked={isDescending}
-                onChange={handleChange}
-                name="searchSort"
-                inputProps={{ "aria-label": "primary-checkbox" }}
-              />
-              <Button onClick={handleSort}>Sort</Button>
-            </Card>
-            {authContext.allAnime.allAnime?.map((anime) => {
+            {/*<Card>
+              <form>
+                <TextField
+                  autoFocus
+                  id="outlined-basic"
+                  name="Search"
+                  className="textfield"
+                  label="Search"
+                  variant="outlined"
+                  onChange={handleChange}
+                />
+                <IconButton aria-label="search" onClick={handleSearch}>
+                  <SearchIcon />
+                </IconButton>
+              </form>
+            </Card>*/}
+            {data?.map((anime) => {
               return (
                 <>
                   <LazyLoad offset={100}>

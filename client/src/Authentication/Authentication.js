@@ -1,5 +1,6 @@
 import React, { useState, createContext } from "react";
 import { useQuery, gql, useMutation } from "@apollo/client";
+import axios from "axios";
 
 const GET_LISTS = gql`
   query {
@@ -70,8 +71,6 @@ const SAVE_LIST = gql`
   }
 `;
 
-// This is just the initial state of the authentication.
-
 // This is the context of the entire application.
 // This has been immencely simplified to accomodate GraphQL
 export const Authentication = createContext({
@@ -79,49 +78,74 @@ export const Authentication = createContext({
   favoriteList: [],
 });
 
+const authMethod = axios.create({
+  baseURL: "http://localhost:6060",
+});
+
 // This is the Provider and lets the rest of the compoments access things globally without needing to pass a prop everywhere.
 const AuthProvider = ({ children }) => {
   // Here are my hooks that trigger states and keep track of things accross the app.
   const [clicked, setClicked] = useState();
-  const [userName, setUserName] = useState(null);
   const [userList, setUserList] = useState();
   const [isDelete, setIsDelete] = useState(false);
   const [didSignOut, setDidSignOut] = useState(false);
+  const [isAuth, setIsAuth] = useState(Boolean);
+  const [userName, setUserName] = useState();
 
   // GQL Stuff
-  const { 
-    loading: loadingList,
-     data: listData 
-  } = useQuery(GET_LISTS);
-  const {
-    loading: loadingAnime,
-    data: animeData,
-  } = useQuery(ALL_ANIME);
-  const {
-    loading: loadingManga,
-    data: mangaData,
-  } = useQuery(ALL_MANGA);
+  const { loading: loadingList, data: listData } = useQuery(GET_LISTS);
+  const { loading: loadingAnime, data: animeData } = useQuery(ALL_ANIME);
+  const { loading: loadingManga, data: mangaData } = useQuery(ALL_MANGA);
 
   // Mutations
   const [saveList] = useMutation(SAVE_LIST);
   const [editList] = useMutation(EDIT_LIST);
   const [deleteList] = useMutation(DELETE_LIST);
 
-  const userNameHandler = (_userName) => {
-    setUserName(_userName);
-    listHandler(_userName);
+  const signIn = async (_username, _password) => {
+    const { data } = await authMethod.post("/api/Auth", {
+      UserName: _username,
+      Password: _password,
+    });
+    if (data.auth) {
+      listHandler(_username);
+      setIsAuth(data.auth);
+      setUserName(_username)
+      return true;
+    } else {
+      return false;
+    }
   };
+
+  const signUp = async (_username, _password, _confirm) => {
+    if (_password === _confirm) {
+      const { data } = await authMethod.post("/api/Create", {
+        UserName: _username,
+        Password: _password,
+      });
+      if (data.auth) {
+        listHandler(_username);
+        setIsAuth(data.auth);
+        setUserName(_username);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   const deleteHandler = (bool) => {
     setIsDelete(bool);
   };
 
-  const determineIfPutPostDelete = () => {
-    debugger;
+  const determineIfPutPostDelete = async () => {
     const lists = listData.allLists;
     if (isDelete) {
       try {
         deleteList({ variables: { id: userList.id } });
+        await authMethod.delete(`/api/Delete/${userName}`);
       } catch (err) {
         console.log(`${err}`);
       }
@@ -155,7 +179,7 @@ const AuthProvider = ({ children }) => {
 
   const didTheySignOut = () => {
     setDidSignOut(false);
-  }
+  };
 
   const findList = (_lists) => {
     for (let value of _lists) {
@@ -187,6 +211,7 @@ const AuthProvider = ({ children }) => {
   const logOutHandler = () => {
     determineIfPutPostDelete();
     setUserName(null);
+    setIsAuth(false);
   };
 
   // This adds to the favorite list.
@@ -253,17 +278,19 @@ const AuthProvider = ({ children }) => {
   return (
     <Authentication.Provider
       value={{
-        userNameHandler: userNameHandler,
         click: setClickedHandler,
         addFavorite: addToFavoriteList,
         removeFavorite: deleteFromFavoriteList,
         searchList: favoriteListSearcher,
         signOutLogicHandler: didTheySignOut,
+        signIn: signIn,
+        signUp: signUp,
         userName: userName,
         clicked: clicked,
         allAnime: animeData,
         allManga: mangaData,
         allLists: listData,
+        auth: isAuth,
         loadingAnime: loadingAnime,
         loadingLists: loadingList,
         loadingManga: loadingManga,

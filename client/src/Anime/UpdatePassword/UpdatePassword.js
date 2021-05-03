@@ -1,40 +1,52 @@
-import React, { useContext, useState } from "react";
-import { Formik } from "formik";
+import React, {useContext, useState} from "react";
+import {Card, Typography, TextField, Button} from "@material-ui/core"
+import {Formik} from "formik";
+import { Redirect } from "react-router";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
-import { Card, TextField, Button } from "@material-ui/core";
+import axios from "axios";
 
-import { Authentication } from "../../Authentication/Authentication";
-import PasswordError from "../../Errors/PasswordError/PasswordError"
+import {Authentication} from "../../Authentication/Authentication"
 
-const SignUp = () => {
-  // All of the hooks needed to make the component work
+const authMethod = axios.create({
+  baseURL: "http://localhost:6060",
+})
+
+const UpdatePassword = () => {
   const authContext = useContext(Authentication);
-  const history = useHistory();
-  const [passwordError, setPasswordError] = useState(Boolean);
-  // This separates the sign in functions form the context.
+  const [error, setError] = useState(Boolean);
+  const [success, setSuccess] = useState(Boolean);
 
-  if (authContext.isAuthenticated) {
-    history.push("/Search");
+  const sendPasswordUpdate = async (_password, _confirm) => {
+    if (_password === _confirm) {
+      try {
+        await authMethod.put("/api/Change", {
+          UserName: authContext.userName,
+          Password: _password
+        });
+        setError(false);
+        setSuccess(true);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setError(true);
+    }
   }
 
+  if (!authContext.auth) {
+    return <Redirect path="/" />;
+  }
   return (
-    <Card id="login">
-      <h4>Sign Up</h4>
-      {passwordError ? <PasswordError /> : null}
-      <Card>
-        {/* Using Formik, we set the expected values, then steup the logic and validation. After that its a pretty simple form */}
-        <Formik
+    <Card>
+      <Typography>Change Password</Typography>
+      {success ? <Card> Success </Card> : null}
+      {error ? <Card> Error </Card> : null}
+      <Formik
           initialValues={{
-            UserName: "",
             Password: "",
             Confirm: "",
           }}
           validationSchema={Yup.object().shape({
-            UserName: Yup.string()
-              .min(10, "Too short")
-              .max(50, "Too long")
-              .required("Must enter an Username"),
             Password: Yup.string()
               .min(10, "Too short")
               .max(50, "Too long")
@@ -46,12 +58,8 @@ const SignUp = () => {
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
-              const auth = await authContext.signUp(values.UserName, values.Password, values.Confirm);
-              if (auth) {
-                history.push("/Search")
-              } else {
-                setPasswordError(true)
-              }
+              debugger;
+              await sendPasswordUpdate(values.Password, values.Confirm);
             } catch (err) {
               console.error(err);
             }
@@ -67,20 +75,6 @@ const SignUp = () => {
             isSubmitting,
           }) => (
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-              <TextField
-                autoFocus
-                id="outlined-basic"
-                name="UserName"
-                className="textfield"
-                label="username"
-                variant="outlined"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.UserName}
-                required
-                error={Boolean(touched.UserName && errors.UserName)}
-                helpertext={touched.UserName && errors.UserName}
-              />
               <TextField
                 autoFocus
                 id="outlined-basic"
@@ -114,7 +108,7 @@ const SignUp = () => {
               <Button
                 className="button"
                 variant="contained"
-                disabled={errors.Username || errors.Password}
+                disabled={errors.Password || errors.Confirm}
                 type="Submit"
               >
                 Sign Up
@@ -122,8 +116,7 @@ const SignUp = () => {
             </form>
           )}
         </Formik>
-      </Card>
     </Card>
-  );
-};
-export default SignUp;
+  )
+}
+export default UpdatePassword;

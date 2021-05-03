@@ -118,6 +118,8 @@ export interface NexusGenFieldTypes {
     findSomeAnime: Array<NexusGenRootTypes['Anime'] | null>; // [Anime]!
     findSomeManga: Array<NexusGenRootTypes['Manga'] | null>; // [Manga]!
     saveList: NexusGenRootTypes['List'] | null; // List
+    searchAnime: Array<NexusGenRootTypes['Anime'] | null> | null; // [Anime]
+    searchManga: Array<NexusGenRootTypes['Manga'] | null> | null; // [Manga]
   }
   Query: { // field return type
     allAnime: NexusGenRootTypes['Anime'][]; // [Anime!]!
@@ -163,6 +165,8 @@ export interface NexusGenFieldTypeNames {
     findSomeAnime: 'Anime'
     findSomeManga: 'Manga'
     saveList: 'List'
+    searchAnime: 'Anime'
+    searchManga: 'Manga'
   }
   Query: { // field return type name
     allAnime: 'Anime'
@@ -188,6 +192,12 @@ export interface NexusGenArgTypes {
     }
     saveList: { // args
       data: NexusGenInputs['ClientSaveInput']; // ClientSaveInput!
+    }
+    searchAnime: { // args
+      searchQuery?: string | null; // String
+    }
+    searchManga: { // args
+      searchQuery?: string | null; // String
     }
   }
 }

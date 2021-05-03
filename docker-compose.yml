@@ -26,6 +26,9 @@ services:
       - '6060:6060'
     volumes:
       - /node_modules
+      - ./routes:/routes
+      - ./controllers:/controllers
+      - ./models:/models
     env_file:
       - ./.env
     
@@ -34,7 +37,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./client/src:/client/src
+      - ./client/src:/app/client/src
+      - /client/node_modules
     stdin_open: true
     tty: true
     depends_on:

@@ -11,7 +11,7 @@ const NavContent = () => {
 
   useEffect(() => {}, [authContext.logout]);
 
-  if (authContext.userName === null)
+  if (!authContext.auth)
     return (
       <Card id="loggedOut">
         <ul className="nav">
@@ -20,10 +20,15 @@ const NavContent = () => {
               <Button>Sign In</Button>
             </Link>
           </li>
+          <li>
+            <Link to="/SignUp">
+              <Button>Sign Up</Button>
+            </Link>
+          </li>
         </ul>
       </Card>
     );
-  if (authContext.userName !== null)
+  if (authContext.auth)
     return (
       <Card id="loggedIn">
         <ul className="nav">
@@ -47,6 +52,11 @@ const NavContent = () => {
           <li>
             <Link to="/Favorites">
               <Button>Favorites</Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/Change">
+              <Button>Password</Button>
             </Link>
           </li>
         </ul>

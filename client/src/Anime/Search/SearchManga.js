@@ -72,7 +72,7 @@ const SearchManga = () => {
   }, [compLoad, authContext.allAnime, authContext.loadingAnime]);
 
   // Route Gauarding
-  if (authContext.userName === null) {
+  if (authContext.auth === null) {
     return <Redirect to="/" />;
   }
 

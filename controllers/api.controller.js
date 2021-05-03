@@ -1,153 +1,77 @@
-import axios from "axios";
+import bcrypt from "bcrypt";
 
-import { FavoriteList } from "../models/list.model.js";
-import { Manga } from "../models/manga.model.js";
-import { Anime } from "../models/anime.model.js";
+import { Users } from "../models/user.model.js";
 
-// again I can get rid of this later when we move to graphql
-const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v3/",
-});
-
-// First get endpoint
-export const getManga = async (req, res) => {
-  const manga = await Manga.find();
-  if (!manga) {
-    return res.status(400).json({ Message: `No manga found` });
-  }
-  res.json(manga);
-};
-
-// This is just how the api I was using before worked. When we get to GraphQL, I'll be able to get rid of this.
-export const getMangaDetail = async (req, res) => {
+export const authUser = (req, res) => {
+  console.log(req.body)
   try {
-    const { data } = await jikanApi.get(`/manga/${req.params.mal_id}`);
-    res.json(data);
-  } catch (err) {
-    res.status(400).json({ Message: `Couldnl't fetch detail. ${err}` });
-  }
-};
-
-// Third Get
-export const getList = (req, res) => {
-  let data;
-  try {
-    FavoriteList.find()
-      .where({ uid: req.params.uid })
-      .exec((err, list) => {
-        if (err)
-          res
-            .status(400)
-            .json({ Message: `Couldn't find a list with that UID ${err}` });
-        if (list.length === 0) {
-          const newList = new FavoriteList({
-            uid: req.params.uid,
-            animeList: [],
-            mangaList: [],
-          });
-          res.json(newList);
+    Users.find()
+    .where({ UserName: req.body.UserName })
+    .exec(async (err, user) => {
+      if (err) res.status(400).json({ Message: `Could not find user: ${err}` });
+      const result = await bcrypt.compare(req.body.Password, user[0].Password);
+      console.log(result)
+      if (user.length !== 0) {
+        if (result) {
+          res.status(200).json({ auth: true });
         } else {
-          res.json(list[0]);
+          res.status(400).json({ auth: false });
         }
+      } else {
+        res.status(400).json({ auth: false });
+      }
+    });
+  } catch (err) {
+    res.status(400).json({auth: false});
+  }
+};
+
+export const createUser = (req, res) => {
+  console.log(req.body)
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.Password, salt, (err, hash) => {
+      if (err) res.status(400).json({ Message: `Failed to salt: ${err}` });
+      const newUser = new Users({
+        UserName: req.body.UserName,
+        Password: hash,
       });
-  } catch (err) {
-    res.status(400).json({ Message: `Invalid User ID ${err}` });
-  }
-};
-
-// put
-export const editFavoriteList = async (req, res) => {
-  const favID = req.body._id;
-  const newList = {
-    animeList: req.body.animeList,
-    mangaList: req.body.mangaList,
-    uid: req.body.uid,
-  };
-  try {
-    const list = await FavoriteList.findByIdAndUpdate(favID, newList, {
-      new: true,
-      useFindAndModify: false,
+      try {
+        newUser.save();
+        res.status(200).json({ auth: true });
+      } catch (err) {
+        res.status(400).json({ auth: false });
+      }
     });
-    console.log(list);
-    res.status(200).json({Message: "Successfully Edited"}); // mainly for debug reasons.
-  } catch (err) {
-    res.status(400).json({ Message: `Could not update ${err}` });
-  }
-};
-
-// delete
-export const deleteFavoriteList = async (req, res) => {
-  console.log(req.params);
-  const favID = req.params._id;
-  try {
-    FavoriteList.findByIdAndDelete(favID, (err, list) => {
-      if (err) res.status(400).json({ Message: `No list to delete ${err}` });
-      res.status(200).json({ success: true });
-    });
-  } catch (err) {
-    res.status(400).json({ Message: `Could not delete${err}` });
-  }
-};
-
-// POST
-export const createNewFavoriteList = async (req, res) => {
-  const newList = new FavoriteList({
-    animeList: req.body.animeList,
-    mangaList: req.body.mangaList,
-    uid: req.body.uid,
   });
-  try {
-    console.log(newList);
-    newList.save();
-    res.status(200).json({ Message: "success" });
-  } catch (err) {
-    res.status(400).json({ Message: `Could not create ${err}` });
-  }
 };
 
-// First get endpoint
-export const getAnime = async (req, res) => {
-  const anime = await Anime.find();
-  if (!anime) {
-    return res.status(400).json({ Message: `No anime found` });
-  }
-  res.status(200).json(anime);
-};
-
-// This is just how the api I was using before worked. To get a bunch of data from it, search was needed.
-// But the results of the search didn't have the data needed for the other parts of my page.
-// So I have to get the other information like this. I didn't switch API's because I didn't want to change the
-// data structure of the app too much. But I found a GraphQL Anime API so hopefully I won't have to resort to something like this.
-export const getAnimeDetail = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
-    const { data } = await jikanApi.get(`/anime/${req.params.mal_id}`);
-    res.json(data);
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ Message: `Couldnl't fetch detail. ${err}` });
-  }
-};
-
-export const getAnimeByMalId = (req, res) => {
-  const mal_id = req.params.mal_id;
-  try {
-    Anime.find().where({mal_id: mal_id}).exec( async (err, anime) => {
-      if (err) res.status(400).json({Message: `Could not find anime ${mal_id}. ${err}`})
-      res.json(anime[0]);
+    Users.deleteOne({UserName: req.params.UserName}, (err) => {
+      if (err) res.status(400)
+        .json({Message: `Could not find user to delete: ${err}`});
+      res.status(200).json({Message: "Successfully deleted user"});
     })
+      
   } catch (err) {
-    res.status(400).json({Message: `Could not execute query ${err}`});
+    res.status(400).json({ Message: `Could not delete user: ${err}` });
   }
 };
 
-export const getMangaByMalId = (req, res) => {
-  const mal_id = req.params.mal_id;
-  try {
-    Manga.find().where({mal_id: mal_id}).exec( async (err, anime) => {
-      if (err) res.status(400).json({Message: `Could not find anime ${mal_id}. ${err}`})
-      res.json(anime[0]);
-    })
-  } catch (err) {
-    res.status(400).json({Message: `Could not execute query ${err}`});
-  }
-};
+export const updatePassword = (req, res) => {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.Password, salt, async (err, hash) => {
+      if (err) res.status(400).json({ Message: `Failed to salt: ${err}` });
+      const modifiedUser = {
+        UserName: req.body.UserName,
+        Password: hash,
+      };
+      try {
+        await Users.findOneAndUpdate({UserName: req.body.UserName}, modifiedUser);
+        res.status(200).json({ success: true });
+      } catch (err) {
+        res.status(400).json({ success: false });
+      }
+    });
+  });
+}
