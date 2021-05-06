@@ -62,7 +62,7 @@ export const createUser = (req, res) => {
       const newUser = new Users({
         UserName: req.body.UserName,
         Password: hash,
-        FavCharacer: req.body.FavCharacter,
+        FavCharacter: req.body.FavCharacter,
         FavAnime: req.body.FavAnime,
         FavManga: req.body.FavManga,
       });
